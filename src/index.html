@@ -1,0 +1,1577 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MimiMania 🎭</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0c29;
+    --bg2: #1a1640;
+    --card: #231e5a;
+    --card2: #2d2870;
+    --accent1: #ff6b6b;
+    --accent2: #ffd93d;
+    --accent3: #6bcb77;
+    --accent4: #4d96ff;
+    --accent5: #c77dff;
+    --text: #ffffff;
+    --text2: rgba(255,255,255,0.75);
+    --text3: rgba(255,255,255,0.45);
+    --radius: 20px;
+    --radius-sm: 12px;
+    --shadow: 0 8px 32px rgba(0,0,0,0.4);
+    --team1: #ff6b6b;
+    --team2: #4d96ff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at 20% 20%, #3d2f8a33 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 80%, #ff6b6b22 0%, transparent 60%),
+                radial-gradient(ellipse at 50% 50%, #4d96ff11 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* STARS BG */
+  .stars {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    overflow: hidden;
+  }
+  .star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle var(--d, 3s) ease-in-out infinite var(--del, 0s);
+    opacity: 0;
+  }
+  @keyframes twinkle {
+    0%,100% { opacity: 0; transform: scale(0.5); }
+    50% { opacity: var(--op, 0.6); transform: scale(1); }
+  }
+
+  /* SCREENS */
+  .screen {
+    position: relative; z-index: 1;
+    display: none;
+    min-height: 100vh;
+    padding: 20px;
+    align-items: center;
+    justify-content: center;
+  }
+  .screen.active { display: flex; flex-direction: column; }
+
+  /* LOGO */
+  .logo {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    text-align: center;
+    background: linear-gradient(135deg, #ffd93d, #ff6b6b, #c77dff, #4d96ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 4px 12px rgba(255,107,107,0.5));
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .logo-sub {
+    text-align: center;
+    color: var(--text3);
+    font-size: 1rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 40px;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: var(--radius);
+    padding: 28px;
+    box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 480px;
+  }
+  .card-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: var(--accent2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* BUTTONS */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 28px;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    transition: all 0.18s ease;
+    text-transform: none;
+    letter-spacing: 0.3px;
+  }
+  .btn:active { transform: scale(0.96); }
+  .btn-primary {
+    background: linear-gradient(135deg, #ff6b6b, #ff8e53);
+    color: white;
+    box-shadow: 0 4px 20px rgba(255,107,107,0.5);
+  }
+  .btn-primary:hover { box-shadow: 0 6px 28px rgba(255,107,107,0.7); transform: translateY(-1px); }
+  .btn-secondary {
+    background: linear-gradient(135deg, #4d96ff, #6bcb77);
+    color: white;
+    box-shadow: 0 4px 20px rgba(77,150,255,0.4);
+  }
+  .btn-secondary:hover { box-shadow: 0 6px 28px rgba(77,150,255,0.6); transform: translateY(-1px); }
+  .btn-purple {
+    background: linear-gradient(135deg, #c77dff, #4d96ff);
+    color: white;
+    box-shadow: 0 4px 20px rgba(199,125,255,0.4);
+  }
+  .btn-ghost {
+    background: rgba(255,255,255,0.06);
+    color: var(--text2);
+    border: 1px solid rgba(255,255,255,0.12);
+  }
+  .btn-ghost:hover { background: rgba(255,255,255,0.12); }
+  .btn-danger {
+    background: linear-gradient(135deg, #ff4757, #ff6b81);
+    color: white;
+    box-shadow: 0 4px 20px rgba(255,71,87,0.4);
+  }
+  .btn-success {
+    background: linear-gradient(135deg, #6bcb77, #44a049);
+    color: white;
+    box-shadow: 0 4px 20px rgba(107,203,119,0.4);
+  }
+  .btn-lg { padding: 18px 36px; font-size: 1.15rem; }
+  .btn-sm { padding: 9px 18px; font-size: 0.85rem; }
+  .btn-block { width: 100%; }
+
+  /* INPUTS */
+  .inp {
+    width: 100%;
+    padding: 13px 18px;
+    background: rgba(255,255,255,0.06);
+    border: 1.5px solid rgba(255,255,255,0.12);
+    border-radius: var(--radius-sm);
+    color: white;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  .inp:focus { border-color: var(--accent4); background: rgba(77,150,255,0.08); }
+  .inp::placeholder { color: var(--text3); }
+
+  /* MODE SELECT */
+  .mode-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .mode-card {
+    background: rgba(255,255,255,0.04);
+    border: 2px solid rgba(255,255,255,0.08);
+    border-radius: var(--radius);
+    padding: 22px 16px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+  }
+  .mode-card:hover { background: rgba(255,255,255,0.08); transform: translateY(-2px); }
+  .mode-card.selected { border-color: var(--accent2); background: rgba(255,217,61,0.08); }
+  .mode-card .mode-icon { font-size: 2.5rem; margin-bottom: 10px; }
+  .mode-card .mode-name { font-family: 'Fredoka One', cursive; font-size: 1.1rem; color: var(--text); }
+  .mode-card .mode-desc { font-size: 0.8rem; color: var(--text3); margin-top: 4px; font-weight: 600; }
+
+  /* PLAYER SETUP */
+  .player-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .player-avatar {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    font-weight: 800;
+  }
+  .team-badge {
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+
+  /* TIMER */
+  .timer-wrap {
+    position: relative;
+    width: 160px; height: 160px;
+    margin: 0 auto 24px;
+  }
+  .timer-svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .timer-track { fill: none; stroke: rgba(255,255,255,0.08); stroke-width: 8; }
+  .timer-prog { fill: none; stroke-width: 8; stroke-linecap: round; transition: stroke-dashoffset 0.5s linear, stroke 0.3s; }
+  .timer-num {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Fredoka One', cursive;
+    font-size: 3.5rem;
+    line-height: 1;
+  }
+  .timer-label {
+    position: absolute;
+    bottom: 18px; left: 0; right: 0;
+    text-align: center;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    color: var(--text3);
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  /* WORD DISPLAY */
+  .word-card {
+    background: linear-gradient(135deg, var(--card), var(--card2));
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius);
+    padding: 32px 24px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    margin: 16px 0;
+  }
+  .word-text {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    color: var(--accent2);
+    filter: drop-shadow(0 2px 8px rgba(255,217,61,0.4));
+    word-break: break-word;
+  }
+  .word-category {
+    font-size: 0.8rem;
+    color: var(--text3);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 6px;
+  }
+
+  /* SCOREBOARD */
+  .score-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: rgba(255,255,255,0.04);
+    border-radius: var(--radius-sm);
+    margin-bottom: 8px;
+    border: 1px solid rgba(255,255,255,0.06);
+    transition: all 0.2s;
+  }
+  .score-row.first { background: rgba(255,217,61,0.12); border-color: rgba(255,217,61,0.3); }
+  .score-row.second { background: rgba(192,192,192,0.08); border-color: rgba(192,192,192,0.2); }
+  .score-row.third { background: rgba(205,127,50,0.08); border-color: rgba(205,127,50,0.2); }
+  .score-name { font-weight: 800; font-size: 1rem; }
+  .score-pts {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.4rem;
+    color: var(--accent2);
+  }
+  .rank-badge {
+    font-size: 1.2rem;
+    width: 32px;
+    text-align: center;
+  }
+
+  /* CURRENT PLAYER BANNER */
+  .current-player {
+    background: linear-gradient(135deg, rgba(77,150,255,0.2), rgba(199,125,255,0.2));
+    border: 1px solid rgba(77,150,255,0.3);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  .current-player .cp-label { font-size: 0.75rem; color: var(--text3); font-weight: 700; text-transform: uppercase; letter-spacing: 2px; }
+  .current-player .cp-name { font-family: 'Fredoka One', cursive; font-size: 1.6rem; color: white; }
+
+  /* WORD BANK */
+  .word-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin: 4px;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: var(--text2);
+  }
+  .word-tag:hover { background: rgba(255,71,87,0.2); border-color: rgba(255,71,87,0.5); color: var(--accent1); }
+  .word-tag .del-btn { opacity: 0.5; font-size: 1rem; line-height: 1; }
+  .words-container { max-height: 200px; overflow-y: auto; padding: 4px 0; }
+
+  /* TABS */
+  .tab-bar {
+    display: flex;
+    background: rgba(255,255,255,0.04);
+    border-radius: 50px;
+    padding: 4px;
+    margin-bottom: 24px;
+    gap: 4px;
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 10px;
+    border-radius: 50px;
+    border: none;
+    background: transparent;
+    color: var(--text3);
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+  }
+  .tab-btn.active { background: rgba(255,255,255,0.1); color: white; }
+
+  /* NOTIFICATION */
+  .notif {
+    position: fixed;
+    top: 20px; left: 50%; transform: translateX(-50%) translateY(-80px);
+    background: var(--accent3);
+    color: #0d4f17;
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 0.95rem;
+    z-index: 1000;
+    transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+    white-space: nowrap;
+    box-shadow: 0 4px 20px rgba(107,203,119,0.5);
+  }
+  .notif.show { transform: translateX(-50%) translateY(0); }
+
+  /* PULSE ANIM */
+  @keyframes pulse-ring {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(1.5); opacity: 0; }
+  }
+  .pulse {
+    animation: pulse-ring 0.8s ease-out infinite;
+  }
+
+  /* CONFETTI */
+  .confetti-piece {
+    position: fixed;
+    width: 10px; height: 10px;
+    pointer-events: none;
+    z-index: 9999;
+    animation: confettiFall var(--dur, 2.5s) ease-in var(--del2, 0s) forwards;
+  }
+  @keyframes confettiFall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* TURN RESULT */
+  .result-overlay {
+    position: fixed; inset: 0; z-index: 500;
+    background: rgba(0,0,0,0.85);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 20px;
+  }
+  .result-overlay.show { display: flex; }
+  .result-emoji { font-size: 5rem; animation: bounceIn 0.5s cubic-bezier(0.34,1.56,0.64,1); }
+  @keyframes bounceIn {
+    0% { transform: scale(0); }
+    100% { transform: scale(1); }
+  }
+  .result-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2.5rem;
+    margin: 12px 0 4px;
+    text-align: center;
+  }
+  .result-sub { color: var(--text2); font-size: 1rem; font-weight: 700; margin-bottom: 28px; text-align: center; }
+
+  /* SECTION HEADER */
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .section-head span {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.1rem;
+    color: var(--text2);
+  }
+  .section-head::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(255,255,255,0.08);
+  }
+
+  /* PHASE INDICATOR */
+  .phase-bar {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .phase-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    transition: all 0.3s;
+  }
+  .phase-dot.done { background: var(--accent3); }
+  .phase-dot.active { background: var(--accent2); transform: scale(1.4); }
+
+  /* ROUND COUNTER */
+  .round-info {
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--text3);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+
+  /* SETTINGS TOGGLE */
+  .toggle-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .toggle-label { font-weight: 700; font-size: 0.95rem; }
+  .toggle-sub { font-size: 0.8rem; color: var(--text3); margin-top: 2px; }
+  .toggle-input { display: none; }
+  .toggle-switch {
+    width: 48px; height: 26px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 13px;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.2s;
+    flex-shrink: 0;
+  }
+  .toggle-switch::after {
+    content: '';
+    position: absolute;
+    left: 3px; top: 3px;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: white;
+    transition: transform 0.2s;
+  }
+  .toggle-input:checked + .toggle-switch { background: var(--accent3); }
+  .toggle-input:checked + .toggle-switch::after { transform: translateX(22px); }
+
+  /* RANGE SLIDER */
+  .range-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .range-inp {
+    flex: 1;
+    -webkit-appearance: none;
+    height: 6px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 3px;
+    outline: none;
+    cursor: pointer;
+  }
+  .range-inp::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--accent2);
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(255,217,61,0.5);
+  }
+  .range-val {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.3rem;
+    color: var(--accent2);
+    min-width: 48px;
+    text-align: right;
+  }
+
+  /* SCROLL BAR */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
+
+  /* SELECT */
+  select.inp {
+    appearance: none;
+    cursor: pointer;
+  }
+
+  /* FLEX HELPERS */
+  .flex-col { display: flex; flex-direction: column; gap: 12px; }
+  .flex-row { display: flex; gap: 10px; align-items: center; }
+  .center { text-align: center; }
+  .mt { margin-top: 16px; }
+  .mb { margin-bottom: 16px; }
+  .text-sm { font-size: 0.85rem; color: var(--text3); font-weight: 700; }
+  .text-accent { color: var(--accent2); }
+
+  /* GAME SCREEN LAYOUT */
+  #screen-game {
+    max-width: 520px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 16px;
+  }
+
+  /* TEAM COLORS */
+  .team-1-color { color: var(--team1); }
+  .team-2-color { color: var(--team2); }
+  .bg-team-1 { background: var(--team1); }
+  .bg-team-2 { background: var(--team2); }
+
+  /* PREPARING STATE */
+  .preparing-state {
+    text-align: center;
+    padding: 40px 0;
+  }
+  .prep-icon { font-size: 4rem; animation: shake 0.5s ease infinite; }
+  @keyframes shake {
+    0%,100% { transform: rotate(-8deg); }
+    50% { transform: rotate(8deg); }
+  }
+
+  @media (max-width: 480px) {
+    .mode-grid { grid-template-columns: 1fr; }
+    .card { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+
+<!-- NOTIFICATION -->
+<div class="notif" id="notif">✅ Palavra adicionada!</div>
+
+<!-- RESULT OVERLAY -->
+<div class="result-overlay" id="resultOverlay">
+  <div class="result-emoji" id="resultEmoji">🎉</div>
+  <div class="result-title" id="resultTitle">Acertou!</div>
+  <div class="result-sub" id="resultSub">+10 pontos para Time A</div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+    <button class="btn btn-success btn-lg" onclick="nextTurn()">➡️ Próximo turno</button>
+  </div>
+</div>
+
+<!-- ========== SCREEN: HOME ========== -->
+<div class="screen active" id="screen-home">
+  <div style="width:100%;max-width:480px">
+    <div class="logo">MimiMania</div>
+    <div class="logo-sub">🎭 O jogo da mímica</div>
+
+    <div class="card" style="margin-bottom:16px">
+      <div class="flex-col">
+        <button class="btn btn-primary btn-lg btn-block" onclick="goTo('setup')">🎮 Novo Jogo</button>
+        <button class="btn btn-ghost btn-lg btn-block" onclick="goTo('wordbank')">📝 Banco de Palavras</button>
+        <button class="btn btn-ghost btn-lg btn-block" onclick="goTo('settings')">⚙️ Configurações</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🏆 Como jogar</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;gap:12px;align-items:flex-start">
+          <div style="font-size:1.5rem;flex-shrink:0">👤</div>
+          <div>
+            <div style="font-weight:800;font-size:0.9rem">O Mimo</div>
+            <div class="text-sm">Vê a palavra e faz a mímica sem falar nada!</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start">
+          <div style="font-size:1.5rem;flex-shrink:0">🕐</div>
+          <div>
+            <div style="font-weight:800;font-size:0.9rem">O Tempo</div>
+            <div class="text-sm">Tentem adivinhar antes do timer acabar!</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start">
+          <div style="font-size:1.5rem;flex-shrink:0">⭐</div>
+          <div>
+            <div style="font-weight:800;font-size:0.9rem">Os Pontos</div>
+            <div class="text-sm">Cada acerto vale pontos. Quem tiver mais pontos vence!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SCREEN: SETUP ========== -->
+<div class="screen" id="screen-setup">
+  <div style="width:100%;max-width:480px">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px">
+      <button class="btn btn-ghost btn-sm" onclick="goTo('home')">← Voltar</button>
+      <div style="font-family:'Fredoka One',cursive;font-size:1.4rem;color:var(--accent2)">Nova Partida</div>
+    </div>
+
+    <!-- STEP 1: GAME MODE -->
+    <div class="card" id="step-mode" style="margin-bottom:16px">
+      <div class="card-title">1️⃣ Modo de Jogo</div>
+      <div class="mode-grid">
+        <div class="mode-card selected" id="mode-teams" onclick="selectMode('teams')">
+          <div class="mode-icon">🤝</div>
+          <div class="mode-name">Dois Times</div>
+          <div class="mode-desc">Equipes competem</div>
+        </div>
+        <div class="mode-card" id="mode-ffa" onclick="selectMode('ffa')">
+          <div class="mode-icon">🏆</div>
+          <div class="mode-name">Cada um por si</div>
+          <div class="mode-desc">Todos contra todos</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2: PLAYERS - TEAMS MODE -->
+    <div class="card" id="step-teams" style="margin-bottom:16px">
+      <div class="card-title">2️⃣ Jogadores por Time</div>
+
+      <div class="section-head">
+        <span style="color:var(--team1)">🔴 Time A</span>
+      </div>
+      <div id="team-a-players" class="flex-col" style="margin-bottom:16px"></div>
+      <div class="flex-row" id="team-a-inp-wrap">
+        <input class="inp" id="inp-team-a" placeholder="Nome do jogador..." onkeydown="if(event.key==='Enter')addTeamPlayer('A')">
+        <button class="btn btn-sm" style="background:var(--team1);color:white;white-space:nowrap" onclick="addTeamPlayer('A')">+ Adicionar</button>
+      </div>
+
+      <div style="height:1px;background:rgba(255,255,255,0.06);margin:20px 0"></div>
+
+      <div class="section-head">
+        <span style="color:var(--team2)">🔵 Time B</span>
+      </div>
+      <div id="team-b-players" class="flex-col" style="margin-bottom:16px"></div>
+      <div class="flex-row" id="team-b-inp-wrap">
+        <input class="inp" id="inp-team-b" placeholder="Nome do jogador..." onkeydown="if(event.key==='Enter')addTeamPlayer('B')">
+        <button class="btn btn-sm" style="background:var(--team2);color:white;white-space:nowrap" onclick="addTeamPlayer('B')">+ Adicionar</button>
+      </div>
+
+      <div style="margin-top:16px;padding:12px;background:rgba(255,255,255,0.03);border-radius:var(--radius-sm);font-size:0.8rem;color:var(--text3)">
+        💡 Mínimo 1 por time, máximo 3 por time (até 6 jogadores no total)
+      </div>
+    </div>
+
+    <!-- STEP 2: PLAYERS - FFA MODE -->
+    <div class="card" id="step-ffa" style="margin-bottom:16px;display:none">
+      <div class="card-title">2️⃣ Jogadores</div>
+      <div id="ffa-players" class="flex-col" style="margin-bottom:16px"></div>
+      <div class="flex-row">
+        <input class="inp" id="inp-ffa" placeholder="Nome do jogador..." onkeydown="if(event.key==='Enter')addFFAPlayer()">
+        <button class="btn btn-secondary btn-sm" style="white-space:nowrap" onclick="addFFAPlayer()">+ Adicionar</button>
+      </div>
+      <div style="margin-top:16px;padding:12px;background:rgba(255,255,255,0.03);border-radius:var(--radius-sm);font-size:0.8rem;color:var(--text3)">
+        💡 Mínimo 3, máximo 6 jogadores
+      </div>
+    </div>
+
+    <!-- STEP 3: ROUNDS -->
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-title">3️⃣ Configurar Partida</div>
+      <div class="toggle-wrap">
+        <div>
+          <div class="toggle-label">Número de Rodadas</div>
+          <div class="toggle-sub">Quantas rodadas por jogador</div>
+        </div>
+        <div class="range-wrap" style="width:160px">
+          <input type="range" class="range-inp" id="rounds-slider" min="1" max="5" value="3" oninput="document.getElementById('rounds-val').textContent=this.value">
+          <div class="range-val" id="rounds-val">3</div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary btn-lg btn-block" onclick="startGame()" style="margin-bottom:20px">🎭 Começar o Jogo!</button>
+  </div>
+</div>
+
+<!-- ========== SCREEN: GAME ========== -->
+<div class="screen" id="screen-game">
+  <div style="width:100%;max-width:520px">
+    <!-- TOP BAR -->
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <div class="round-info" id="round-display">Rodada 1 de 3</div>
+      <button class="btn btn-ghost btn-sm" onclick="confirmRestart()">🔄 Reiniciar</button>
+    </div>
+
+    <!-- SCORE MINI -->
+    <div id="score-mini" style="display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px"></div>
+
+    <!-- CURRENT PLAYER -->
+    <div class="current-player" id="current-player-card">
+      <div class="cp-label">Vez de fazer a mímica:</div>
+      <div class="cp-name" id="current-player-name">--</div>
+      <div id="current-team-badge" style="margin-top:4px"></div>
+    </div>
+
+    <!-- PREPARING STATE (before seeing word) -->
+    <div id="preparing-state" class="card" style="text-align:center">
+      <div style="font-size:3.5rem;margin-bottom:12px">🎭</div>
+      <div style="font-family:'Fredoka One',cursive;font-size:1.3rem;margin-bottom:8px">Prontos para ver a palavra?</div>
+      <div class="text-sm" style="margin-bottom:20px">Só o mimo deve ver! Os outros fechem os olhos! 👀</div>
+      <button class="btn btn-primary btn-lg btn-block" onclick="revealWord()">🎲 Revelar Palavra</button>
+    </div>
+
+    <!-- PLAYING STATE -->
+    <div id="playing-state" style="display:none">
+      <!-- TIMER -->
+      <div class="timer-wrap">
+        <svg class="timer-svg" viewBox="0 0 160 160">
+          <circle class="timer-track" cx="80" cy="80" r="68"/>
+          <circle class="timer-prog" id="timerCircle" cx="80" cy="80" r="68" stroke="#ffd93d"
+            stroke-dasharray="427.3" stroke-dashoffset="0"/>
+        </svg>
+        <div class="timer-num" id="timer-num">60</div>
+        <div class="timer-label">SEGUNDOS</div>
+      </div>
+
+      <!-- WORD -->
+      <div class="word-card">
+        <div class="word-text" id="word-display">---</div>
+        <div class="word-category" id="word-category">categoria</div>
+      </div>
+
+      <!-- ACTION BUTTONS -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px">
+        <button class="btn btn-success btn-lg" onclick="markResult(true)">✅ Acertou!</button>
+        <button class="btn btn-danger btn-lg" onclick="markResult(false)">❌ Errou / Skip</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SCREEN: SCOREBOARD ========== -->
+<div class="screen" id="screen-score">
+  <div style="width:100%;max-width:480px">
+    <div style="font-family:'Fredoka One',cursive;font-size:2rem;text-align:center;margin-bottom:4px;background:linear-gradient(135deg,#ffd93d,#ff6b6b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
+      🏆 Placar
+    </div>
+    <div class="text-sm center mb" id="score-subtitle">Fim de jogo!</div>
+
+    <div id="scoreboard-list" class="mb"></div>
+
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-title" style="font-size:1.1rem">🎊 Próxima Rodada</div>
+      <div id="next-round-info" class="text-sm mb">Info da próxima rodada</div>
+      <div style="display:flex;gap:10px">
+        <button class="btn btn-primary btn-block" onclick="continueGame()" id="btn-continue">▶️ Continuar</button>
+        <button class="btn btn-ghost btn-block" onclick="confirmRestart()">🔄 Reiniciar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SCREEN: FINAL ========== -->
+<div class="screen" id="screen-final">
+  <div style="width:100%;max-width:480px;text-align:center">
+    <div style="font-size:5rem;margin-bottom:12px" id="final-trophy">🏆</div>
+    <div class="logo" style="font-size:2.5rem;margin-bottom:4px" id="final-winner">--</div>
+    <div class="logo-sub" id="final-subtitle">VENCEDOR!</div>
+
+    <div class="card" style="margin:20px 0;text-align:left">
+      <div class="card-title">📊 Resultado Final</div>
+      <div id="final-scoreboard"></div>
+    </div>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-primary btn-lg btn-block" onclick="confirmRestart()">🎮 Jogar de Novo</button>
+      <button class="btn btn-ghost btn-block" onclick="goTo('home')">🏠 Início</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SCREEN: WORD BANK ========== -->
+<div class="screen" id="screen-wordbank">
+  <div style="width:100%;max-width:480px">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px">
+      <button class="btn btn-ghost btn-sm" onclick="goTo('home')">← Voltar</button>
+      <div style="font-family:'Fredoka One',cursive;font-size:1.4rem;color:var(--accent2)">Banco de Palavras</div>
+    </div>
+
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="switchWordTab('all')" id="tab-all">Todas</button>
+      <button class="tab-btn" onclick="switchWordTab('objects')" id="tab-objects">🧸 Objetos</button>
+      <button class="tab-btn" onclick="switchWordTab('actions')" id="tab-actions">🏃 Ações</button>
+      <button class="tab-btn" onclick="switchWordTab('animals')" id="tab-animals">🐾 Animais</button>
+    </div>
+
+    <!-- ADD WORD -->
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-title" style="font-size:1.1rem">➕ Adicionar Palavra</div>
+      <div class="flex-col">
+        <input class="inp" id="inp-new-word" placeholder="Digite a palavra..." onkeydown="if(event.key==='Enter')addWord()">
+        <select class="inp" id="inp-word-cat">
+          <option value="objects">🧸 Objetos</option>
+          <option value="actions">🏃 Ações</option>
+          <option value="animals">🐾 Animais</option>
+        </select>
+        <button class="btn btn-secondary btn-block" onclick="addWord()">➕ Adicionar Palavra</button>
+      </div>
+    </div>
+
+    <!-- WORD LIST -->
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <div class="card-title" style="margin:0;font-size:1.1rem">📋 Palavras (<span id="word-count">0</span>)</div>
+        <button class="btn btn-ghost btn-sm" onclick="resetWords()">↺ Restaurar padrão</button>
+      </div>
+      <div class="words-container" id="words-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SCREEN: SETTINGS ========== -->
+<div class="screen" id="screen-settings">
+  <div style="width:100%;max-width:480px">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px">
+      <button class="btn btn-ghost btn-sm" onclick="goTo('home')">← Voltar</button>
+      <div style="font-family:'Fredoka One',cursive;font-size:1.4rem;color:var(--accent2)">Configurações</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">⏱️ Timer</div>
+      <div class="toggle-wrap">
+        <div>
+          <div class="toggle-label">Tempo por Rodada</div>
+          <div class="toggle-sub">Segundos para adivinhar</div>
+        </div>
+        <div class="range-wrap" style="width:160px">
+          <input type="range" class="range-inp" id="timer-slider" min="20" max="120" step="10" value="60" oninput="updateTimerLabel(this.value)">
+          <div class="range-val" id="timer-val">60s</div>
+        </div>
+      </div>
+      <div class="toggle-wrap">
+        <div>
+          <div class="toggle-label">Som de Alerta</div>
+          <div class="toggle-sub">Beep nos últimos 10 segundos</div>
+        </div>
+        <label>
+          <input type="checkbox" class="toggle-input" id="toggle-sound" checked>
+          <div class="toggle-switch"></div>
+        </label>
+      </div>
+      <div class="toggle-wrap" style="border:none">
+        <div>
+          <div class="toggle-label">Pontos por Skip</div>
+          <div class="toggle-sub">Penaliza por pular palavra</div>
+        </div>
+        <label>
+          <input type="checkbox" class="toggle-input" id="toggle-penalty">
+          <div class="toggle-switch"></div>
+        </label>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <div class="card-title">🎲 Palavras</div>
+      <div class="toggle-wrap" style="border:none">
+        <div>
+          <div class="toggle-label">Embaralhar Palavras</div>
+          <div class="toggle-sub">Ordem aleatória a cada jogo</div>
+        </div>
+        <label>
+          <input type="checkbox" class="toggle-input" id="toggle-shuffle" checked>
+          <div class="toggle-switch"></div>
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+const DEFAULT_WORDS = {
+  objects: [
+    'Guarda-chuva','Televisão','Geladeira','Bicicleta','Telefone',
+    'Livro','Óculos','Mochila','Cadeira','Mesa','Teclado','Sofá',
+    'Lâmpada','Garrafa','Relógio','Chapéu','Sapato','Almofada','Escova','Espelho'
+  ],
+  actions: [
+    'Nadar','Dançar','Cozinhar','Dirigir','Correr','Pular','Dormir',
+    'Cantar','Pintar','Pescar','Escovar dentes','Jogar bola','Lavar roupa',
+    'Tirar foto','Fazer ioga','Pedalar','Aplaudir','Abraçar','Varrer','Mergulhar'
+  ],
+  animals: [
+    'Elefante','Golfinho','Canguru','Giraffa','Pingüim','Macaco',
+    'Leão','Cobra','Papagaio','Tartaruga','Urso','Flamingo','Cavalo',
+    'Cachorro','Gato','Borboleta','Jacaré','Hipopótamo','Aranha','Polvos'
+  ]
+};
+
+let wordBank = JSON.parse(localStorage.getItem('mm_words') || 'null') || JSON.parse(JSON.stringify(DEFAULT_WORDS));
+
+let gameState = {
+  mode: 'teams',
+  teams: { A: [], B: [] },
+  players: [],
+  scores: {},
+  currentPlayerIdx: 0,
+  currentRound: 1,
+  totalRounds: 3,
+  turnRound: 0,
+  currentWord: null,
+  usedWords: [],
+  timerDur: 60,
+  timerInterval: null,
+  timerLeft: 60,
+  phase: 'preparing',
+  totalTurns: 0,
+  turnsDone: 0
+};
+
+// ============================================================
+// STARS
+// ============================================================
+(function() {
+  const c = document.getElementById('stars');
+  for (let i = 0; i < 60; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = Math.random() * 2.5 + 0.5;
+    s.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${(Math.random()*4+2).toFixed(1)}s;--del:${(Math.random()*4).toFixed(1)}s;--op:${(Math.random()*0.5+0.3).toFixed(2)}`;
+    c.appendChild(s);
+  }
+})();
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function goTo(screen) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + screen).classList.add('active');
+  if (screen === 'wordbank') renderWordBank();
+  if (screen === 'setup') renderSetupPlayers();
+}
+
+// ============================================================
+// NOTIFICATIONS
+// ============================================================
+function showNotif(msg, color='var(--accent3)', textColor='#0d4f17') {
+  const el = document.getElementById('notif');
+  el.textContent = msg;
+  el.style.background = color;
+  el.style.color = textColor;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2200);
+}
+
+// ============================================================
+// MODE SELECTION
+// ============================================================
+function selectMode(mode) {
+  gameState.mode = mode;
+  document.getElementById('mode-teams').classList.toggle('selected', mode === 'teams');
+  document.getElementById('mode-ffa').classList.toggle('selected', mode === 'ffa');
+  document.getElementById('step-teams').style.display = mode === 'teams' ? '' : 'none';
+  document.getElementById('step-ffa').style.display = mode === 'ffa' ? '' : 'none';
+}
+
+// ============================================================
+// PLAYER SETUP
+// ============================================================
+const AVATARS_BG = [
+  '#ff6b6b22','#ffd93d22','#6bcb7722','#4d96ff22','#c77dff22','#ff8e5322'
+];
+const AVATAR_EMOJIS = ['😀','😎','🤩','🥳','👾','🦸'];
+
+function renderSetupPlayers() {
+  renderTeamPlayers();
+  renderFFAPlayers();
+}
+
+function renderTeamPlayers() {
+  ['A','B'].forEach(t => {
+    const cont = document.getElementById('team-' + t.toLowerCase() + '-players');
+    cont.innerHTML = '';
+    (gameState.teams[t] || []).forEach((p, i) => {
+      const color = t === 'A' ? 'var(--team1)' : 'var(--team2)';
+      const el = document.createElement('div');
+      el.className = 'player-row';
+      el.innerHTML = `
+        <div class="player-avatar" style="background:${color}22;color:${color}">${p[0].toUpperCase()}</div>
+        <div style="flex:1;font-weight:800">${p}</div>
+        <button class="btn btn-ghost btn-sm" onclick="removeTeamPlayer('${t}',${i})">✕</button>
+      `;
+      cont.appendChild(el);
+    });
+  });
+}
+
+function addTeamPlayer(team) {
+  const inp = document.getElementById('inp-team-' + team.toLowerCase());
+  const name = inp.value.trim();
+  if (!name) return;
+  const total = (gameState.teams.A || []).length + (gameState.teams.B || []).length;
+  if (total >= 6) { showNotif('❌ Máximo 6 jogadores no total!', 'var(--accent1)', 'white'); return; }
+  const tLen = (gameState.teams[team] || []).length;
+  if (tLen >= 3) { showNotif(`❌ Máximo 3 jogadores por time!`, 'var(--accent1)', 'white'); return; }
+  if (!gameState.teams[team]) gameState.teams[team] = [];
+  gameState.teams[team].push(name);
+  inp.value = '';
+  renderTeamPlayers();
+  showNotif(`✅ ${name} adicionado ao Time ${team}!`);
+}
+
+function removeTeamPlayer(team, idx) {
+  gameState.teams[team].splice(idx, 1);
+  renderTeamPlayers();
+}
+
+function renderFFAPlayers() {
+  const cont = document.getElementById('ffa-players');
+  cont.innerHTML = '';
+  (gameState.players || []).forEach((p, i) => {
+    const el = document.createElement('div');
+    el.className = 'player-row';
+    el.innerHTML = `
+      <div class="player-avatar" style="background:${AVATARS_BG[i%6]};color:white">${p[0].toUpperCase()}</div>
+      <div style="flex:1;font-weight:800">${p}</div>
+      <button class="btn btn-ghost btn-sm" onclick="removeFFAPlayer(${i})">✕</button>
+    `;
+    cont.appendChild(el);
+  });
+}
+
+function addFFAPlayer() {
+  const inp = document.getElementById('inp-ffa');
+  const name = inp.value.trim();
+  if (!name) return;
+  if (!gameState.players) gameState.players = [];
+  if (gameState.players.length >= 6) { showNotif('❌ Máximo 6 jogadores!', 'var(--accent1)', 'white'); return; }
+  gameState.players.push(name);
+  inp.value = '';
+  renderFFAPlayers();
+  showNotif(`✅ ${name} entrou no jogo!`);
+}
+
+function removeFFAPlayer(idx) {
+  gameState.players.splice(idx, 1);
+  renderFFAPlayers();
+}
+
+// ============================================================
+// GAME START
+// ============================================================
+function startGame() {
+  const rounds = parseInt(document.getElementById('rounds-slider').value);
+  gameState.totalRounds = rounds;
+  gameState.timerDur = parseInt(document.getElementById('timer-slider').value) || 60;
+
+  if (gameState.mode === 'teams') {
+    const a = gameState.teams.A || [];
+    const b = gameState.teams.B || [];
+    if (a.length < 1 || b.length < 1) {
+      showNotif('❌ Adicione pelo menos 1 jogador por time!', 'var(--accent1)', 'white'); return;
+    }
+    // Build turn order: alternate A/B
+    gameState.players = [];
+    const maxLen = Math.max(a.length, b.length);
+    for (let i = 0; i < maxLen; i++) {
+      if (i < a.length) gameState.players.push({ name: a[i], team: 'A' });
+      if (i < b.length) gameState.players.push({ name: b[i], team: 'B' });
+    }
+    gameState.scores = { teamA: 0, teamB: 0 };
+    a.forEach(p => gameState.scores[p] = 0);
+    b.forEach(p => gameState.scores[p] = 0);
+  } else {
+    if (!gameState.players || gameState.players.length < 3) {
+      showNotif('❌ Mínimo 3 jogadores no modo todos contra todos!', 'var(--accent1)', 'white'); return;
+    }
+    const players = gameState.players;
+    gameState.players = players.map(p => ({ name: p, team: null }));
+    gameState.scores = {};
+    players.forEach(p => gameState.scores[p] = 0);
+  }
+
+  gameState.currentPlayerIdx = 0;
+  gameState.currentRound = 1;
+  gameState.usedWords = [];
+  gameState.turnsDone = 0;
+  gameState.totalTurns = gameState.players.length * rounds;
+
+  initTurn();
+  goTo('game');
+}
+
+// ============================================================
+// TURN MANAGEMENT
+// ============================================================
+function initTurn() {
+  gameState.phase = 'preparing';
+  const player = gameState.players[gameState.currentPlayerIdx];
+
+  // ROUND DISPLAY
+  const roundNum = Math.floor(gameState.turnsDone / gameState.players.length) + 1;
+  document.getElementById('round-display').textContent = `Rodada ${roundNum} de ${gameState.totalRounds}`;
+
+  // CURRENT PLAYER
+  document.getElementById('current-player-name').textContent = player.name || player;
+  const badge = document.getElementById('current-team-badge');
+  if (player.team) {
+    const color = player.team === 'A' ? 'var(--team1)' : 'var(--team2)';
+    badge.innerHTML = `<span class="team-badge" style="background:${color}22;color:${color}">Time ${player.team === 'A' ? 'A 🔴' : 'B 🔵'}</span>`;
+  } else {
+    badge.innerHTML = '';
+  }
+
+  // SHOW PREPARING STATE
+  document.getElementById('preparing-state').style.display = '';
+  document.getElementById('playing-state').style.display = 'none';
+
+  // SCORE MINI
+  renderScoreMini();
+}
+
+function revealWord() {
+  gameState.phase = 'playing';
+  gameState.currentWord = pickWord();
+
+  document.getElementById('word-display').textContent = gameState.currentWord.word;
+  document.getElementById('word-category').textContent = {
+    objects: '🧸 Objeto', actions: '🏃 Ação', animals: '🐾 Animal'
+  }[gameState.currentWord.cat] || 'Palavra';
+
+  document.getElementById('preparing-state').style.display = 'none';
+  document.getElementById('playing-state').style.display = '';
+
+  startTimer();
+}
+
+function pickWord() {
+  const shuffle = document.getElementById('toggle-shuffle').checked;
+  const allWords = [];
+  Object.entries(wordBank).forEach(([cat, words]) => {
+    words.forEach(w => allWords.push({ word: w, cat }));
+  });
+
+  let available = allWords.filter(w => !gameState.usedWords.includes(w.word));
+  if (available.length === 0) {
+    gameState.usedWords = [];
+    available = allWords;
+  }
+
+  if (shuffle) {
+    const idx = Math.floor(Math.random() * available.length);
+    const picked = available[idx];
+    gameState.usedWords.push(picked.word);
+    return picked;
+  } else {
+    const picked = available[0];
+    gameState.usedWords.push(picked.word);
+    return picked;
+  }
+}
+
+// ============================================================
+// TIMER
+// ============================================================
+function startTimer() {
+  const dur = gameState.timerDur;
+  gameState.timerLeft = dur;
+  updateTimerDisplay(dur, dur);
+
+  clearInterval(gameState.timerInterval);
+  gameState.timerInterval = setInterval(() => {
+    gameState.timerLeft--;
+    updateTimerDisplay(gameState.timerLeft, dur);
+
+    // Sound alert (last 10s)
+    if (document.getElementById('toggle-sound').checked && gameState.timerLeft <= 10 && gameState.timerLeft > 0) {
+      playBeep(gameState.timerLeft <= 3 ? 880 : 440);
+    }
+
+    if (gameState.timerLeft <= 0) {
+      clearInterval(gameState.timerInterval);
+      markResult(false, true);
+    }
+  }, 1000);
+}
+
+function updateTimerDisplay(left, total) {
+  document.getElementById('timer-num').textContent = left;
+  const circ = document.getElementById('timerCircle');
+  const circumference = 427.3;
+  const offset = circumference - (left / total) * circumference;
+  circ.style.strokeDashoffset = offset;
+
+  // Color
+  if (left > total * 0.5) circ.style.stroke = '#ffd93d';
+  else if (left > total * 0.25) circ.style.stroke = '#ff8e53';
+  else circ.style.stroke = '#ff4757';
+}
+
+function updateTimerLabel(val) {
+  document.getElementById('timer-val').textContent = val + 's';
+  gameState.timerDur = parseInt(val);
+}
+
+function playBeep(freq = 440) {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(0.1, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.2);
+  } catch(e) {}
+}
+
+// ============================================================
+// RESULT
+// ============================================================
+function markResult(correct, timeUp = false) {
+  clearInterval(gameState.timerInterval);
+  const player = gameState.players[gameState.currentPlayerIdx];
+  const playerName = player.name || player;
+
+  const overlay = document.getElementById('resultOverlay');
+  const emoji = document.getElementById('resultEmoji');
+  const title = document.getElementById('resultTitle');
+  const sub = document.getElementById('resultSub');
+
+  if (correct) {
+    // Add point
+    if (gameState.mode === 'teams') {
+      const teamKey = 'team' + player.team;
+      gameState.scores[teamKey] = (gameState.scores[teamKey] || 0) + 10;
+      gameState.scores[playerName] = (gameState.scores[playerName] || 0) + 10;
+    } else {
+      gameState.scores[playerName] = (gameState.scores[playerName] || 0) + 10;
+    }
+
+    emoji.textContent = '🎉';
+    title.textContent = 'Acertou!';
+    title.style.color = '#6bcb77';
+
+    if (gameState.mode === 'teams') {
+      sub.textContent = `+10 pontos para o Time ${player.team === 'A' ? 'A 🔴' : 'B 🔵'}`;
+    } else {
+      sub.textContent = `+10 pontos para ${playerName}!`;
+    }
+    launchConfetti();
+    playBeep(523);
+  } else {
+    // Penalty?
+    if (document.getElementById('toggle-penalty').checked && !timeUp) {
+      if (gameState.mode === 'teams') {
+        const teamKey = 'team' + player.team;
+        gameState.scores[teamKey] = Math.max(0, (gameState.scores[teamKey] || 0) - 10);
+        gameState.scores[playerName] = Math.max(0, (gameState.scores[playerName] || 0) - 10);
+      } else {
+        gameState.scores[playerName] = Math.max(0, (gameState.scores[playerName] || 0) - 10);
+      }
+      sub.textContent = `-10 pontos (penalidade por skip)`;
+    } else {
+      sub.textContent = timeUp ? `O tempo acabou! Sem pontos.` : `Palavra pulada. Sem pontos.`;
+    }
+
+    emoji.textContent = timeUp ? '⏰' : '😅';
+    title.textContent = timeUp ? 'Tempo esgotado!' : 'Errou!';
+    title.style.color = '#ff6b6b';
+  }
+
+  overlay.classList.add('show');
+}
+
+function nextTurn() {
+  document.getElementById('resultOverlay').classList.remove('show');
+  gameState.turnsDone++;
+
+  // Check if all rounds done
+  if (gameState.turnsDone >= gameState.totalTurns) {
+    showFinalScore();
+    return;
+  }
+
+  // Next player
+  gameState.currentPlayerIdx = (gameState.currentPlayerIdx + 1) % gameState.players.length;
+
+  // Check if a full round is done (show scoreboard mid-game)
+  if (gameState.currentPlayerIdx === 0) {
+    gameState.currentRound++;
+    showMidScore();
+  } else {
+    initTurn();
+  }
+}
+
+// ============================================================
+// SCORE DISPLAY
+// ============================================================
+function renderScoreMini() {
+  const cont = document.getElementById('score-mini');
+  cont.innerHTML = '';
+
+  if (gameState.mode === 'teams') {
+    ['A','B'].forEach(t => {
+      const key = 'team' + t;
+      const color = t === 'A' ? 'var(--team1)' : 'var(--team2)';
+      const el = document.createElement('div');
+      el.style.cssText = `background:${color}22;border:1px solid ${color}44;border-radius:12px;padding:8px 14px;display:flex;align-items:center;gap:8px;white-space:nowrap;`;
+      el.innerHTML = `<span style="font-weight:800;color:${color}">Time ${t}</span><span style="font-family:'Fredoka One',cursive;font-size:1.2rem;color:${color}">${gameState.scores[key] || 0}</span>`;
+      cont.appendChild(el);
+    });
+  } else {
+    gameState.players.forEach((p, i) => {
+      const name = p.name || p;
+      const el = document.createElement('div');
+      el.style.cssText = `background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:8px 14px;display:flex;align-items:center;gap:8px;white-space:nowrap;`;
+      el.innerHTML = `<span style="font-weight:800;font-size:0.85rem;">${name}</span><span style="font-family:'Fredoka One',cursive;font-size:1.2rem;color:var(--accent2)">${gameState.scores[name] || 0}</span>`;
+      cont.appendChild(el);
+    });
+  }
+}
+
+function showMidScore() {
+  goTo('score');
+  renderFullScoreboard(false);
+  const roundDone = gameState.currentRound - 1;
+  const remaining = gameState.totalRounds - roundDone;
+  document.getElementById('score-subtitle').textContent = `Fim da Rodada ${roundDone} — ${remaining} rodada${remaining!==1?'s':''} restante${remaining!==1?'s':''}!`;
+  document.getElementById('next-round-info').textContent = `Rodada ${gameState.currentRound} de ${gameState.totalRounds}`;
+  document.getElementById('btn-continue').style.display = '';
+}
+
+function renderFullScoreboard(isFinal = false) {
+  const cont = document.getElementById(isFinal ? 'final-scoreboard' : 'scoreboard-list');
+  cont.innerHTML = '';
+
+  let entries = [];
+  if (gameState.mode === 'teams') {
+    entries = [
+      { name: '🔴 Time A', pts: gameState.scores.teamA || 0, team: 'A' },
+      { name: '🔵 Time B', pts: gameState.scores.teamB || 0, team: 'B' }
+    ];
+  } else {
+    entries = gameState.players.map((p) => ({
+      name: p.name || p,
+      pts: gameState.scores[p.name || p] || 0
+    }));
+  }
+
+  entries.sort((a, b) => b.pts - a.pts);
+
+  const ranks = ['🥇', '🥈', '🥉'];
+  entries.forEach((e, i) => {
+    const div = document.createElement('div');
+    div.className = 'score-row' + (i === 0 ? ' first' : i === 1 ? ' second' : i === 2 ? ' third' : '');
+    const color = e.team === 'A' ? 'var(--team1)' : e.team === 'B' ? 'var(--team2)' : '';
+    div.innerHTML = `
+      <div class="rank-badge">${ranks[i] || (i+1)}</div>
+      <div class="score-name" style="flex:1;${color?'color:'+color:''}">${e.name}</div>
+      <div class="score-pts">${e.pts} <span style="font-size:0.8rem;color:var(--text3)">pts</span></div>
+    `;
+    cont.appendChild(div);
+  });
+}
+
+function continueGame() {
+  goTo('game');
+  initTurn();
+}
+
+function showFinalScore() {
+  goTo('final');
+  renderFullScoreboard(true);
+
+  // Determine winner
+  let winner = '';
+  if (gameState.mode === 'teams') {
+    const a = gameState.scores.teamA || 0;
+    const b = gameState.scores.teamB || 0;
+    if (a > b) { winner = '🔴 Time A'; document.getElementById('final-trophy').textContent = '🏆'; }
+    else if (b > a) { winner = '🔵 Time B'; document.getElementById('final-trophy').textContent = '🏆'; }
+    else { winner = 'EMPATE!'; document.getElementById('final-trophy').textContent = '🤝'; }
+  } else {
+    const sorted = gameState.players.map(p => ({ name: p.name || p, pts: gameState.scores[p.name || p] || 0 })).sort((a,b) => b.pts - a.pts);
+    winner = sorted[0].name;
+    if (sorted.length > 1 && sorted[0].pts === sorted[1].pts) { winner = 'EMPATE!'; document.getElementById('final-trophy').textContent = '🤝'; }
+    else document.getElementById('final-trophy').textContent = '🏆';
+  }
+
+  document.getElementById('final-winner').textContent = winner;
+  document.getElementById('final-subtitle').textContent = 'VENCEDOR!';
+  launchConfetti(80);
+}
+
+// ============================================================
+// WORD BANK
+// ============================================================
+let currentWordTab = 'all';
+
+function switchWordTab(tab) {
+  currentWordTab = tab;
+  ['all','objects','actions','animals'].forEach(t => {
+    document.getElementById('tab-' + t)?.classList.toggle('active', t === tab);
+  });
+  renderWordBank();
+}
+
+function renderWordBank() {
+  const cont = document.getElementById('words-list');
+  cont.innerHTML = '';
+  let count = 0;
+
+  const cats = currentWordTab === 'all' ? Object.keys(wordBank) : [currentWordTab];
+  cats.forEach(cat => {
+    (wordBank[cat] || []).forEach((word, idx) => {
+      count++;
+      const tag = document.createElement('span');
+      tag.className = 'word-tag';
+      const catIcon = { objects: '🧸', actions: '🏃', animals: '🐾' }[cat] || '';
+      tag.innerHTML = `${catIcon} ${word} <span class="del-btn" onclick="removeWord('${cat}',${wordBank[cat].indexOf(word)})">✕</span>`;
+      cont.appendChild(tag);
+    });
+  });
+
+  document.getElementById('word-count').textContent = count;
+}
+
+function addWord() {
+  const inp = document.getElementById('inp-new-word');
+  const cat = document.getElementById('inp-word-cat').value;
+  const word = inp.value.trim();
+  if (!word) return;
+  if (!wordBank[cat]) wordBank[cat] = [];
+  if (wordBank[cat].includes(word)) {
+    showNotif('⚠️ Palavra já existe!', 'var(--accent2)', '#333'); return;
+  }
+  wordBank[cat].push(word);
+  saveWords();
+  inp.value = '';
+  renderWordBank();
+  showNotif('✅ "' + word + '" adicionada!');
+}
+
+function removeWord(cat, idx) {
+  wordBank[cat].splice(idx, 1);
+  saveWords();
+  renderWordBank();
+}
+
+function resetWords() {
+  if (confirm('Restaurar o banco de palavras padrão? Palavras customizadas serão perdidas.')) {
+    wordBank = JSON.parse(JSON.stringify(DEFAULT_WORDS));
+    saveWords();
+    renderWordBank();
+    showNotif('✅ Banco restaurado!');
+  }
+}
+
+function saveWords() {
+  localStorage.setItem('mm_words', JSON.stringify(wordBank));
+}
+
+// ============================================================
+// CONFETTI
+// ============================================================
+function launchConfetti(count = 40) {
+  const colors = ['#ff6b6b','#ffd93d','#6bcb77','#4d96ff','#c77dff','#ff8e53'];
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    el.style.cssText = `left:${Math.random()*100}vw;top:-10px;background:${colors[Math.floor(Math.random()*colors.length)]};border-radius:${Math.random()>0.5?'50%':'2px'};--dur:${(Math.random()*1.5+1.5).toFixed(1)}s;--del2:${(Math.random()*1).toFixed(2)}s;`;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 4000);
+  }
+}
+
+// ============================================================
+// RESTART
+// ============================================================
+function confirmRestart() {
+  if (confirm('Reiniciar o jogo? Todo o progresso será perdido.')) {
+    clearInterval(gameState.timerInterval);
+    document.getElementById('resultOverlay').classList.remove('show');
+
+    gameState = {
+      mode: 'teams',
+      teams: { A: [], B: [] },
+      players: [],
+      scores: {},
+      currentPlayerIdx: 0,
+      currentRound: 1,
+      totalRounds: 3,
+      turnRound: 0,
+      currentWord: null,
+      usedWords: [],
+      timerDur: parseInt(document.getElementById('timer-slider').value) || 60,
+      timerInterval: null,
+      timerLeft: 60,
+      phase: 'preparing',
+      totalTurns: 0,
+      turnsDone: 0
+    };
+
+    selectMode('teams');
+    goTo('setup');
+    renderSetupPlayers();
+  }
+}
+
+// ============================================================
+// INIT
+// ============================================================
+selectMode('teams');
+updateTimerLabel(60);
+</script>
+<footer style="position:relative;z-index:1;text-align:center;padding:20px 16px 28px;font-size:0.75rem;color:rgba(255,255,255,0.25);font-weight:700;letter-spacing:0.5px">© 2025 MimiMania · matiello · Publicado no <a href="https://github.com/matiello" target="_blank" style="color:rgba(255,255,255,0.35);text-decoration:none;">GitHub Pages</a></footer>
+</body>
+</html>

@@ -763,6 +763,30 @@
       <button class="btn btn-primary btn-lg btn-block" onclick="revealWord()">🎲 Revelar Palavra</button>
     </div>
 
+    <!-- MEMORIZE STATE (5s countdown before game) -->
+    <div id="memorize-state" style="display:none">
+      <div style="text-align:center;margin-bottom:12px">
+        <div style="font-size:0.75rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--accent5);margin-bottom:6px">⚡ Memorize a palavra!</div>
+        <div style="font-size:0.8rem;color:var(--text3);font-weight:700">O jogo começa em...</div>
+      </div>
+      <!-- Mini memorize countdown -->
+      <div style="display:flex;align-items:center;justify-content:center;margin-bottom:16px">
+        <div style="position:relative;width:80px;height:80px">
+          <svg style="width:100%;height:100%;transform:rotate(-90deg)" viewBox="0 0 80 80">
+            <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="6"/>
+            <circle id="memCircle" cx="40" cy="40" r="34" fill="none" stroke="#c77dff" stroke-width="6" stroke-linecap="round"
+              stroke-dasharray="213.6" stroke-dashoffset="0" style="transition:stroke-dashoffset 0.5s linear"/>
+          </svg>
+          <div id="mem-num" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:2.2rem;color:#c77dff">5</div>
+        </div>
+      </div>
+      <!-- Word shown big -->
+      <div class="word-card" style="border:2px solid rgba(199,125,255,0.4);background:linear-gradient(135deg,rgba(199,125,255,0.12),rgba(77,150,255,0.08))">
+        <div class="word-text" id="mem-word-display" style="color:#c77dff;filter:drop-shadow(0 2px 12px rgba(199,125,255,0.5))">---</div>
+        <div style="font-size:0.75rem;color:rgba(255,255,255,0.35);font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-top:8px">Só o mimo pode ver!</div>
+      </div>
+    </div>
+
     <!-- PLAYING STATE -->
     <div id="playing-state" style="display:none">
       <!-- TIMER -->
@@ -776,14 +800,31 @@
         <div class="timer-label">SEGUNDOS</div>
       </div>
 
-      <!-- WORD -->
-      <div class="word-card">
-        <div class="word-text" id="word-display">---</div>
-        <div class="word-category" id="word-category">categoria</div>
+      <!-- WORD CARD -->
+      <div class="word-card" id="play-word-card">
+        <!-- HIDDEN STATE -->
+        <div id="word-hidden-placeholder" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:8px 0">
+          <div style="font-size:2.8rem;line-height:1">🙈</div>
+          <div style="font-size:0.8rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--text3)">Palavra oculta</div>
+        </div>
+        <!-- VISIBLE STATE -->
+        <div id="word-visible-content" style="display:none">
+          <div class="word-text" id="word-display">---</div>
+        </div>
+        <!-- Hint revealed at 75% time elapsed -->
+        <div id="hint-banner" style="display:none;margin-top:10px;padding:8px 14px;background:rgba(255,217,61,0.12);border:1px solid rgba(255,217,61,0.3);border-radius:10px">
+          <div style="font-size:0.7rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,217,61,0.6);margin-bottom:2px">💡 Dica</div>
+          <div id="hint-text" style="font-family:'Fredoka One',cursive;font-size:1.1rem;color:var(--accent2)">---</div>
+        </div>
+      </div>
+
+      <!-- SHOW/HIDE BUTTON -->
+      <div style="display:flex;justify-content:center;margin:10px 0 4px">
+        <button id="btn-toggle-word" class="btn btn-ghost btn-sm" onclick="toggleWordVisibility()">👁️ Mostrar palavra</button>
       </div>
 
       <!-- ACTION BUTTONS -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px">
         <button class="btn btn-success btn-lg" onclick="markResult(true)">✅ Acertou!</button>
         <button class="btn btn-danger btn-lg" onclick="markResult(false)">❌ Errou / Skip</button>
       </div>
@@ -1176,20 +1217,81 @@ function initTurn() {
 }
 
 function revealWord() {
-  gameState.phase = 'playing';
+  gameState.phase = 'memorizing';
   gameState.currentWord = pickWord();
 
+  const catLabels = { objects: '🧸 Objeto', actions: '🏃 Ação', animals: '🐾 Animal' };
+
+  // Set word in memorize display
+  document.getElementById('mem-word-display').textContent = gameState.currentWord.word;
+
+  // Prepare hint text (shown at 75% elapsed)
+  const catLabel = catLabels[gameState.currentWord.cat] || 'Palavra';
+  document.getElementById('hint-text').textContent = catLabel;
+  document.getElementById('hint-banner').style.display = 'none';
+
+  // Prepare playing state word (hidden by default)
   document.getElementById('word-display').textContent = gameState.currentWord.word;
-  document.getElementById('word-category').textContent = {
-    objects: '🧸 Objeto', actions: '🏃 Ação', animals: '🐾 Animal'
-  }[gameState.currentWord.cat] || 'Palavra';
+  document.getElementById('word-hidden-placeholder').style.display = 'flex';
+  document.getElementById('word-visible-content').style.display = 'none';
+  document.getElementById('btn-toggle-word').textContent = '👁️ Mostrar palavra';
+  gameState.wordVisible = false;
 
+  // Show memorize state
   document.getElementById('preparing-state').style.display = 'none';
-  document.getElementById('playing-state').style.display = '';
+  document.getElementById('memorize-state').style.display = '';
+  document.getElementById('playing-state').style.display = 'none';
 
-  startTimer();
+  // 5-second memorize countdown
+  let memLeft = 5;
+  const memCirc = document.getElementById('memCircle');
+  const memNum = document.getElementById('mem-num');
+  const memCircumference = 213.6;
+
+  updateMemCircle(memLeft, 5, memCirc, memNum, memCircumference);
+  playBeep(600);
+
+  gameState.memInterval = setInterval(() => {
+    memLeft--;
+    updateMemCircle(memLeft, 5, memCirc, memNum, memCircumference);
+    if (memLeft > 0) playBeep(memLeft <= 2 ? 700 : 500);
+    if (memLeft <= 0) {
+      clearInterval(gameState.memInterval);
+      // Transition to playing
+      document.getElementById('memorize-state').style.display = 'none';
+      document.getElementById('playing-state').style.display = '';
+      gameState.phase = 'playing';
+      playBeep(880);
+      startTimer();
+    }
+  }, 1000);
 }
 
+function updateMemCircle(left, total, circ, numEl, circumference) {
+  numEl.textContent = left;
+  const offset = circumference - (left / total) * circumference;
+  circ.style.strokeDashoffset = offset;
+}
+
+function toggleWordVisibility() {
+  const placeholder = document.getElementById('word-hidden-placeholder');
+  const content = document.getElementById('word-visible-content');
+  const btn = document.getElementById('btn-toggle-word');
+  gameState.wordVisible = !gameState.wordVisible;
+  if (gameState.wordVisible) {
+    placeholder.style.display = 'none';
+    content.style.display = '';
+    btn.textContent = '🙈 Ocultar palavra';
+  } else {
+    placeholder.style.display = 'flex';
+    content.style.display = 'none';
+    btn.textContent = '👁️ Mostrar palavra';
+  }
+}
+
+// ============================================================
+// PICK WORD
+// ============================================================
 function pickWord() {
   const shuffle = document.getElementById('toggle-shuffle').checked;
   const allWords = [];
@@ -1221,12 +1323,26 @@ function pickWord() {
 function startTimer() {
   const dur = gameState.timerDur;
   gameState.timerLeft = dur;
+  gameState.hintShown = false;
   updateTimerDisplay(dur, dur);
 
   clearInterval(gameState.timerInterval);
   gameState.timerInterval = setInterval(() => {
     gameState.timerLeft--;
     updateTimerDisplay(gameState.timerLeft, dur);
+
+    // Show hint at 75% elapsed (i.e. when 25% time remains)
+    const elapsed = dur - gameState.timerLeft;
+    if (!gameState.hintShown && elapsed >= Math.floor(dur * 0.75)) {
+      gameState.hintShown = true;
+      const hint = document.getElementById('hint-banner');
+      hint.style.display = '';
+      hint.animate([
+        { opacity: 0, transform: 'translateY(8px)' },
+        { opacity: 1, transform: 'translateY(0)' }
+      ], { duration: 400, fill: 'forwards' });
+      playBeep(523);
+    }
 
     // Sound alert (last 10s)
     if (document.getElementById('toggle-sound').checked && gameState.timerLeft <= 10 && gameState.timerLeft > 0) {
@@ -1278,6 +1394,8 @@ function playBeep(freq = 440) {
 // ============================================================
 function markResult(correct, timeUp = false) {
   clearInterval(gameState.timerInterval);
+  clearInterval(gameState.memInterval);
+  document.getElementById('memorize-state').style.display = 'none';
   const player = gameState.players[gameState.currentPlayerIdx];
   const playerName = player.name || player;
 
@@ -1539,6 +1657,7 @@ function launchConfetti(count = 40) {
 function confirmRestart() {
   if (confirm('Reiniciar o jogo? Todo o progresso será perdido.')) {
     clearInterval(gameState.timerInterval);
+    clearInterval(gameState.memInterval);
     document.getElementById('resultOverlay').classList.remove('show');
 
     gameState = {

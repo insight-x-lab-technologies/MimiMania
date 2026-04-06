@@ -21,11 +21,11 @@ O **Mimi Mania** é um jogo web leve e interativo, focado na simplicidade e na d
 
 ## 🚀 Como Jogar
 
-1.  **Acesse o link:** 
+1.  **Acesse o link:** http://matiello.github.io/MimiMania
 2.  **Escolha o modo:**
-    * **Times:** Cadastre o nome das duas equipes.
-    * **Individual:** Cadastre de 3 a 6 jogadores.
-3.  **Configure (Opcional):** Clique no ícone de engrenagem para adicionar ou remover palavras do banco de dados.
+    * **Dois Times:** Cadastre o nome das duas equipes.
+    * **Cada um por si:** Cadastre de 3 a 6 jogadores.
+3.  **Configure (Opcional):** Personalize o jogo e/ou adicione ou removova palavras do banco de dados.
 4.  **Ação:** O jogador da vez clica em "Ver Palavra" (sem mostrar para os outros!) e inicia a mímica assim que o botão de ação for acionado.
 5.  **Pontue:** Se alguém adivinhar, clique em "Acertou!". Caso o tempo acabe, o turno passa para o próximo.
 
@@ -38,7 +38,6 @@ O jogo foi construído utilizando tecnologias web padrão, garantindo que funcio
 * **HTML5:** Estrutura semântica.
 * **CSS3:** Estilização moderna e layout responsivo.
 * **JavaScript (Vanilla):** Lógica do jogo, sistema de turnos e cronômetro.
-* **Google Fonts:** Fontes *Fredoka One* e *Quicksand* para um visual amigável.
 
 ---
 

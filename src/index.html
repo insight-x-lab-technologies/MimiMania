@@ -1,1078 +1,1885 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MimiMania 🎭</title>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #0f0c29; --bg2: #1a1640; --card: #231e5a; --card2: #2d2870;
-    --accent1: #ff6b6b; --accent2: #ffd93d; --accent3: #6bcb77; --accent4: #4d96ff; --accent5: #c77dff;
-    --text: #ffffff; --text2: rgba(255,255,255,0.75); --text3: rgba(255,255,255,0.45);
-    --radius: 20px; --radius-sm: 12px; --shadow: 0 8px 32px rgba(0,0,0,0.4);
-    --team1: #ff6b6b; --team2: #4d96ff;
-    --diff-easy: #6bcb77; --diff-normal: #ffd93d; --diff-hard: #ff6b6b;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
-  body::before { content: ''; position: fixed; inset: 0; background: radial-gradient(ellipse at 20% 20%, #3d2f8a33 0%, transparent 60%), radial-gradient(ellipse at 80% 80%, #ff6b6b22 0%, transparent 60%), radial-gradient(ellipse at 50% 50%, #4d96ff11 0%, transparent 70%); pointer-events: none; z-index: 0; }
-  .stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
-  .star { position: absolute; background: white; border-radius: 50%; animation: twinkle var(--d,3s) ease-in-out infinite var(--del,0s); opacity: 0; }
-  @keyframes twinkle { 0%,100%{opacity:0;transform:scale(0.5)} 50%{opacity:var(--op,0.6);transform:scale(1)} }
-  .screen { position: relative; z-index: 1; display: none; min-height: 100vh; padding: 20px; align-items: center; justify-content: center; }
-  .screen.active { display: flex; flex-direction: column; }
-  .logo { font-family:'Fredoka One',cursive; font-size:clamp(3rem,8vw,5.5rem); text-align:center; background:linear-gradient(135deg,#ffd93d,#ff6b6b,#c77dff,#4d96ff); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; filter:drop-shadow(0 4px 12px rgba(255,107,107,0.5)); line-height:1; margin-bottom:4px; }
-  .logo-sub { text-align:center; color:var(--text3); font-size:1rem; letter-spacing:3px; text-transform:uppercase; font-weight:700; margin-bottom:40px; }
-  .card { background:var(--card); border:1px solid rgba(255,255,255,0.08); border-radius:var(--radius); padding:28px; box-shadow:var(--shadow); width:100%; max-width:480px; }
-  .card-title { font-family:'Fredoka One',cursive; font-size:1.5rem; margin-bottom:20px; color:var(--accent2); display:flex; align-items:center; gap:10px; }
-  .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:14px 28px; border-radius:50px; border:none; cursor:pointer; font-family:'Nunito',sans-serif; font-weight:800; font-size:1rem; transition:all 0.18s ease; }
-  .btn:active { transform:scale(0.96); }
-  .btn-primary { background:linear-gradient(135deg,#ff6b6b,#ff8e53); color:white; box-shadow:0 4px 20px rgba(255,107,107,0.5); }
-  .btn-primary:hover { box-shadow:0 6px 28px rgba(255,107,107,0.7); transform:translateY(-1px); }
-  .btn-secondary { background:linear-gradient(135deg,#4d96ff,#6bcb77); color:white; box-shadow:0 4px 20px rgba(77,150,255,0.4); }
-  .btn-secondary:hover { box-shadow:0 6px 28px rgba(77,150,255,0.6); transform:translateY(-1px); }
-  .btn-ghost { background:rgba(255,255,255,0.06); color:var(--text2); border:1px solid rgba(255,255,255,0.12); }
-  .btn-ghost:hover { background:rgba(255,255,255,0.12); }
-  .btn-danger { background:linear-gradient(135deg,#ff4757,#ff6b81); color:white; box-shadow:0 4px 20px rgba(255,71,87,0.4); }
-  .btn-success { background:linear-gradient(135deg,#6bcb77,#44a049); color:white; box-shadow:0 4px 20px rgba(107,203,119,0.4); }
-  .btn-lg { padding:18px 36px; font-size:1.15rem; }
-  .btn-sm { padding:9px 18px; font-size:0.85rem; }
-  .btn-block { width:100%; }
-  .inp { width:100%; padding:13px 18px; background:rgba(255,255,255,0.06); border:1.5px solid rgba(255,255,255,0.12); border-radius:var(--radius-sm); color:white; font-family:'Nunito',sans-serif; font-size:1rem; font-weight:600; transition:border-color 0.2s; outline:none; }
-  .inp:focus { border-color:var(--accent4); background:rgba(77,150,255,0.08); }
-  .inp::placeholder { color:var(--text3); }
-  select.inp { appearance:none; cursor:pointer; }
-  .mode-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-  .mode-card { background:rgba(255,255,255,0.04); border:2px solid rgba(255,255,255,0.08); border-radius:var(--radius); padding:22px 16px; cursor:pointer; text-align:center; transition:all 0.2s; }
-  .mode-card:hover { background:rgba(255,255,255,0.08); transform:translateY(-2px); }
-  .mode-card.selected { border-color:var(--accent2); background:rgba(255,217,61,0.08); }
-  .mode-card .mode-icon { font-size:2.5rem; margin-bottom:10px; }
-  .mode-card .mode-name { font-family:'Fredoka One',cursive; font-size:1.1rem; color:var(--text); }
-  .mode-card .mode-desc { font-size:0.8rem; color:var(--text3); margin-top:4px; font-weight:600; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MimiMania 🎭</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f0c29;
+      --bg2: #1a1640;
+      --card: #231e5a;
+      --card2: #2d2870;
+      --accent1: #ff6b6b;
+      --accent2: #ffd93d;
+      --accent3: #6bcb77;
+      --accent4: #4d96ff;
+      --accent5: #c77dff;
+      --text: #ffffff;
+      --text2: rgba(255, 255, 255, 0.75);
+      --text3: rgba(255, 255, 255, 0.45);
+      --radius: 20px;
+      --radius-sm: 12px;
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      --team1: #ff6b6b;
+      --team2: #4d96ff;
+      --diff-easy: #6bcb77;
+      --diff-normal: #ffd93d;
+      --diff-hard: #ff6b6b;
+    }
 
-  /* DIFFICULTY CARDS */
-  .diff-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
-  .diff-card { background:rgba(255,255,255,0.04); border:2px solid rgba(255,255,255,0.08); border-radius:var(--radius-sm); padding:14px 8px; cursor:pointer; text-align:center; transition:all 0.2s; }
-  .diff-card:hover { transform:translateY(-2px); background:rgba(255,255,255,0.08); }
-  .diff-card .diff-icon { font-size:1.8rem; margin-bottom:5px; }
-  .diff-card .diff-name { font-family:'Fredoka One',cursive; font-size:1rem; }
-  .diff-card .diff-desc { font-size:0.7rem; color:var(--text3); margin-top:3px; font-weight:700; line-height:1.3; }
-  .diff-card.easy .diff-name  { color:var(--diff-easy); }
-  .diff-card.normal .diff-name{ color:var(--diff-normal); }
-  .diff-card.hard .diff-name  { color:var(--diff-hard); }
-  .diff-card.easy.selected  { border-color:var(--diff-easy);  background:rgba(107,203,119,0.1); }
-  .diff-card.normal.selected { border-color:var(--diff-normal);background:rgba(255,217,61,0.1); }
-  .diff-card.hard.selected  { border-color:var(--diff-hard);  background:rgba(255,107,107,0.1); }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  .player-row { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
-  .player-avatar { width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.2rem; flex-shrink:0; font-weight:800; }
-  .team-badge { font-size:0.75rem; font-weight:800; padding:3px 10px; border-radius:20px; letter-spacing:0.5px; }
-  .timer-wrap { position:relative; width:160px; height:160px; margin:0 auto 24px; }
-  .timer-svg { width:100%; height:100%; transform:rotate(-90deg); }
-  .timer-track { fill:none; stroke:rgba(255,255,255,0.08); stroke-width:8; }
-  .timer-prog { fill:none; stroke-width:8; stroke-linecap:round; transition:stroke-dashoffset 0.5s linear,stroke 0.3s; }
-  .timer-num { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family:'Fredoka One',cursive; font-size:3.5rem; line-height:1; }
-  .timer-label { position:absolute; bottom:18px; left:0; right:0; text-align:center; font-size:0.7rem; letter-spacing:2px; color:var(--text3); font-weight:700; text-transform:uppercase; }
-  .word-card { background:linear-gradient(135deg,var(--card),var(--card2)); border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius); padding:32px 24px; text-align:center; box-shadow:var(--shadow); margin:16px 0; }
-  .word-text { font-family:'Fredoka One',cursive; font-size:clamp(2rem,6vw,3.5rem); color:var(--accent2); filter:drop-shadow(0 2px 8px rgba(255,217,61,0.4)); word-break:break-word; }
-  .score-row { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; background:rgba(255,255,255,0.04); border-radius:var(--radius-sm); margin-bottom:8px; border:1px solid rgba(255,255,255,0.06); }
-  .score-row.first  { background:rgba(255,217,61,0.12); border-color:rgba(255,217,61,0.3); }
-  .score-row.second { background:rgba(192,192,192,0.08); border-color:rgba(192,192,192,0.2); }
-  .score-row.third  { background:rgba(205,127,50,0.08); border-color:rgba(205,127,50,0.2); }
-  .score-name { font-weight:800; font-size:1rem; }
-  .score-pts { font-family:'Fredoka One',cursive; font-size:1.4rem; color:var(--accent2); }
-  .rank-badge { font-size:1.2rem; width:32px; text-align:center; }
-  .current-player { background:linear-gradient(135deg,rgba(77,150,255,0.2),rgba(199,125,255,0.2)); border:1px solid rgba(77,150,255,0.3); border-radius:var(--radius); padding:16px 20px; text-align:center; margin-bottom:16px; }
-  .current-player .cp-label { font-size:0.75rem; color:var(--text3); font-weight:700; text-transform:uppercase; letter-spacing:2px; }
-  .current-player .cp-name { font-family:'Fredoka One',cursive; font-size:1.6rem; color:white; }
-  .word-tag { display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:20px; padding:6px 12px; font-size:0.85rem; font-weight:700; margin:4px; cursor:pointer; transition:all 0.15s; color:var(--text2); }
-  .word-tag:hover { background:rgba(255,71,87,0.2); border-color:rgba(255,71,87,0.5); color:var(--accent1); }
-  .word-tag .del-btn { opacity:0.5; font-size:1rem; line-height:1; }
-  .words-container { max-height:200px; overflow-y:auto; padding:4px 0; }
-  .tab-bar { display:flex; background:rgba(255,255,255,0.04); border-radius:50px; padding:4px; margin-bottom:14px; gap:4px; }
-  .tab-btn { flex:1; padding:9px 4px; border-radius:50px; border:none; background:transparent; color:var(--text3); cursor:pointer; font-family:'Nunito',sans-serif; font-weight:700; font-size:0.78rem; transition:all 0.2s; white-space:nowrap; }
-  .tab-btn.active { background:rgba(255,255,255,0.1); color:white; }
-  .notif { position:fixed; top:20px; left:50%; transform:translateX(-50%) translateY(-80px); background:var(--accent3); color:#0d4f17; padding:12px 24px; border-radius:50px; font-weight:800; font-size:0.95rem; z-index:1000; transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1); white-space:nowrap; box-shadow:0 4px 20px rgba(107,203,119,0.5); }
-  .notif.show { transform:translateX(-50%) translateY(0); }
-  .result-overlay { position:fixed; inset:0; z-index:500; background:rgba(0,0,0,0.85); display:none; align-items:center; justify-content:center; flex-direction:column; padding:20px; }
-  .result-overlay.show { display:flex; }
-  .result-emoji { font-size:5rem; animation:bounceIn 0.5s cubic-bezier(0.34,1.56,0.64,1); }
-  @keyframes bounceIn { 0%{transform:scale(0)} 100%{transform:scale(1)} }
-  .result-title { font-family:'Fredoka One',cursive; font-size:2.5rem; margin:12px 0 4px; text-align:center; }
-  .result-sub { color:var(--text2); font-size:1rem; font-weight:700; margin-bottom:28px; text-align:center; }
-  .section-head { display:flex; align-items:center; gap:10px; margin-bottom:16px; }
-  .section-head span { font-family:'Fredoka One',cursive; font-size:1.1rem; color:var(--text2); }
-  .section-head::after { content:''; flex:1; height:1px; background:rgba(255,255,255,0.08); }
-  .round-info { text-align:center; font-size:0.8rem; color:var(--text3); font-weight:700; text-transform:uppercase; letter-spacing:2px; margin-bottom:8px; }
-  .toggle-wrap { display:flex; align-items:center; justify-content:space-between; padding:14px 0; border-bottom:1px solid rgba(255,255,255,0.06); }
-  .toggle-label { font-weight:700; font-size:0.95rem; }
-  .toggle-sub { font-size:0.8rem; color:var(--text3); margin-top:2px; }
-  .toggle-input { display:none; }
-  .toggle-switch { width:48px; height:26px; background:rgba(255,255,255,0.1); border-radius:13px; position:relative; cursor:pointer; transition:background 0.2s; flex-shrink:0; }
-  .toggle-switch::after { content:''; position:absolute; left:3px; top:3px; width:20px; height:20px; border-radius:50%; background:white; transition:transform 0.2s; }
-  .toggle-input:checked + .toggle-switch { background:var(--accent3); }
-  .toggle-input:checked + .toggle-switch::after { transform:translateX(22px); }
-  .range-wrap { display:flex; align-items:center; gap:12px; }
-  .range-inp { flex:1; -webkit-appearance:none; height:6px; background:rgba(255,255,255,0.12); border-radius:3px; outline:none; cursor:pointer; }
-  .range-inp::-webkit-slider-thumb { -webkit-appearance:none; width:20px; height:20px; border-radius:50%; background:var(--accent2); cursor:pointer; box-shadow:0 2px 8px rgba(255,217,61,0.5); }
-  .range-val { font-family:'Fredoka One',cursive; font-size:1.3rem; color:var(--accent2); min-width:48px; text-align:right; }
-  ::-webkit-scrollbar { width:6px; } ::-webkit-scrollbar-track { background:transparent; } ::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.15); border-radius:3px; }
-  .flex-col { display:flex; flex-direction:column; gap:12px; }
-  .flex-row { display:flex; gap:10px; align-items:center; }
-  .center { text-align:center; } .mt { margin-top:16px; } .mb { margin-bottom:16px; }
-  .text-sm { font-size:0.85rem; color:var(--text3); font-weight:700; }
-  #screen-game { max-width:520px; width:100%; margin:0 auto; padding:16px; }
-  .confetti-piece { position:fixed; width:10px; height:10px; pointer-events:none; z-index:9999; animation:confettiFall var(--dur,2.5s) ease-in var(--del2,0s) forwards; }
-  @keyframes confettiFall { 0%{transform:translateY(-20px) rotate(0deg);opacity:1} 100%{transform:translateY(100vh) rotate(720deg);opacity:0} }
-  @media(max-width:480px){.mode-grid{grid-template-columns:1fr}.card{padding:20px}}
-</style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at 20% 20%, #3d2f8a33 0%, transparent 60%), radial-gradient(ellipse at 80% 80%, #ff6b6b22 0%, transparent 60%), radial-gradient(ellipse at 50% 50%, #4d96ff11 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .stars {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle var(--d, 3s) ease-in-out infinite var(--del, 0s);
+      opacity: 0;
+    }
+
+    @keyframes twinkle {
+
+      0%,
+      100% {
+        opacity: 0;
+        transform: scale(0.5)
+      }
+
+      50% {
+        opacity: var(--op, 0.6);
+        transform: scale(1)
+      }
+    }
+
+    .screen {
+      position: relative;
+      z-index: 1;
+      display: none;
+      min-height: 100vh;
+      padding: 20px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .screen.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(3rem, 8vw, 5.5rem);
+      text-align: center;
+      background: linear-gradient(135deg, #ffd93d, #ff6b6b, #c77dff, #4d96ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 4px 12px rgba(255, 107, 107, 0.5));
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .logo-sub {
+      text-align: center;
+      color: var(--text3);
+      font-size: 1rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 40px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+      width: 100%;
+      max-width: 480px;
+    }
+
+    .card-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      color: var(--accent2);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+      transition: all 0.18s ease;
+    }
+
+    .btn:active {
+      transform: scale(0.96);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #ff6b6b, #ff8e53);
+      color: white;
+      box-shadow: 0 4px 20px rgba(255, 107, 107, 0.5);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 6px 28px rgba(255, 107, 107, 0.7);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, #4d96ff, #6bcb77);
+      color: white;
+      box-shadow: 0 4px 20px rgba(77, 150, 255, 0.4);
+    }
+
+    .btn-secondary:hover {
+      box-shadow: 0 6px 28px rgba(77, 150, 255, 0.6);
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text2);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #ff4757, #ff6b81);
+      color: white;
+      box-shadow: 0 4px 20px rgba(255, 71, 87, 0.4);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #6bcb77, #44a049);
+      color: white;
+      box-shadow: 0 4px 20px rgba(107, 203, 119, 0.4);
+    }
+
+    .btn-lg {
+      padding: 18px 36px;
+      font-size: 1.15rem;
+    }
+
+    .btn-sm {
+      padding: 9px 18px;
+      font-size: 0.85rem;
+    }
+
+    .btn-block {
+      width: 100%;
+    }
+
+    .inp {
+      width: 100%;
+      padding: 13px 18px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1.5px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-sm);
+      color: white;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: border-color 0.2s;
+      outline: none;
+    }
+
+    .inp:focus {
+      border-color: var(--accent4);
+      background: rgba(77, 150, 255, 0.08);
+    }
+
+    .inp::placeholder {
+      color: var(--text3);
+    }
+
+    select.inp {
+      appearance: none;
+      cursor: pointer;
+    }
+
+    .mode-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .mode-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 2px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius);
+      padding: 22px 16px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .mode-card:hover {
+      background: rgba(255, 255, 255, 0.08);
+      transform: translateY(-2px);
+    }
+
+    .mode-card.selected {
+      border-color: var(--accent2);
+      background: rgba(255, 217, 61, 0.08);
+    }
+
+    .mode-card .mode-icon {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .mode-card .mode-name {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.1rem;
+      color: var(--text);
+    }
+
+    .mode-card .mode-desc {
+      font-size: 0.8rem;
+      color: var(--text3);
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    /* DIFFICULTY CARDS */
+    .diff-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+    }
+
+    .diff-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 2px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-sm);
+      padding: 14px 8px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .diff-card:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .diff-card .diff-icon {
+      font-size: 1.8rem;
+      margin-bottom: 5px;
+    }
+
+    .diff-card .diff-name {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1rem;
+    }
+
+    .diff-card .diff-desc {
+      font-size: 0.7rem;
+      color: var(--text3);
+      margin-top: 3px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .diff-card.easy .diff-name {
+      color: var(--diff-easy);
+    }
+
+    .diff-card.normal .diff-name {
+      color: var(--diff-normal);
+    }
+
+    .diff-card.hard .diff-name {
+      color: var(--diff-hard);
+    }
+
+    .diff-card.easy.selected {
+      border-color: var(--diff-easy);
+      background: rgba(107, 203, 119, 0.1);
+    }
+
+    .diff-card.normal.selected {
+      border-color: var(--diff-normal);
+      background: rgba(255, 217, 61, 0.1);
+    }
+
+    .diff-card.hard.selected {
+      border-color: var(--diff-hard);
+      background: rgba(255, 107, 107, 0.1);
+    }
+
+    .player-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .player-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+      font-weight: 800;
+    }
+
+    .team-badge {
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+    }
+
+    .timer-wrap {
+      position: relative;
+      width: 160px;
+      height: 160px;
+      margin: 0 auto 24px;
+    }
+
+    .timer-svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    .timer-track {
+      fill: none;
+      stroke: rgba(255, 255, 255, 0.08);
+      stroke-width: 8;
+    }
+
+    .timer-prog {
+      fill: none;
+      stroke-width: 8;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 0.5s linear, stroke 0.3s;
+    }
+
+    .timer-num {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Fredoka One', cursive;
+      font-size: 3.5rem;
+      line-height: 1;
+    }
+
+    .timer-label {
+      position: absolute;
+      bottom: 18px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      color: var(--text3);
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .word-card {
+      background: linear-gradient(135deg, var(--card), var(--card2));
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius);
+      padding: 32px 24px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      margin: 16px 0;
+    }
+
+    .word-text {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      color: var(--accent2);
+      filter: drop-shadow(0 2px 8px rgba(255, 217, 61, 0.4));
+      word-break: break-word;
+    }
+
+    .score-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: var(--radius-sm);
+      margin-bottom: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .score-row.first {
+      background: rgba(255, 217, 61, 0.12);
+      border-color: rgba(255, 217, 61, 0.3);
+    }
+
+    .score-row.second {
+      background: rgba(192, 192, 192, 0.08);
+      border-color: rgba(192, 192, 192, 0.2);
+    }
+
+    .score-row.third {
+      background: rgba(205, 127, 50, 0.08);
+      border-color: rgba(205, 127, 50, 0.2);
+    }
+
+    .score-name {
+      font-weight: 800;
+      font-size: 1rem;
+    }
+
+    .score-pts {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.4rem;
+      color: var(--accent2);
+    }
+
+    .rank-badge {
+      font-size: 1.2rem;
+      width: 32px;
+      text-align: center;
+    }
+
+    .current-player {
+      background: linear-gradient(135deg, rgba(77, 150, 255, 0.2), rgba(199, 125, 255, 0.2));
+      border: 1px solid rgba(77, 150, 255, 0.3);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .current-player .cp-label {
+      font-size: 0.75rem;
+      color: var(--text3);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .current-player .cp-name {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.6rem;
+      color: white;
+    }
+
+    .word-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 6px 12px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin: 4px;
+      cursor: pointer;
+      transition: all 0.15s;
+      color: var(--text2);
+    }
+
+    .word-tag:hover {
+      background: rgba(255, 71, 87, 0.2);
+      border-color: rgba(255, 71, 87, 0.5);
+      color: var(--accent1);
+    }
+
+    .word-tag .del-btn {
+      opacity: 0.5;
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    .words-container {
+      max-height: 200px;
+      overflow-y: auto;
+      padding: 4px 0;
+    }
+
+    .tab-bar {
+      display: flex;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 50px;
+      padding: 4px;
+      margin-bottom: 14px;
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 9px 4px;
+      border-radius: 50px;
+      border: none;
+      background: transparent;
+      color: var(--text3);
+      cursor: pointer;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 0.78rem;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .tab-btn.active {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    .notif {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-80px);
+      background: var(--accent3);
+      color: #0d4f17;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-weight: 800;
+      font-size: 0.95rem;
+      z-index: 1000;
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      white-space: nowrap;
+      box-shadow: 0 4px 20px rgba(107, 203, 119, 0.5);
+    }
+
+    .notif.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .result-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      background: rgba(0, 0, 0, 0.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 20px;
+    }
+
+    .result-overlay.show {
+      display: flex;
+    }
+
+    .result-emoji {
+      font-size: 5rem;
+      animation: bounceIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes bounceIn {
+      0% {
+        transform: scale(0)
+      }
+
+      100% {
+        transform: scale(1)
+      }
+    }
+
+    .result-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: 2.5rem;
+      margin: 12px 0 4px;
+      text-align: center;
+    }
+
+    .result-sub {
+      color: var(--text2);
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 28px;
+      text-align: center;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .section-head span {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.1rem;
+      color: var(--text2);
+    }
+
+    .section-head::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .round-info {
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text3);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+
+    .toggle-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .toggle-label {
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .toggle-sub {
+      font-size: 0.8rem;
+      color: var(--text3);
+      margin-top: 2px;
+    }
+
+    .toggle-input {
+      display: none;
+    }
+
+    .toggle-switch {
+      width: 48px;
+      height: 26px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 13px;
+      position: relative;
+      cursor: pointer;
+      transition: background 0.2s;
+      flex-shrink: 0;
+    }
+
+    .toggle-switch::after {
+      content: '';
+      position: absolute;
+      left: 3px;
+      top: 3px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: white;
+      transition: transform 0.2s;
+    }
+
+    .toggle-input:checked+.toggle-switch {
+      background: var(--accent3);
+    }
+
+    .toggle-input:checked+.toggle-switch::after {
+      transform: translateX(22px);
+    }
+
+    .range-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .range-inp {
+      flex: 1;
+      -webkit-appearance: none;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 3px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .range-inp::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--accent2);
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(255, 217, 61, 0.5);
+    }
+
+    .range-val {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.3rem;
+      color: var(--accent2);
+      min-width: 48px;
+      text-align: right;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 3px;
+    }
+
+    .flex-col {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .flex-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .mt {
+      margin-top: 16px;
+    }
+
+    .mb {
+      margin-bottom: 16px;
+    }
+
+    .text-sm {
+      font-size: 0.85rem;
+      color: var(--text3);
+      font-weight: 700;
+    }
+
+    #screen-game {
+      max-width: 520px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    .confetti-piece {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      pointer-events: none;
+      z-index: 9999;
+      animation: confettiFall var(--dur, 2.5s) ease-in var(--del2, 0s) forwards;
+    }
+
+    @keyframes confettiFall {
+      0% {
+        transform: translateY(-20px) rotate(0deg);
+        opacity: 1
+      }
+
+      100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0
+      }
+    }
+
+    @media(max-width:480px) {
+      .mode-grid {
+        grid-template-columns: 1fr
+      }
+
+      .card {
+        padding: 20px
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="stars" id="stars"></div>
-<div class="notif" id="notif">✅</div>
+  <div class="stars" id="stars"></div>
+  <div class="notif" id="notif">✅</div>
 
-<!-- RESULT OVERLAY -->
-<div class="result-overlay" id="resultOverlay">
-  <div class="result-emoji" id="resultEmoji">🎉</div>
-  <div class="result-title" id="resultTitle">Acertou!</div>
-  <div class="result-sub" id="resultSub">+10 pontos</div>
-  <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
-    <button class="btn btn-success btn-lg" onclick="nextTurn()">➡️ Próximo turno</button>
-  </div>
-</div>
-
-<!-- ========== HOME ========== -->
-<div class="screen active" id="screen-home">
-  <div style="width:100%;max-width:480px">
-    <div class="logo">MimiMania</div>
-    <div class="logo-sub">🎭 O jogo da mímica</div>
-    <div class="card" style="margin-bottom:16px">
-      <div class="flex-col">
-        <button class="btn btn-primary btn-lg btn-block" onclick="goTo('setup')">🎮 Novo Jogo</button>
-        <button class="btn btn-ghost btn-lg btn-block" onclick="goTo('wordbank')">📝 Banco de Palavras</button>
-        <button class="btn btn-ghost btn-lg btn-block" onclick="goTo('settings')">⚙️ Configurações</button>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title">🏆 Como jogar</div>
-      <div style="display:flex;flex-direction:column;gap:10px">
-        <div style="display:flex;gap:12px;align-items:flex-start"><div style="font-size:1.5rem;flex-shrink:0">👤</div><div><div style="font-weight:800;font-size:0.9rem">O Mimo</div><div class="text-sm">Vê a palavra e faz a mímica sem falar nada!</div></div></div>
-        <div style="display:flex;gap:12px;align-items:flex-start"><div style="font-size:1.5rem;flex-shrink:0">🕐</div><div><div style="font-weight:800;font-size:0.9rem">O Tempo</div><div class="text-sm">Tentem adivinhar antes do timer acabar!</div></div></div>
-        <div style="display:flex;gap:12px;align-items:flex-start"><div style="font-size:1.5rem;flex-shrink:0">⭐</div><div><div style="font-weight:800;font-size:0.9rem">Os Pontos</div><div class="text-sm">Cada acerto vale 10 pontos. Quem tiver mais pontos vence!</div></div></div>
-      </div>
+  <!-- RESULT OVERLAY -->
+  <div class="result-overlay" id="resultOverlay">
+    <div class="result-emoji" id="resultEmoji">🎉</div>
+    <div class="result-title" id="resultTitle">Acertou!</div>
+    <div class="result-sub" id="resultSub">+10 pontos</div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+      <button class="btn btn-success btn-lg" onclick="nextTurn()">➡️ Próximo turno</button>
     </div>
   </div>
-</div>
 
-<!-- ========== SETUP ========== -->
-<div class="screen" id="screen-setup">
-  <div style="width:100%;max-width:480px">
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px">
-      <button class="btn btn-ghost btn-sm" onclick="goTo('home')">← Voltar</button>
-      <div style="font-family:'Fredoka One',cursive;font-size:1.4rem;color:var(--accent2)">Nova Partida</div>
-    </div>
-
-    <!-- STEP 1: MODE -->
-    <div class="card" style="margin-bottom:16px">
-      <div class="card-title">1️⃣ Modo de Jogo</div>
-      <div class="mode-grid">
-        <div class="mode-card selected" id="mode-teams" onclick="selectMode('teams')">
-          <div class="mode-icon">🤝</div><div class="mode-name">Dois Times</div><div class="mode-desc">Equipes competem</div>
+  <!-- ========== HOME ========== -->
+  <div class="screen active" id="screen-home">
+    <div style="width:100%;max-width:480px">
+      <div class="logo">MimiMania</div>
+      <div class="logo-sub">🎭 O jogo da mímica</div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="flex-col">
+          <button class="btn btn-primary btn-lg btn-block" onclick="goTo('setup')">🎮 Novo Jogo</button>
+          <button class="btn btn-ghost btn-lg btn-block" onclick="goTo('wordbank')">📝 Banco de Palavras</button>
+          <button class="btn btn-ghost btn-lg btn-block" onclick="goTo('settings')">⚙️ Configurações</button>
         </div>
-        <div class="mode-card" id="mode-ffa" onclick="selectMode('ffa')">
-          <div class="mode-icon">🏆</div><div class="mode-name">Cada um por si</div><div class="mode-desc">Todos contra todos</div>
+      </div>
+      <div class="card">
+        <div class="card-title">🏆 Como jogar</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <div style="font-size:1.5rem;flex-shrink:0">👤</div>
+            <div>
+              <div style="font-weight:800;font-size:0.9rem">O Mimo</div>
+              <div class="text-sm">Vê a palavra e faz a mímica sem falar nada!</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <div style="font-size:1.5rem;flex-shrink:0">🕐</div>
+            <div>
+              <div style="font-weight:800;font-size:0.9rem">O Tempo</div>
+              <div class="text-sm">Tentem adivinhar antes do timer acabar!</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <div style="font-size:1.5rem;flex-shrink:0">⭐</div>
+            <div>
+              <div style="font-weight:800;font-size:0.9rem">Os Pontos</div>
+              <div class="text-sm">Cada acerto vale 10 pontos. Quem tiver mais pontos vence!</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- STEP 2: PLAYERS TEAMS -->
-    <div class="card" id="step-teams" style="margin-bottom:16px">
-      <div class="card-title">2️⃣ Jogadores por Time</div>
-      <div class="section-head"><span style="color:var(--team1)">🔴 Time A</span></div>
-      <div id="team-a-players" class="flex-col" style="margin-bottom:16px"></div>
-      <div class="flex-row">
-        <input class="inp" id="inp-team-a" placeholder="Nome do jogador..." onkeydown="if(event.key==='Enter')addTeamPlayer('A')">
-        <button class="btn btn-sm" style="background:var(--team1);color:white;white-space:nowrap" onclick="addTeamPlayer('A')">+ Adicionar</button>
+  <!-- ========== SETUP ========== -->
+  <div class="screen" id="screen-setup">
+    <div style="width:100%;max-width:480px">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px">
+        <button class="btn btn-ghost btn-sm" onclick="goTo('home')">← Voltar</button>
+        <div style="font-family:'Fredoka One',cursive;font-size:1.4rem;color:var(--accent2)">Nova Partida</div>
       </div>
-      <div style="height:1px;background:rgba(255,255,255,0.06);margin:20px 0"></div>
-      <div class="section-head"><span style="color:var(--team2)">🔵 Time B</span></div>
-      <div id="team-b-players" class="flex-col" style="margin-bottom:16px"></div>
-      <div class="flex-row">
-        <input class="inp" id="inp-team-b" placeholder="Nome do jogador..." onkeydown="if(event.key==='Enter')addTeamPlayer('B')">
-        <button class="btn btn-sm" style="background:var(--team2);color:white;white-space:nowrap" onclick="addTeamPlayer('B')">+ Adicionar</button>
+
+      <!-- STEP 1: MODE -->
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-title">1️⃣ Modo de Jogo</div>
+        <div class="mode-grid">
+          <div class="mode-card selected" id="mode-teams" onclick="selectMode('teams')">
+            <div class="mode-icon">🤝</div>
+            <div class="mode-name">Dois Times</div>
+            <div class="mode-desc">Equipes competem</div>
+          </div>
+          <div class="mode-card" id="mode-ffa" onclick="selectMode('ffa')">
+            <div class="mode-icon">🏆</div>
+            <div class="mode-name">Cada um por si</div>
+            <div class="mode-desc">Todos contra todos</div>
+          </div>
+        </div>
       </div>
-      <div style="margin-top:16px;padding:12px;background:rgba(255,255,255,0.03);border-radius:var(--radius-sm);font-size:0.8rem;color:var(--text3)">
-        💡 Mínimo 1 por time, máximo 3 por time (até 6 jogadores)
+
+      <!-- STEP 2: PLAYERS TEAMS -->
+      <div class="card" id="step-teams" style="margin-bottom:16px">
+        <div class="card-title">2️⃣ Jogadores por Time</div>
+        <div class="section-head"><span style="color:var(--team1)">🔴 Time A</span></div>
+        <div id="team-a-players" class="flex-col" style="margin-bottom:16px"></div>
+        <div class="flex-row">
+          <input class="inp" id="inp-team-a" placeholder="Nome do jogador..."
+            onkeydown="if(event.key==='Enter')addTeamPlayer('A')">
+          <button class="btn btn-sm" style="background:var(--team1);color:white;white-space:nowrap"
+            onclick="addTeamPlayer('A')">+ Adicionar</button>
+        </div>
+        <div style="height:1px;background:rgba(255,255,255,0.06);margin:20px 0"></div>
+        <div class="section-head"><span style="color:var(--team2)">🔵 Time B</span></div>
+        <div id="team-b-players" class="flex-col" style="margin-bottom:16px"></div>
+        <div class="flex-row">
+          <input class="inp" id="inp-team-b" placeholder="Nome do jogador..."
+            onkeydown="if(event.key==='Enter')addTeamPlayer('B')">
+          <button class="btn btn-sm" style="background:var(--team2);color:white;white-space:nowrap"
+            onclick="addTeamPlayer('B')">+ Adicionar</button>
+        </div>
+        <div
+          style="margin-top:16px;padding:12px;background:rgba(255,255,255,0.03);border-radius:var(--radius-sm);font-size:0.8rem;color:var(--text3)">
+          💡 Mínimo 1 por time, máximo 3 por time (até 6 jogadores)
+        </div>
+      </div>
+
+      <!-- STEP 2 FFA -->
+      <div class="card" id="step-ffa" style="margin-bottom:16px;display:none">
+        <div class="card-title">2️⃣ Jogadores</div>
+        <div id="ffa-players" class="flex-col" style="margin-bottom:16px"></div>
+        <div class="flex-row">
+          <input class="inp" id="inp-ffa" placeholder="Nome do jogador..."
+            onkeydown="if(event.key==='Enter')addFFAPlayer()">
+          <button class="btn btn-secondary btn-sm" style="white-space:nowrap" onclick="addFFAPlayer()">+
+            Adicionar</button>
+        </div>
+        <div
+          style="margin-top:16px;padding:12px;background:rgba(255,255,255,0.03);border-radius:var(--radius-sm);font-size:0.8rem;color:var(--text3)">
+          💡 Mínimo 3, máximo 6 jogadores
+        </div>
+      </div>
+
+      <!-- STEP 3: DIFFICULTY -->
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-title">3️⃣ Dificuldade</div>
+        <div class="diff-grid">
+          <div class="diff-card easy selected" id="diff-easy" onclick="selectDifficulty('easy')">
+            <div class="diff-icon">🌱</div>
+            <div class="diff-name">Fácil</div>
+            <div class="diff-desc">Ótimo para crianças e iniciantes</div>
+          </div>
+          <div class="diff-card normal" id="diff-normal" onclick="selectDifficulty('normal')">
+            <div class="diff-icon">⚡</div>
+            <div class="diff-name">Normal</div>
+            <div class="diff-desc">Desafio equilibrado para a família</div>
+          </div>
+          <div class="diff-card hard" id="diff-hard" onclick="selectDifficulty('hard')">
+            <div class="diff-icon">🔥</div>
+            <div class="diff-name">Difícil</div>
+            <div class="diff-desc">Palavras complexas, para os corajosos!</div>
+          </div>
+        </div>
+        <div id="diff-word-count"
+          style="margin-top:12px;text-align:center;font-size:0.8rem;color:var(--text3);font-weight:700"></div>
+      </div>
+
+      <!-- STEP 4: ROUNDS -->
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-title">4️⃣ Configurar Partida</div>
+        <div class="toggle-wrap" style="border:none">
+          <div>
+            <div class="toggle-label">Número de Rodadas</div>
+            <div class="toggle-sub">Quantas rodadas por jogador</div>
+          </div>
+          <div class="range-wrap" style="width:160px">
+            <input type="range" class="range-inp" id="rounds-slider" min="1" max="5" value="3"
+              oninput="document.getElementById('rounds-val').textContent=this.value">
+            <div class="range-val" id="rounds-val">3</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-lg btn-block" onclick="startGame()" style="margin-bottom:20px">🎭 Começar o
+        Jogo!</button>
+    </div>
+  </div>
+
+  <!-- ========== GAME ========== -->
+  <div class="screen" id="screen-game">
+    <div style="width:100%;max-width:520px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div class="round-info" id="round-display">Rodada 1 de 3</div>
+        <button class="btn btn-ghost btn-sm" onclick="confirmRestart()">🔄 Reiniciar</button>
+      </div>
+      <div id="score-mini" style="display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px"></div>
+      <div class="current-player">
+        <div class="cp-label">Vez de fazer a mímica:</div>
+        <div class="cp-name" id="current-player-name">--</div>
+        <div id="current-team-badge" style="margin-top:4px"></div>
+      </div>
+
+      <!-- PREPARING -->
+      <div id="preparing-state" class="card" style="text-align:center">
+        <div style="font-size:3.5rem;margin-bottom:12px">🎭</div>
+        <div style="font-family:'Fredoka One',cursive;font-size:1.3rem;margin-bottom:8px">Prontos para ver a palavra?
+        </div>
+        <div class="text-sm" style="margin-bottom:20px">Só o mimo deve ver! Os outros fechem os olhos! 👀</div>
+        <button class="btn btn-primary btn-lg btn-block" onclick="revealWord()">🎲 Revelar Palavra</button>
+      </div>
+
+      <!-- MEMORIZE -->
+      <div id="memorize-state" style="display:none">
+        <div style="text-align:center;margin-bottom:12px">
+          <div
+            style="font-size:0.75rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--accent5);margin-bottom:6px">
+            ⚡ Memorize a palavra!</div>
+          <div style="font-size:0.8rem;color:var(--text3);font-weight:700">O jogo começa em...</div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:center;margin-bottom:16px">
+          <div style="position:relative;width:80px;height:80px">
+            <svg style="width:100%;height:100%;transform:rotate(-90deg)" viewBox="0 0 80 80">
+              <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="6" />
+              <circle id="memCircle" cx="40" cy="40" r="34" fill="none" stroke="#c77dff" stroke-width="6"
+                stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="0"
+                style="transition:stroke-dashoffset 0.5s linear" />
+            </svg>
+            <div id="mem-num"
+              style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:2.2rem;color:#c77dff">
+              5</div>
+          </div>
+        </div>
+        <div class="word-card"
+          style="border:2px solid rgba(199,125,255,0.4);background:linear-gradient(135deg,rgba(199,125,255,0.12),rgba(77,150,255,0.08))">
+          <div class="word-text" id="mem-word-display"
+            style="color:#c77dff;filter:drop-shadow(0 2px 12px rgba(199,125,255,0.5))">---</div>
+          <div
+            style="font-size:0.75rem;color:rgba(255,255,255,0.35);font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-top:8px">
+            Só o mimo pode ver!</div>
+        </div>
+      </div>
+
+      <!-- PLAYING -->
+      <div id="playing-state" style="display:none">
+        <div class="timer-wrap">
+          <svg class="timer-svg" viewBox="0 0 160 160">
+            <circle class="timer-track" cx="80" cy="80" r="68" />
+            <circle class="timer-prog" id="timerCircle" cx="80" cy="80" r="68" stroke="#ffd93d" stroke-dasharray="427.3"
+              stroke-dashoffset="0" />
+          </svg>
+          <div class="timer-num" id="timer-num">60</div>
+          <div class="timer-label">SEGUNDOS</div>
+        </div>
+        <div class="word-card">
+          <div id="word-hidden-placeholder"
+            style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:8px 0">
+            <div style="font-size:2.8rem;line-height:1">🙈</div>
+            <div
+              style="font-size:0.8rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--text3)">
+              Palavra oculta</div>
+          </div>
+          <div id="word-visible-content" style="display:none">
+            <div class="word-text" id="word-display">---</div>
+          </div>
+          <div id="hint-banner"
+            style="display:none;margin-top:10px;padding:8px 14px;background:rgba(255,217,61,0.12);border:1px solid rgba(255,217,61,0.3);border-radius:10px">
+            <div
+              style="font-size:0.7rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,217,61,0.6);margin-bottom:2px">
+              💡 Dica</div>
+            <div id="hint-text" style="font-family:'Fredoka One',cursive;font-size:1.1rem;color:var(--accent2)">---
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:center;margin:10px 0 4px">
+          <button id="btn-toggle-word" class="btn btn-ghost btn-sm" onclick="toggleWordVisibility()">👁️ Mostrar
+            palavra</button>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px">
+          <button class="btn btn-success btn-lg" onclick="markResult(true)">✅ Acertou!</button>
+          <button class="btn btn-danger btn-lg" onclick="markResult(false)">❌ Errou / Skip</button>
+        </div>
       </div>
     </div>
+  </div>
 
-    <!-- STEP 2 FFA -->
-    <div class="card" id="step-ffa" style="margin-bottom:16px;display:none">
-      <div class="card-title">2️⃣ Jogadores</div>
-      <div id="ffa-players" class="flex-col" style="margin-bottom:16px"></div>
-      <div class="flex-row">
-        <input class="inp" id="inp-ffa" placeholder="Nome do jogador..." onkeydown="if(event.key==='Enter')addFFAPlayer()">
-        <button class="btn btn-secondary btn-sm" style="white-space:nowrap" onclick="addFFAPlayer()">+ Adicionar</button>
-      </div>
-      <div style="margin-top:16px;padding:12px;background:rgba(255,255,255,0.03);border-radius:var(--radius-sm);font-size:0.8rem;color:var(--text3)">
-        💡 Mínimo 3, máximo 6 jogadores
+  <!-- ========== SCOREBOARD ========== -->
+  <div class="screen" id="screen-score">
+    <div style="width:100%;max-width:480px">
+      <div
+        style="font-family:'Fredoka One',cursive;font-size:2rem;text-align:center;margin-bottom:4px;background:linear-gradient(135deg,#ffd93d,#ff6b6b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
+        🏆 Placar</div>
+      <div class="text-sm center mb" id="score-subtitle"></div>
+      <div id="scoreboard-list" class="mb"></div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-title" style="font-size:1.1rem">🎊 Próxima Rodada</div>
+        <div id="next-round-info" class="text-sm mb"></div>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-primary btn-block" onclick="continueGame()">▶️ Continuar</button>
+          <button class="btn btn-ghost btn-block" onclick="confirmRestart()">🔄 Reiniciar</button>
+        </div>
       </div>
     </div>
+  </div>
 
-    <!-- STEP 3: DIFFICULTY -->
-    <div class="card" style="margin-bottom:16px">
-      <div class="card-title">3️⃣ Dificuldade</div>
-      <div class="diff-grid">
-        <div class="diff-card easy selected" id="diff-easy" onclick="selectDifficulty('easy')">
+  <!-- ========== FINAL ========== -->
+  <div class="screen" id="screen-final">
+    <div style="width:100%;max-width:480px;text-align:center">
+      <div style="font-size:5rem;margin-bottom:12px" id="final-trophy">🏆</div>
+      <div class="logo" style="font-size:2.5rem;margin-bottom:4px" id="final-winner">--</div>
+      <div class="logo-sub">VENCEDOR!</div>
+      <div class="card" style="margin:20px 0;text-align:left">
+        <div class="card-title">📊 Resultado Final</div>
+        <div id="final-scoreboard"></div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn btn-primary btn-lg btn-block" onclick="confirmRestart()">🎮 Jogar de Novo</button>
+        <button class="btn btn-ghost btn-block" onclick="goTo('home')">🏠 Início</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== WORD BANK ========== -->
+  <div class="screen" id="screen-wordbank">
+    <div style="width:100%;max-width:480px">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+        <button class="btn btn-ghost btn-sm" onclick="goTo('home')">← Voltar</button>
+        <div style="font-family:'Fredoka One',cursive;font-size:1.4rem;color:var(--accent2)">Banco de Palavras</div>
+      </div>
+
+      <!-- DIFFICULTY SELECTOR -->
+      <div class="diff-grid" style="margin-bottom:14px">
+        <div class="diff-card easy selected" id="wb-diff-easy" onclick="switchWBDiff('easy')">
           <div class="diff-icon">🌱</div>
           <div class="diff-name">Fácil</div>
-          <div class="diff-desc">Ótimo para crianças e iniciantes</div>
         </div>
-        <div class="diff-card normal" id="diff-normal" onclick="selectDifficulty('normal')">
+        <div class="diff-card normal" id="wb-diff-normal" onclick="switchWBDiff('normal')">
           <div class="diff-icon">⚡</div>
           <div class="diff-name">Normal</div>
-          <div class="diff-desc">Desafio equilibrado para a família</div>
         </div>
-        <div class="diff-card hard" id="diff-hard" onclick="selectDifficulty('hard')">
+        <div class="diff-card hard" id="wb-diff-hard" onclick="switchWBDiff('hard')">
           <div class="diff-icon">🔥</div>
           <div class="diff-name">Difícil</div>
-          <div class="diff-desc">Palavras complexas, para os corajosos!</div>
         </div>
       </div>
-      <div id="diff-word-count" style="margin-top:12px;text-align:center;font-size:0.8rem;color:var(--text3);font-weight:700"></div>
-    </div>
 
-    <!-- STEP 4: ROUNDS -->
-    <div class="card" style="margin-bottom:16px">
-      <div class="card-title">4️⃣ Configurar Partida</div>
-      <div class="toggle-wrap" style="border:none">
-        <div><div class="toggle-label">Número de Rodadas</div><div class="toggle-sub">Quantas rodadas por jogador</div></div>
-        <div class="range-wrap" style="width:160px">
-          <input type="range" class="range-inp" id="rounds-slider" min="1" max="5" value="3" oninput="document.getElementById('rounds-val').textContent=this.value">
-          <div class="range-val" id="rounds-val">3</div>
+      <!-- CATEGORY TABS -->
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchWordTab('all')" id="tab-all">Todas</button>
+        <button class="tab-btn" onclick="switchWordTab('objects')" id="tab-objects">🧸 Objetos</button>
+        <button class="tab-btn" onclick="switchWordTab('actions')" id="tab-actions">🏃 Ações</button>
+        <button class="tab-btn" onclick="switchWordTab('animals')" id="tab-animals">🐾 Animais</button>
+      </div>
+
+      <!-- ADD WORD -->
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-title" style="font-size:1.1rem">➕ Adicionar Palavra</div>
+        <div class="flex-col">
+          <input class="inp" id="inp-new-word" placeholder="Digite a palavra..."
+            onkeydown="if(event.key==='Enter')addWord()">
+          <select class="inp" id="inp-word-cat">
+            <option value="objects">🧸 Objetos</option>
+            <option value="actions">🏃 Ações</option>
+            <option value="animals">🐾 Animais</option>
+          </select>
+          <div style="font-size:0.8rem;color:var(--text3);font-weight:700;padding:0 4px">Será adicionada à dificuldade:
+            <span id="wb-diff-label" style="color:var(--accent2)">🌱 Fácil</span></div>
+          <button class="btn btn-secondary btn-block" onclick="addWord()">➕ Adicionar Palavra</button>
         </div>
       </div>
-    </div>
 
-    <button class="btn btn-primary btn-lg btn-block" onclick="startGame()" style="margin-bottom:20px">🎭 Começar o Jogo!</button>
-  </div>
-</div>
-
-<!-- ========== GAME ========== -->
-<div class="screen" id="screen-game">
-  <div style="width:100%;max-width:520px">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-      <div class="round-info" id="round-display">Rodada 1 de 3</div>
-      <button class="btn btn-ghost btn-sm" onclick="confirmRestart()">🔄 Reiniciar</button>
-    </div>
-    <div id="score-mini" style="display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px"></div>
-    <div class="current-player">
-      <div class="cp-label">Vez de fazer a mímica:</div>
-      <div class="cp-name" id="current-player-name">--</div>
-      <div id="current-team-badge" style="margin-top:4px"></div>
-    </div>
-
-    <!-- PREPARING -->
-    <div id="preparing-state" class="card" style="text-align:center">
-      <div style="font-size:3.5rem;margin-bottom:12px">🎭</div>
-      <div style="font-family:'Fredoka One',cursive;font-size:1.3rem;margin-bottom:8px">Prontos para ver a palavra?</div>
-      <div class="text-sm" style="margin-bottom:20px">Só o mimo deve ver! Os outros fechem os olhos! 👀</div>
-      <button class="btn btn-primary btn-lg btn-block" onclick="revealWord()">🎲 Revelar Palavra</button>
-    </div>
-
-    <!-- MEMORIZE -->
-    <div id="memorize-state" style="display:none">
-      <div style="text-align:center;margin-bottom:12px">
-        <div style="font-size:0.75rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--accent5);margin-bottom:6px">⚡ Memorize a palavra!</div>
-        <div style="font-size:0.8rem;color:var(--text3);font-weight:700">O jogo começa em...</div>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:center;margin-bottom:16px">
-        <div style="position:relative;width:80px;height:80px">
-          <svg style="width:100%;height:100%;transform:rotate(-90deg)" viewBox="0 0 80 80">
-            <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="6"/>
-            <circle id="memCircle" cx="40" cy="40" r="34" fill="none" stroke="#c77dff" stroke-width="6" stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="0" style="transition:stroke-dashoffset 0.5s linear"/>
-          </svg>
-          <div id="mem-num" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:2.2rem;color:#c77dff">5</div>
+      <!-- LIST -->
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+          <div class="card-title" style="margin:0;font-size:1.1rem">📋 Palavras (<span id="word-count">0</span>)</div>
+          <button class="btn btn-ghost btn-sm" onclick="resetWords()">↺ Restaurar</button>
         </div>
-      </div>
-      <div class="word-card" style="border:2px solid rgba(199,125,255,0.4);background:linear-gradient(135deg,rgba(199,125,255,0.12),rgba(77,150,255,0.08))">
-        <div class="word-text" id="mem-word-display" style="color:#c77dff;filter:drop-shadow(0 2px 12px rgba(199,125,255,0.5))">---</div>
-        <div style="font-size:0.75rem;color:rgba(255,255,255,0.35);font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-top:8px">Só o mimo pode ver!</div>
-      </div>
-    </div>
-
-    <!-- PLAYING -->
-    <div id="playing-state" style="display:none">
-      <div class="timer-wrap">
-        <svg class="timer-svg" viewBox="0 0 160 160">
-          <circle class="timer-track" cx="80" cy="80" r="68"/>
-          <circle class="timer-prog" id="timerCircle" cx="80" cy="80" r="68" stroke="#ffd93d" stroke-dasharray="427.3" stroke-dashoffset="0"/>
-        </svg>
-        <div class="timer-num" id="timer-num">60</div>
-        <div class="timer-label">SEGUNDOS</div>
-      </div>
-      <div class="word-card">
-        <div id="word-hidden-placeholder" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:8px 0">
-          <div style="font-size:2.8rem;line-height:1">🙈</div>
-          <div style="font-size:0.8rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--text3)">Palavra oculta</div>
-        </div>
-        <div id="word-visible-content" style="display:none">
-          <div class="word-text" id="word-display">---</div>
-        </div>
-        <div id="hint-banner" style="display:none;margin-top:10px;padding:8px 14px;background:rgba(255,217,61,0.12);border:1px solid rgba(255,217,61,0.3);border-radius:10px">
-          <div style="font-size:0.7rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,217,61,0.6);margin-bottom:2px">💡 Dica</div>
-          <div id="hint-text" style="font-family:'Fredoka One',cursive;font-size:1.1rem;color:var(--accent2)">---</div>
-        </div>
-      </div>
-      <div style="display:flex;justify-content:center;margin:10px 0 4px">
-        <button id="btn-toggle-word" class="btn btn-ghost btn-sm" onclick="toggleWordVisibility()">👁️ Mostrar palavra</button>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px">
-        <button class="btn btn-success btn-lg" onclick="markResult(true)">✅ Acertou!</button>
-        <button class="btn btn-danger btn-lg" onclick="markResult(false)">❌ Errou / Skip</button>
+        <div class="words-container" id="words-list"></div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- ========== SCOREBOARD ========== -->
-<div class="screen" id="screen-score">
-  <div style="width:100%;max-width:480px">
-    <div style="font-family:'Fredoka One',cursive;font-size:2rem;text-align:center;margin-bottom:4px;background:linear-gradient(135deg,#ffd93d,#ff6b6b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">🏆 Placar</div>
-    <div class="text-sm center mb" id="score-subtitle"></div>
-    <div id="scoreboard-list" class="mb"></div>
-    <div class="card" style="margin-bottom:16px">
-      <div class="card-title" style="font-size:1.1rem">🎊 Próxima Rodada</div>
-      <div id="next-round-info" class="text-sm mb"></div>
-      <div style="display:flex;gap:10px">
-        <button class="btn btn-primary btn-block" onclick="continueGame()">▶️ Continuar</button>
-        <button class="btn btn-ghost btn-block" onclick="confirmRestart()">🔄 Reiniciar</button>
+  <!-- ========== SETTINGS ========== -->
+  <div class="screen" id="screen-settings">
+    <div style="width:100%;max-width:480px">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px">
+        <button class="btn btn-ghost btn-sm" onclick="goTo('home')">← Voltar</button>
+        <div style="font-family:'Fredoka One',cursive;font-size:1.4rem;color:var(--accent2)">Configurações</div>
       </div>
-    </div>
-  </div>
-</div>
-
-<!-- ========== FINAL ========== -->
-<div class="screen" id="screen-final">
-  <div style="width:100%;max-width:480px;text-align:center">
-    <div style="font-size:5rem;margin-bottom:12px" id="final-trophy">🏆</div>
-    <div class="logo" style="font-size:2.5rem;margin-bottom:4px" id="final-winner">--</div>
-    <div class="logo-sub">VENCEDOR!</div>
-    <div class="card" style="margin:20px 0;text-align:left">
-      <div class="card-title">📊 Resultado Final</div>
-      <div id="final-scoreboard"></div>
-    </div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap">
-      <button class="btn btn-primary btn-lg btn-block" onclick="confirmRestart()">🎮 Jogar de Novo</button>
-      <button class="btn btn-ghost btn-block" onclick="goTo('home')">🏠 Início</button>
-    </div>
-  </div>
-</div>
-
-<!-- ========== WORD BANK ========== -->
-<div class="screen" id="screen-wordbank">
-  <div style="width:100%;max-width:480px">
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
-      <button class="btn btn-ghost btn-sm" onclick="goTo('home')">← Voltar</button>
-      <div style="font-family:'Fredoka One',cursive;font-size:1.4rem;color:var(--accent2)">Banco de Palavras</div>
-    </div>
-
-    <!-- DIFFICULTY SELECTOR -->
-    <div class="diff-grid" style="margin-bottom:14px">
-      <div class="diff-card easy selected" id="wb-diff-easy" onclick="switchWBDiff('easy')">
-        <div class="diff-icon">🌱</div><div class="diff-name">Fácil</div>
-      </div>
-      <div class="diff-card normal" id="wb-diff-normal" onclick="switchWBDiff('normal')">
-        <div class="diff-icon">⚡</div><div class="diff-name">Normal</div>
-      </div>
-      <div class="diff-card hard" id="wb-diff-hard" onclick="switchWBDiff('hard')">
-        <div class="diff-icon">🔥</div><div class="diff-name">Difícil</div>
-      </div>
-    </div>
-
-    <!-- CATEGORY TABS -->
-    <div class="tab-bar">
-      <button class="tab-btn active" onclick="switchWordTab('all')" id="tab-all">Todas</button>
-      <button class="tab-btn" onclick="switchWordTab('objects')" id="tab-objects">🧸 Objetos</button>
-      <button class="tab-btn" onclick="switchWordTab('actions')" id="tab-actions">🏃 Ações</button>
-      <button class="tab-btn" onclick="switchWordTab('animals')" id="tab-animals">🐾 Animais</button>
-    </div>
-
-    <!-- ADD WORD -->
-    <div class="card" style="margin-bottom:16px">
-      <div class="card-title" style="font-size:1.1rem">➕ Adicionar Palavra</div>
-      <div class="flex-col">
-        <input class="inp" id="inp-new-word" placeholder="Digite a palavra..." onkeydown="if(event.key==='Enter')addWord()">
-        <select class="inp" id="inp-word-cat">
-          <option value="objects">🧸 Objetos</option>
-          <option value="actions">🏃 Ações</option>
-          <option value="animals">🐾 Animais</option>
-        </select>
-        <div style="font-size:0.8rem;color:var(--text3);font-weight:700;padding:0 4px">Será adicionada à dificuldade: <span id="wb-diff-label" style="color:var(--accent2)">🌱 Fácil</span></div>
-        <button class="btn btn-secondary btn-block" onclick="addWord()">➕ Adicionar Palavra</button>
-      </div>
-    </div>
-
-    <!-- LIST -->
-    <div class="card">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-        <div class="card-title" style="margin:0;font-size:1.1rem">📋 Palavras (<span id="word-count">0</span>)</div>
-        <button class="btn btn-ghost btn-sm" onclick="resetWords()">↺ Restaurar</button>
-      </div>
-      <div class="words-container" id="words-list"></div>
-    </div>
-  </div>
-</div>
-
-<!-- ========== SETTINGS ========== -->
-<div class="screen" id="screen-settings">
-  <div style="width:100%;max-width:480px">
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px">
-      <button class="btn btn-ghost btn-sm" onclick="goTo('home')">← Voltar</button>
-      <div style="font-family:'Fredoka One',cursive;font-size:1.4rem;color:var(--accent2)">Configurações</div>
-    </div>
-    <div class="card">
-      <div class="card-title">⏱️ Timer</div>
-      <div class="toggle-wrap">
-        <div><div class="toggle-label">Tempo por Rodada</div><div class="toggle-sub">Segundos para adivinhar</div></div>
-        <div class="range-wrap" style="width:160px">
-          <input type="range" class="range-inp" id="timer-slider" min="20" max="120" step="10" value="60" oninput="updateTimerLabel(this.value)">
-          <div class="range-val" id="timer-val">60s</div>
+      <div class="card">
+        <div class="card-title">⏱️ Timer</div>
+        <div class="toggle-wrap">
+          <div>
+            <div class="toggle-label">Tempo por Rodada</div>
+            <div class="toggle-sub">Segundos para adivinhar</div>
+          </div>
+          <div class="range-wrap" style="width:160px">
+            <input type="range" class="range-inp" id="timer-slider" min="20" max="120" step="10" value="60"
+              oninput="updateTimerLabel(this.value)">
+            <div class="range-val" id="timer-val">60s</div>
+          </div>
+        </div>
+        <div class="toggle-wrap">
+          <div>
+            <div class="toggle-label">Som de Alerta</div>
+            <div class="toggle-sub">Beep nos últimos 10 segundos</div>
+          </div>
+          <label><input type="checkbox" class="toggle-input" id="toggle-sound" checked>
+            <div class="toggle-switch"></div>
+          </label>
+        </div>
+        <div class="toggle-wrap" style="border:none">
+          <div>
+            <div class="toggle-label">Penalidade por Skip</div>
+            <div class="toggle-sub">−10 pontos ao pular</div>
+          </div>
+          <label><input type="checkbox" class="toggle-input" id="toggle-penalty">
+            <div class="toggle-switch"></div>
+          </label>
         </div>
       </div>
-      <div class="toggle-wrap">
-        <div><div class="toggle-label">Som de Alerta</div><div class="toggle-sub">Beep nos últimos 10 segundos</div></div>
-        <label><input type="checkbox" class="toggle-input" id="toggle-sound" checked><div class="toggle-switch"></div></label>
-      </div>
-      <div class="toggle-wrap" style="border:none">
-        <div><div class="toggle-label">Penalidade por Skip</div><div class="toggle-sub">−10 pontos ao pular</div></div>
-        <label><input type="checkbox" class="toggle-input" id="toggle-penalty"><div class="toggle-switch"></div></label>
-      </div>
-    </div>
-    <div class="card" style="margin-top:16px">
-      <div class="card-title">🎲 Palavras</div>
-      <div class="toggle-wrap" style="border:none">
-        <div><div class="toggle-label">Embaralhar Palavras</div><div class="toggle-sub">Ordem aleatória a cada jogo</div></div>
-        <label><input type="checkbox" class="toggle-input" id="toggle-shuffle" checked><div class="toggle-switch"></div></label>
+      <div class="card" style="margin-top:16px">
+        <div class="card-title">🎲 Palavras</div>
+        <div class="toggle-wrap" style="border:none">
+          <div>
+            <div class="toggle-label">Embaralhar Palavras</div>
+            <div class="toggle-sub">Ordem aleatória a cada jogo</div>
+          </div>
+          <label><input type="checkbox" class="toggle-input" id="toggle-shuffle" checked>
+            <div class="toggle-switch"></div>
+          </label>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<footer style="position:relative;z-index:1;text-align:center;padding:20px 16px 28px;font-size:0.75rem;color:rgba(255,255,255,0.25);font-weight:700;letter-spacing:0.5px">
-  © 2025 MimiMania · matiello · Publicado no <a href="https://github.com/matiello" target="_blank" style="color:rgba(255,255,255,0.35);text-decoration:none;">GitHub Pages</a>
-</footer>
+  <footer
+    style="position:relative;z-index:1;text-align:center;padding:20px 16px 28px;font-size:0.75rem;color:rgba(255,255,255,0.25);font-weight:700;letter-spacing:0.5px">
+    © 2025 MimiMania · matiello · Publicado no <a href="https://github.com/matiello" target="_blank"
+      style="color:rgba(255,255,255,0.35);text-decoration:none;">GitHub Pages</a>
+  </footer>
 
-<script>
-// ============================================================
-// DEFAULT WORD BANK — keyed by difficulty → category
-// ============================================================
-const DEFAULT_WORDS = {
-  easy: {
-    objects: [
-      'Bola','Copo','Chapéu','Sapato','Livro','Cadeira','Mesa','Cama','Porta','Janela',
-      'Lápis','Borracha','Mochila','Óculos','Guarda-chuva','Telefone','Espelho','Escova','Pente','Tesoura',
-      'Chave','Garfo','Colher','Prato','Garrafa','Almofada','Cobertor','Toalha','Sabão','Balão',
-      'Boneca','Carrinho','Pipoca','Sorvete','Bolo','Maçã','Banana','Uva','Flor','Árvore',
-      'Sol','Lua','Estrela','Nuvem','Chuva','Guarda-roupa','Armário','Geladeira','Fogão','Televisão'
-    ],
-    actions: [
-      'Correr','Pular','Dormir','Comer','Beber','Rir','Chorar','Dançar','Cantar','Nadar',
-      'Voar','Andar','Sentar','Levantar','Abraçar','Brincar','Desenhar','Pintar','Ler','Escrever',
-      'Ouvir','Gritar','Soprar','Respirar','Tossir','Espirrar','Bocejar','Aplaudir','Acenar','Apontar',
-      'Pegar','Jogar','Chutar','Empurrar','Puxar','Abrir','Fechar','Lavar mãos','Escovar dentes','Pentear',
-      'Calçar sapato','Tirar sapato','Ligar TV','Apagar luz','Bater palma','Girar','Rolar','Beijar','Sorrir','Pensar'
-    ],
-    animals: [
-      'Cachorro','Gato','Peixe','Passarinho','Coelho','Galinha','Vaca','Cavalo','Porco','Ovelha',
-      'Pato','Sapo','Borboleta','Formiga','Abelha','Aranha','Minhoca','Lesma','Caracol','Lagarta',
-      'Elefante','Leão','Girafa','Macaco','Zebra','Hipopótamo','Crocodilo','Tartaruga','Pinguim','Urso',
-      'Lobo','Raposa','Veado','Esquilo','Rato','Hamster','Iguana','Papagaio','Tucano','Flamingo',
-      'Pelicano','Canguru','Koala','Panda','Golfinho','Baleia','Polvo','Caranguejo','Camarão','Estrela-do-mar'
-    ]
-  },
-  normal: {
-    objects: [
-      'Computador','Teclado','Rádio','Máquina de lavar','Aspirador','Liquidificador','Batedeira','Cafeteira','Sofá','Estante',
-      'Ventilador','Ar-condicionado','Micro-ondas','Forno','Pia','Banheira','Chuveiro','Mala','Lanterna','Binóculo',
-      'Câmera','Relógio','Calculadora','Termômetro','Balança','Bússola','Violão','Piano','Tambor','Flauta',
-      'Sanfona','Trompete','Violino','Gaita','Xilofone','Raquete','Skate','Patins','Luva de boxe','Capacete',
-      'Colete','Cinto','Gravata','Bolsa','Guarda-chuva','Bengala','Muleta','Cadeira de rodas','Óculos de sol','Boné'
-    ],
-    actions: [
-      'Cozinhar','Dirigir','Pedalar','Pescar','Mergulhar','Escalar','Acampar','Fazer ioga','Meditar','Fotografar',
-      'Filmar','Pintar quadro','Esculpir','Tricotar','Costurar','Bordar','Jardinagem','Regar planta','Podar árvore','Varrer',
-      'Limpar janela','Passar roupa','Dobrar roupa','Fazer cama','Lavar louça','Secar louça','Descascar fruta','Ralar queijo','Amassar pão','Remar',
-      'Surfar','Esquiar','Patinar','Driblar','Arremessar','Defender gol','Servir tênis','Fazer ginástica','Aplaudir','Discursar',
-      'Entrevistar','Escalar parede','Fazer mágica','Equilibrar','Malabarismo','Digitar','Telefonar','Tirar selfie','Pagar conta','Fazer fila'
-    ],
-    animals: [
-      'Águia','Falcão','Coruja','Morcego','Camelo','Lhama','Alpaca','Bisão','Alce','Coyote',
-      'Guepardo','Leopardo','Jaguar','Puma','Rinoceronte','Anaconda','Ornitorrinco','Dingo','Cacatua','Emu',
-      'Orca','Tubarão','Arraia','Lula','Cavalo-marinho','Ouriço-do-mar','Arara','Pavão','Avestruz','Casuar',
-      'Albatroz','Cegonha','Pelicano','Íbis','Garça','Lontra','Foca','Morsa','Leão-marinho','Dugongo',
-      'Cabra-da-montanha','Íbex','Antílope','Gnu','Búfalo','Javali','Texugo','Guaxinim','Furão','Musaranho'
-    ]
-  },
-  hard: {
-    objects: [
-      'Estetoscópio','Bisturi','Microscópio','Telescópio','Sextante','Astrolábio','Cronômetro','Metrônomo','Afinador','Desfibrilador',
-      'Catapulta','Periscópio','Destilador','Centrífuga','Incubadora','Autoclave','Espectrômetro','Cromatógrafo','Calorômetro','Potenciômetro',
-      'Fisga','Arpão','Bumerangue','Arco e flecha','Besta','Lança','Maça','Machado','Foice','Tridente',
-      'Sanduicheira','Desidratador','Fermentador','Slow cooker','Wok','Tagine','Fondue','Churrasqueira','Defumador','Alambique',
-      'Teodolito','Altímetro','Barômetro','Higrômetro','Anemômetro','Pluviômetro','Sismógrafo','Gerador','Transformador','Osciloscópio'
-    ],
-    actions: [
-      'Equilibrar na corda bamba','Engolir fogo','Escapar de camisa de força','Quebrar tijolos com a mão','Andar sobre brasas',
-      'Ler braille','Fazer sinalização de mergulho','Comunicar em libras','Código morse','Tocar instrumento com os pés',
-      'Extrair dente','Fazer cirurgia','Ressuscitar','Imobilizar fratura','Aplicar torniquete',
-      'Fazer esgrima','Praticar tai chi','Golpe de caratê','Arremesso de martelo','Lançamento de dardo olímpico',
-      'Arar terra','Ordenhar vaca','Tosquiar ovelha','Ferrar cavalo','Domar boi',
-      'Tecer no tear','Soprar vidro','Forjar metal','Moldar cerâmica no torno','Restaurar quadro',
-      'Decolar avião','Pousar helicóptero','Navegar barco a vela','Operar guindaste','Conduzir trem',
-      'Fazer rapel','Alpinismo em rocha','Tirolesa','Escalada livre','Slackline',
-      'Desativar bomba','Negociar reféns','Paraquedismo','Corrida de obstáculos','Levantamento de peso olímpico'
-    ],
-    animals: [
-      'Axolote','Tarsídeo','Fossa','Quokka','Numbat','Kakapo','Tuátara','Okapi','Takin','Saiga',
-      'Dugongo','Manatim','Narval','Beluga','Cachalote','Rorcual','Jubarte','Boto','Toninha','Franciscana',
-      'Escorpião','Tarântula','Mamba-negra','Taipan','Cobra-de-coral','Viperão','Cascavel','Boomslang','Lula-gigante','Polvo-de-anéis-azuis',
-      'Baiacu','Peixe-pedra','Peixe-leão','Cone-do-mar','Medusa-da-caixa','Vespa-asiática','Besouro-bombardeiro','Mosquito-tigre','Formiga-bala','Lagarta-de-fogo',
-      'Pangolim','Aye-aye','Loris-lento','Tatu-bola','Tatu-gigante','Tamanduá-bandeira','Preguiça-de-três-dedos','Ouriço-pigmeu','Musaranho-elefante','Marta-pinheira'
-    ]
-  }
-};
-
-let wordBank = JSON.parse(localStorage.getItem('mm_words_v2') || 'null') || JSON.parse(JSON.stringify(DEFAULT_WORDS));
-
-let gameState = {
-  mode: 'teams', difficulty: 'easy',
-  teams: { A: [], B: [] }, players: [],
-  scores: {}, currentPlayerIdx: 0,
-  currentRound: 1, totalRounds: 3,
-  currentWord: null, usedWords: [],
-  timerDur: 60, timerInterval: null, memInterval: null,
-  timerLeft: 60, hintShown: false, wordVisible: false,
-  phase: 'preparing', totalTurns: 0, turnsDone: 0
-};
-
-// ============================================================
-// STARS
-// ============================================================
-(function() {
-  const c = document.getElementById('stars');
-  for (let i = 0; i < 60; i++) {
-    const s = document.createElement('div'); s.className = 'star';
-    const sz = Math.random() * 2.5 + 0.5;
-    s.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${(Math.random()*4+2).toFixed(1)}s;--del:${(Math.random()*4).toFixed(1)}s;--op:${(Math.random()*0.5+0.3).toFixed(2)}`;
-    c.appendChild(s);
-  }
-})();
-
-// ============================================================
-// NAVIGATION
-// ============================================================
-function goTo(screen) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screen-' + screen).classList.add('active');
-  if (screen === 'wordbank') { wbDiff = 'easy'; wbCat = 'all'; syncWBDiffUI(); syncWBCatUI(); renderWordBank(); }
-  if (screen === 'setup') { renderSetupPlayers(); updateDiffWordCount(); }
-}
-
-// ============================================================
-// NOTIFICATIONS
-// ============================================================
-function showNotif(msg, color='var(--accent3)', textColor='#0d4f17') {
-  const el = document.getElementById('notif');
-  el.textContent = msg; el.style.background = color; el.style.color = textColor;
-  el.classList.add('show'); setTimeout(() => el.classList.remove('show'), 2400);
-}
-
-// ============================================================
-// DIFFICULTY (SETUP)
-// ============================================================
-const DIFF_META = {
-  easy:   { label: '🌱 Fácil',  color: 'var(--diff-easy)'   },
-  normal: { label: '⚡ Normal', color: 'var(--diff-normal)'  },
-  hard:   { label: '🔥 Difícil',color: 'var(--diff-hard)'   }
-};
-
-function selectDifficulty(diff) {
-  gameState.difficulty = diff;
-  ['easy','normal','hard'].forEach(d =>
-    document.getElementById('diff-' + d).classList.toggle('selected', d === diff)
-  );
-  updateDiffWordCount();
-}
-
-function updateDiffWordCount() {
-  const bank = wordBank[gameState.difficulty] || {};
-  let total = 0; Object.values(bank).forEach(arr => total += arr.length);
-  document.getElementById('diff-word-count').textContent =
-    `${DIFF_META[gameState.difficulty].label} · ${total} palavras disponíveis`;
-}
-
-// ============================================================
-// MODE
-// ============================================================
-function selectMode(mode) {
-  gameState.mode = mode;
-  document.getElementById('mode-teams').classList.toggle('selected', mode === 'teams');
-  document.getElementById('mode-ffa').classList.toggle('selected', mode === 'ffa');
-  document.getElementById('step-teams').style.display = mode === 'teams' ? '' : 'none';
-  document.getElementById('step-ffa').style.display   = mode === 'ffa'   ? '' : 'none';
-}
-
-// ============================================================
-// PLAYERS
-// ============================================================
-function renderSetupPlayers() { renderTeamPlayers(); renderFFAPlayers(); }
-
-function renderTeamPlayers() {
-  ['A','B'].forEach(t => {
-    const cont = document.getElementById('team-' + t.toLowerCase() + '-players'); cont.innerHTML = '';
-    (gameState.teams[t]||[]).forEach((p, i) => {
-      const color = t === 'A' ? 'var(--team1)' : 'var(--team2)';
-      const el = document.createElement('div'); el.className = 'player-row';
-      el.innerHTML = `<div class="player-avatar" style="background:${color}22;color:${color}">${p[0].toUpperCase()}</div><div style="flex:1;font-weight:800">${p}</div><button class="btn btn-ghost btn-sm" onclick="removeTeamPlayer('${t}',${i})">✕</button>`;
-      cont.appendChild(el);
-    });
-  });
-}
-
-function addTeamPlayer(team) {
-  const inp = document.getElementById('inp-team-' + team.toLowerCase());
-  const name = inp.value.trim(); if (!name) return;
-  const total = (gameState.teams.A||[]).length + (gameState.teams.B||[]).length;
-  if (total >= 6) { showNotif('❌ Máximo 6 jogadores!','var(--accent1)','white'); return; }
-  if ((gameState.teams[team]||[]).length >= 3) { showNotif('❌ Máximo 3 por time!','var(--accent1)','white'); return; }
-  if (!gameState.teams[team]) gameState.teams[team] = [];
-  gameState.teams[team].push(name); inp.value = ''; renderTeamPlayers();
-  showNotif(`✅ ${name} no Time ${team}!`);
-}
-
-function removeTeamPlayer(team, idx) { gameState.teams[team].splice(idx,1); renderTeamPlayers(); }
-
-function renderFFAPlayers() {
-  const cont = document.getElementById('ffa-players'); cont.innerHTML = '';
-  (gameState.players||[]).forEach((p,i) => {
-    const n = p.name||p;
-    const el = document.createElement('div'); el.className = 'player-row';
-    el.innerHTML = `<div class="player-avatar" style="background:rgba(255,255,255,0.08);color:white">${n[0].toUpperCase()}</div><div style="flex:1;font-weight:800">${n}</div><button class="btn btn-ghost btn-sm" onclick="removeFFAPlayer(${i})">✕</button>`;
-    cont.appendChild(el);
-  });
-}
-
-function addFFAPlayer() {
-  const inp = document.getElementById('inp-ffa');
-  const name = inp.value.trim(); if (!name) return;
-  if (!gameState.players) gameState.players = [];
-  if (gameState.players.length >= 6) { showNotif('❌ Máximo 6 jogadores!','var(--accent1)','white'); return; }
-  gameState.players.push(name); inp.value = ''; renderFFAPlayers();
-  showNotif(`✅ ${name} entrou!`);
-}
-
-function removeFFAPlayer(idx) { gameState.players.splice(idx,1); renderFFAPlayers(); }
-
-// ============================================================
-// START GAME
-// ============================================================
-function startGame() {
-  const rounds = parseInt(document.getElementById('rounds-slider').value);
-  gameState.totalRounds = rounds;
-  gameState.timerDur = parseInt(document.getElementById('timer-slider').value) || 60;
-
-  if (gameState.mode === 'teams') {
-    const a = gameState.teams.A||[], b = gameState.teams.B||[];
-    if (a.length < 1 || b.length < 1) { showNotif('❌ Mínimo 1 por time!','var(--accent1)','white'); return; }
-    gameState.players = [];
-    const maxLen = Math.max(a.length, b.length);
-    for (let i = 0; i < maxLen; i++) {
-      if (i < a.length) gameState.players.push({ name: a[i], team: 'A' });
-      if (i < b.length) gameState.players.push({ name: b[i], team: 'B' });
-    }
-    gameState.scores = { teamA: 0, teamB: 0 };
-    a.forEach(p => gameState.scores[p] = 0);
-    b.forEach(p => gameState.scores[p] = 0);
-  } else {
-    if (!gameState.players || gameState.players.length < 3) { showNotif('❌ Mínimo 3 jogadores!','var(--accent1)','white'); return; }
-    const players = [...gameState.players];
-    gameState.players = players.map(p => ({ name: p.name||p, team: null }));
-    gameState.scores = {};
-    players.forEach(p => gameState.scores[p.name||p] = 0);
-  }
-
-  gameState.currentPlayerIdx = 0; gameState.currentRound = 1;
-  gameState.usedWords = []; gameState.turnsDone = 0;
-  gameState.totalTurns = gameState.players.length * rounds;
-  initTurn(); goTo('game');
-}
-
-// ============================================================
-// TURN
-// ============================================================
-function initTurn() {
-  gameState.phase = 'preparing';
-  const player = gameState.players[gameState.currentPlayerIdx];
-  const roundNum = Math.floor(gameState.turnsDone / gameState.players.length) + 1;
-  document.getElementById('round-display').textContent = `Rodada ${roundNum} de ${gameState.totalRounds}`;
-  document.getElementById('current-player-name').textContent = player.name||player;
-  const badge = document.getElementById('current-team-badge');
-  if (player.team) {
-    const color = player.team === 'A' ? 'var(--team1)' : 'var(--team2)';
-    badge.innerHTML = `<span class="team-badge" style="background:${color}22;color:${color}">Time ${player.team==='A'?'A 🔴':'B 🔵'}</span>`;
-  } else badge.innerHTML = '';
-  document.getElementById('preparing-state').style.display = '';
-  document.getElementById('memorize-state').style.display = 'none';
-  document.getElementById('playing-state').style.display = 'none';
-  renderScoreMini();
-}
-
-// ============================================================
-// REVEAL + MEMORIZE
-// ============================================================
-function revealWord() {
-  gameState.phase = 'memorizing';
-  gameState.currentWord = pickWord();
-  const catLabels = { objects:'🧸 Objeto', actions:'🏃 Ação', animals:'🐾 Animal' };
-  document.getElementById('mem-word-display').textContent = gameState.currentWord.word;
-  document.getElementById('hint-text').textContent = catLabels[gameState.currentWord.cat] || 'Palavra';
-  document.getElementById('hint-banner').style.display = 'none';
-  document.getElementById('word-display').textContent = gameState.currentWord.word;
-  document.getElementById('word-hidden-placeholder').style.display = 'flex';
-  document.getElementById('word-visible-content').style.display = 'none';
-  document.getElementById('btn-toggle-word').textContent = '👁️ Mostrar palavra';
-  gameState.wordVisible = false;
-
-  document.getElementById('preparing-state').style.display = 'none';
-  document.getElementById('memorize-state').style.display = '';
-  document.getElementById('playing-state').style.display = 'none';
-
-  let memLeft = 5;
-  const mc = document.getElementById('memCircle'), mn = document.getElementById('mem-num');
-  updateMemCircle(memLeft, 5, mc, mn, 213.6); playBeep(600);
-  gameState.memInterval = setInterval(() => {
-    memLeft--;
-    updateMemCircle(memLeft, 5, mc, mn, 213.6);
-    if (memLeft > 0) playBeep(memLeft <= 2 ? 700 : 500);
-    if (memLeft <= 0) {
-      clearInterval(gameState.memInterval);
-      document.getElementById('memorize-state').style.display = 'none';
-      document.getElementById('playing-state').style.display = '';
-      gameState.phase = 'playing'; playBeep(880); startTimer();
-    }
-  }, 1000);
-}
-
-function updateMemCircle(left, total, circ, numEl, circumference) {
-  numEl.textContent = left;
-  circ.style.strokeDashoffset = circumference - (left / total) * circumference;
-}
-
-function toggleWordVisibility() {
-  const ph = document.getElementById('word-hidden-placeholder');
-  const vc = document.getElementById('word-visible-content');
-  const btn = document.getElementById('btn-toggle-word');
-  gameState.wordVisible = !gameState.wordVisible;
-  if (gameState.wordVisible) { ph.style.display='none'; vc.style.display=''; btn.textContent='🙈 Ocultar palavra'; }
-  else { ph.style.display='flex'; vc.style.display='none'; btn.textContent='👁️ Mostrar palavra'; }
-}
-
-// ============================================================
-// PICK WORD
-// ============================================================
-function pickWord() {
-  const shuffle = document.getElementById('toggle-shuffle').checked;
-  const bank = wordBank[gameState.difficulty] || {};
-  const allWords = [];
-  Object.entries(bank).forEach(([cat, words]) => words.forEach(w => allWords.push({ word: w, cat })));
-  let available = allWords.filter(w => !gameState.usedWords.includes(w.word));
-  if (available.length === 0) { gameState.usedWords = []; available = allWords; }
-  if (available.length === 0) return { word: '???', cat: 'objects' };
-  const picked = shuffle ? available[Math.floor(Math.random() * available.length)] : available[0];
-  gameState.usedWords.push(picked.word);
-  return picked;
-}
-
-// ============================================================
-// TIMER
-// ============================================================
-function startTimer() {
-  const dur = gameState.timerDur;
-  gameState.timerLeft = dur; gameState.hintShown = false;
-  updateTimerDisplay(dur, dur);
-  clearInterval(gameState.timerInterval);
-  gameState.timerInterval = setInterval(() => {
-    gameState.timerLeft--;
-    updateTimerDisplay(gameState.timerLeft, dur);
-    const elapsed = dur - gameState.timerLeft;
-    if (!gameState.hintShown && elapsed >= Math.floor(dur * 0.75)) {
-      gameState.hintShown = true;
-      const hint = document.getElementById('hint-banner');
-      hint.style.display = '';
-      hint.animate([{opacity:0,transform:'translateY(8px)'},{opacity:1,transform:'translateY(0)'}],{duration:400,fill:'forwards'});
-      playBeep(523);
-    }
-    if (document.getElementById('toggle-sound').checked && gameState.timerLeft <= 10 && gameState.timerLeft > 0)
-      playBeep(gameState.timerLeft <= 3 ? 880 : 440);
-    if (gameState.timerLeft <= 0) { clearInterval(gameState.timerInterval); markResult(false, true); }
-  }, 1000);
-}
-
-function updateTimerDisplay(left, total) {
-  document.getElementById('timer-num').textContent = left;
-  const circ = document.getElementById('timerCircle');
-  circ.style.strokeDashoffset = 427.3 - (left / total) * 427.3;
-  circ.style.stroke = left > total * 0.5 ? '#ffd93d' : left > total * 0.25 ? '#ff8e53' : '#ff4757';
-}
-
-function updateTimerLabel(val) {
-  document.getElementById('timer-val').textContent = val + 's';
-  gameState.timerDur = parseInt(val);
-}
-
-function playBeep(freq=440) {
-  try {
-    const ctx = new (window.AudioContext||window.webkitAudioContext)();
-    const osc = ctx.createOscillator(), gain = ctx.createGain();
-    osc.connect(gain); gain.connect(ctx.destination);
-    osc.frequency.value = freq;
-    gain.gain.setValueAtTime(0.1, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
-    osc.start(); osc.stop(ctx.currentTime + 0.2);
-  } catch(e) {}
-}
-
-// ============================================================
-// RESULT
-// ============================================================
-function markResult(correct, timeUp=false) {
-  clearInterval(gameState.timerInterval); clearInterval(gameState.memInterval);
-  document.getElementById('memorize-state').style.display = 'none';
-  const player = gameState.players[gameState.currentPlayerIdx];
-  const pName = player.name||player;
-  const emoji = document.getElementById('resultEmoji');
-  const title = document.getElementById('resultTitle');
-  const sub   = document.getElementById('resultSub');
-
-  if (correct) {
-    if (gameState.mode === 'teams') {
-      gameState.scores['team'+player.team] = (gameState.scores['team'+player.team]||0) + 10;
-      gameState.scores[pName] = (gameState.scores[pName]||0) + 10;
-    } else { gameState.scores[pName] = (gameState.scores[pName]||0) + 10; }
-    emoji.textContent='🎉'; title.textContent='Acertou!'; title.style.color='#6bcb77';
-    sub.textContent = gameState.mode==='teams'
-      ? `+10 pontos para o Time ${player.team==='A'?'A 🔴':'B 🔵'}`
-      : `+10 pontos para ${pName}!`;
-    launchConfetti(); playBeep(523);
-  } else {
-    if (document.getElementById('toggle-penalty').checked && !timeUp) {
-      if (gameState.mode === 'teams') {
-        gameState.scores['team'+player.team] = Math.max(0,(gameState.scores['team'+player.team]||0)-10);
-        gameState.scores[pName] = Math.max(0,(gameState.scores[pName]||0)-10);
-      } else { gameState.scores[pName] = Math.max(0,(gameState.scores[pName]||0)-10); }
-      sub.textContent = '-10 pontos (penalidade por skip)';
-    } else { sub.textContent = timeUp ? 'O tempo acabou! Sem pontos.' : 'Palavra pulada. Sem pontos.'; }
-    emoji.textContent = timeUp ? '⏰' : '😅';
-    title.textContent = timeUp ? 'Tempo esgotado!' : 'Errou!';
-    title.style.color = '#ff6b6b';
-  }
-  document.getElementById('resultOverlay').classList.add('show');
-}
-
-function nextTurn() {
-  document.getElementById('resultOverlay').classList.remove('show');
-  gameState.turnsDone++;
-  if (gameState.turnsDone >= gameState.totalTurns) { showFinalScore(); return; }
-  gameState.currentPlayerIdx = (gameState.currentPlayerIdx + 1) % gameState.players.length;
-  if (gameState.currentPlayerIdx === 0) { gameState.currentRound++; showMidScore(); }
-  else initTurn();
-}
-
-// ============================================================
-// SCOREBOARDS
-// ============================================================
-function renderScoreMini() {
-  const cont = document.getElementById('score-mini'); cont.innerHTML = '';
-  if (gameState.mode === 'teams') {
-    ['A','B'].forEach(t => {
-      const color = t==='A'?'var(--team1)':'var(--team2)';
-      const el = document.createElement('div');
-      el.style.cssText = `background:${color}22;border:1px solid ${color}44;border-radius:12px;padding:8px 14px;display:flex;align-items:center;gap:8px;white-space:nowrap`;
-      el.innerHTML = `<span style="font-weight:800;color:${color}">Time ${t}</span><span style="font-family:'Fredoka One',cursive;font-size:1.2rem;color:${color}">${gameState.scores['team'+t]||0}</span>`;
-      cont.appendChild(el);
-    });
-  } else {
-    gameState.players.forEach(p => {
-      const n=p.name||p;
-      const el = document.createElement('div');
-      el.style.cssText = `background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:8px 14px;display:flex;align-items:center;gap:8px;white-space:nowrap`;
-      el.innerHTML = `<span style="font-weight:800;font-size:0.85rem">${n}</span><span style="font-family:'Fredoka One',cursive;font-size:1.2rem;color:var(--accent2)">${gameState.scores[n]||0}</span>`;
-      cont.appendChild(el);
-    });
-  }
-}
-
-function renderFullScoreboard(isFinal=false) {
-  const cont = document.getElementById(isFinal?'final-scoreboard':'scoreboard-list'); cont.innerHTML = '';
-  let entries = [];
-  if (gameState.mode==='teams') {
-    entries = [{name:'🔴 Time A',pts:gameState.scores.teamA||0,team:'A'},{name:'🔵 Time B',pts:gameState.scores.teamB||0,team:'B'}];
-  } else {
-    entries = gameState.players.map(p=>({name:p.name||p,pts:gameState.scores[p.name||p]||0}));
-  }
-  entries.sort((a,b)=>b.pts-a.pts);
-  const ranks=['🥇','🥈','🥉'];
-  entries.forEach((e,i)=>{
-    const div=document.createElement('div');
-    div.className='score-row'+(i===0?' first':i===1?' second':i===2?' third':'');
-    const color=e.team==='A'?'var(--team1)':e.team==='B'?'var(--team2)':'';
-    div.innerHTML=`<div class="rank-badge">${ranks[i]||(i+1)}</div><div class="score-name" style="flex:1;${color?'color:'+color:''}">${e.name}</div><div class="score-pts">${e.pts} <span style="font-size:0.8rem;color:var(--text3)">pts</span></div>`;
-    cont.appendChild(div);
-  });
-}
-
-function showMidScore() {
-  goTo('score'); renderFullScoreboard(false);
-  const roundDone = gameState.currentRound - 1;
-  const remaining = gameState.totalRounds - roundDone;
-  document.getElementById('score-subtitle').textContent = `Fim da Rodada ${roundDone} — ${remaining} rodada${remaining!==1?'s':''} restante${remaining!==1?'s':''}!`;
-  document.getElementById('next-round-info').textContent = `Rodada ${gameState.currentRound} de ${gameState.totalRounds}`;
-}
-
-function continueGame() { goTo('game'); initTurn(); }
-
-function showFinalScore() {
-  goTo('final'); renderFullScoreboard(true);
-  let winner = '';
-  if (gameState.mode==='teams') {
-    const a=gameState.scores.teamA||0, b=gameState.scores.teamB||0;
-    if (a>b) winner='🔴 Time A'; else if (b>a) winner='🔵 Time B'; else winner='EMPATE!';
-    document.getElementById('final-trophy').textContent = (a===b)?'🤝':'🏆';
-  } else {
-    const sorted=gameState.players.map(p=>({name:p.name||p,pts:gameState.scores[p.name||p]||0})).sort((a,b)=>b.pts-a.pts);
-    winner=sorted[0].name;
-    const isTie=sorted.length>1&&sorted[0].pts===sorted[1].pts;
-    if(isTie){winner='EMPATE!';document.getElementById('final-trophy').textContent='🤝';}
-    else document.getElementById('final-trophy').textContent='🏆';
-  }
-  document.getElementById('final-winner').textContent = winner;
-  launchConfetti(80);
-}
-
-// ============================================================
-// WORD BANK
-// ============================================================
-let wbDiff = 'easy';
-let wbCat  = 'all';
-
-function syncWBDiffUI() {
-  ['easy','normal','hard'].forEach(d =>
-    document.getElementById('wb-diff-' + d).classList.toggle('selected', d === wbDiff)
-  );
-  const labels = { easy:'🌱 Fácil', normal:'⚡ Normal', hard:'🔥 Difícil' };
-  document.getElementById('wb-diff-label').textContent = labels[wbDiff];
-}
-
-function syncWBCatUI() {
-  ['all','objects','actions','animals'].forEach(t =>
-    document.getElementById('tab-' + t)?.classList.toggle('active', t === wbCat)
-  );
-}
-
-function switchWBDiff(diff) { wbDiff = diff; syncWBDiffUI(); renderWordBank(); }
-
-function switchWordTab(tab) { wbCat = tab; syncWBCatUI(); renderWordBank(); }
-
-function renderWordBank() {
-  const cont = document.getElementById('words-list'); cont.innerHTML = '';
-  let count = 0;
-  const bank = wordBank[wbDiff] || {};
-  const cats = wbCat === 'all' ? ['objects','actions','animals'] : [wbCat];
-  const catIcon = { objects:'🧸', actions:'🏃', animals:'🐾' };
-  cats.forEach(cat => {
-    (bank[cat]||[]).forEach(word => {
-      count++;
-      const tag = document.createElement('span'); tag.className = 'word-tag';
-      const idx = (wordBank[wbDiff][cat]||[]).indexOf(word);
-      tag.innerHTML = `${catIcon[cat]||''} ${word} <span class="del-btn" onclick="removeWord('${cat}',${idx})">✕</span>`;
-      cont.appendChild(tag);
-    });
-  });
-  document.getElementById('word-count').textContent = count;
-}
-
-function addWord() {
-  const inp = document.getElementById('inp-new-word');
-  const cat = document.getElementById('inp-word-cat').value;
-  const word = inp.value.trim(); if (!word) return;
-  if (!wordBank[wbDiff]) wordBank[wbDiff] = {};
-  if (!wordBank[wbDiff][cat]) wordBank[wbDiff][cat] = [];
-  if (wordBank[wbDiff][cat].includes(word)) { showNotif('⚠️ Palavra já existe!','var(--accent2)','#333'); return; }
-  wordBank[wbDiff][cat].push(word);
-  saveWords(); inp.value = ''; renderWordBank();
-  const labels = { easy:'🌱 Fácil', normal:'⚡ Normal', hard:'🔥 Difícil' };
-  showNotif(`✅ "${word}" adicionada (${labels[wbDiff]})!`);
-}
-
-function removeWord(cat, idx) {
-  if (!wordBank[wbDiff]?.[cat]) return;
-  wordBank[wbDiff][cat].splice(idx, 1);
-  saveWords(); renderWordBank();
-}
-
-function resetWords() {
-  if (confirm('Restaurar o banco de palavras padrão? Palavras customizadas serão perdidas.')) {
-    wordBank = JSON.parse(JSON.stringify(DEFAULT_WORDS));
-    saveWords(); renderWordBank(); showNotif('✅ Banco restaurado!');
-  }
-}
-
-function saveWords() { localStorage.setItem('mm_words_v2', JSON.stringify(wordBank)); }
-
-// ============================================================
-// CONFETTI
-// ============================================================
-function launchConfetti(count=40) {
-  const colors=['#ff6b6b','#ffd93d','#6bcb77','#4d96ff','#c77dff','#ff8e53'];
-  for(let i=0;i<count;i++){
-    const el=document.createElement('div'); el.className='confetti-piece';
-    el.style.cssText=`left:${Math.random()*100}vw;top:-10px;background:${colors[Math.floor(Math.random()*colors.length)]};border-radius:${Math.random()>0.5?'50%':'2px'};--dur:${(Math.random()*1.5+1.5).toFixed(1)}s;--del2:${(Math.random()*1).toFixed(2)}s;`;
-    document.body.appendChild(el); setTimeout(()=>el.remove(),4000);
-  }
-}
-
-// ============================================================
-// RESTART
-// ============================================================
-function confirmRestart() {
-  if (confirm('Reiniciar o jogo? Todo o progresso será perdido.')) {
-    clearInterval(gameState.timerInterval); clearInterval(gameState.memInterval);
-    document.getElementById('resultOverlay').classList.remove('show');
-    const prevDiff = gameState.difficulty;
-    gameState = {
-      mode:'teams', difficulty:prevDiff,
-      teams:{A:[],B:[]}, players:[],
-      scores:{}, currentPlayerIdx:0, currentRound:1, totalRounds:3,
-      currentWord:null, usedWords:[],
-      timerDur:parseInt(document.getElementById('timer-slider').value)||60,
-      timerInterval:null, memInterval:null,
-      timerLeft:60, hintShown:false, wordVisible:false,
-      phase:'preparing', totalTurns:0, turnsDone:0
+  <script>
+    // ============================================================
+    // DEFAULT WORD BANK — keyed by difficulty → category
+    // ============================================================
+    const DEFAULT_WORDS = {
+      easy: {
+        objects: [
+          'Bola', 'Copo', 'Chapéu', 'Sapato', 'Livro', 'Cadeira', 'Mesa', 'Cama', 'Porta', 'Janela',
+          'Lápis', 'Borracha', 'Mochila', 'Óculos', 'Guarda-chuva', 'Telefone', 'Espelho', 'Escova', 'Pente', 'Tesoura',
+          'Chave', 'Garfo', 'Colher', 'Prato', 'Garrafa', 'Almofada', 'Cobertor', 'Toalha', 'Sabão', 'Balão',
+          'Boneca', 'Carrinho', 'Pipoca', 'Sorvete', 'Bolo', 'Maçã', 'Banana', 'Uva', 'Flor', 'Árvore',
+          'Sol', 'Lua', 'Estrela', 'Nuvem', 'Chuva', 'Guarda-roupa', 'Armário', 'Geladeira', 'Fogão', 'Televisão'
+        ],
+        actions: [
+          'Correr', 'Pular', 'Dormir', 'Comer', 'Beber', 'Rir', 'Chorar', 'Dançar', 'Cantar', 'Nadar',
+          'Voar', 'Andar', 'Sentar', 'Levantar', 'Abraçar', 'Brincar', 'Desenhar', 'Pintar', 'Ler', 'Escrever',
+          'Ouvir', 'Gritar', 'Soprar', 'Respirar', 'Tossir', 'Espirrar', 'Bocejar', 'Aplaudir', 'Acenar', 'Apontar',
+          'Pegar', 'Jogar', 'Chutar', 'Empurrar', 'Puxar', 'Abrir', 'Fechar', 'Lavar mãos', 'Escovar dentes', 'Pentear',
+          'Calçar sapato', 'Tirar sapato', 'Ligar TV', 'Apagar luz', 'Bater palma', 'Girar', 'Rolar', 'Beijar', 'Sorrir', 'Pensar'
+        ],
+        animals: [
+          'Cachorro', 'Gato', 'Peixe', 'Passarinho', 'Coelho', 'Galinha', 'Vaca', 'Cavalo', 'Porco', 'Ovelha',
+          'Pato', 'Sapo', 'Borboleta', 'Formiga', 'Abelha', 'Aranha', 'Minhoca', 'Lesma', 'Caracol', 'Lagarta',
+          'Elefante', 'Leão', 'Girafa', 'Macaco', 'Zebra', 'Hipopótamo', 'Crocodilo', 'Tartaruga', 'Pinguim', 'Urso',
+          'Lobo', 'Raposa', 'Veado', 'Esquilo', 'Rato', 'Hamster', 'Iguana', 'Papagaio', 'Tucano', 'Flamingo',
+          'Pelicano', 'Canguru', 'Koala', 'Panda', 'Golfinho', 'Baleia', 'Polvo', 'Caranguejo', 'Camarão', 'Estrela-do-mar'
+        ]
+      },
+      normal: {
+        objects: [
+          'Computador', 'Teclado', 'Rádio', 'Máquina de lavar', 'Aspirador', 'Liquidificador', 'Batedeira', 'Cafeteira', 'Sofá', 'Estante',
+          'Ventilador', 'Ar-condicionado', 'Micro-ondas', 'Forno', 'Pia', 'Banheira', 'Chuveiro', 'Mala', 'Lanterna', 'Binóculo',
+          'Câmera', 'Relógio', 'Calculadora', 'Termômetro', 'Balança', 'Bússola', 'Violão', 'Piano', 'Tambor', 'Flauta',
+          'Sanfona', 'Trompete', 'Violino', 'Gaita', 'Xilofone', 'Raquete', 'Skate', 'Patins', 'Luva de boxe', 'Capacete',
+          'Colete', 'Cinto', 'Gravata', 'Bolsa', 'Guarda-chuva', 'Bengala', 'Muleta', 'Cadeira de rodas', 'Óculos de sol', 'Boné'
+        ],
+        actions: [
+          'Cozinhar', 'Dirigir', 'Pedalar', 'Pescar', 'Mergulhar', 'Escalar', 'Acampar', 'Fazer ioga', 'Meditar', 'Fotografar',
+          'Filmar', 'Pintar quadro', 'Esculpir', 'Tricotar', 'Costurar', 'Bordar', 'Jardinagem', 'Regar planta', 'Podar árvore', 'Varrer',
+          'Limpar janela', 'Passar roupa', 'Dobrar roupa', 'Fazer cama', 'Lavar louça', 'Secar louça', 'Descascar fruta', 'Ralar queijo', 'Amassar pão', 'Remar',
+          'Surfar', 'Esquiar', 'Patinar', 'Driblar', 'Arremessar', 'Defender gol', 'Servir tênis', 'Fazer ginástica', 'Aplaudir', 'Discursar',
+          'Entrevistar', 'Escalar parede', 'Fazer mágica', 'Equilibrar', 'Malabarismo', 'Digitar', 'Telefonar', 'Tirar selfie', 'Pagar conta', 'Fazer fila'
+        ],
+        animals: [
+          'Águia', 'Falcão', 'Coruja', 'Morcego', 'Camelo', 'Lhama', 'Alpaca', 'Bisão', 'Alce', 'Coyote',
+          'Guepardo', 'Leopardo', 'Jaguar', 'Puma', 'Rinoceronte', 'Anaconda', 'Ornitorrinco', 'Dingo', 'Cacatua', 'Emu',
+          'Orca', 'Tubarão', 'Arraia', 'Lula', 'Cavalo-marinho', 'Ouriço-do-mar', 'Arara', 'Pavão', 'Avestruz', 'Casuar',
+          'Albatroz', 'Cegonha', 'Pelicano', 'Íbis', 'Garça', 'Lontra', 'Foca', 'Morsa', 'Leão-marinho', 'Dugongo',
+          'Cabra-da-montanha', 'Íbex', 'Antílope', 'Gnu', 'Búfalo', 'Javali', 'Texugo', 'Guaxinim', 'Furão', 'Musaranho'
+        ]
+      },
+      hard: {
+        objects: [
+          'Estetoscópio', 'Bisturi', 'Microscópio', 'Telescópio', 'Sextante', 'Astrolábio', 'Cronômetro', 'Metrônomo', 'Afinador', 'Desfibrilador',
+          'Catapulta', 'Periscópio', 'Destilador', 'Centrífuga', 'Incubadora', 'Autoclave', 'Espectrômetro', 'Cromatógrafo', 'Calorômetro', 'Potenciômetro',
+          'Fisga', 'Arpão', 'Bumerangue', 'Arco e flecha', 'Besta', 'Lança', 'Maça', 'Machado', 'Foice', 'Tridente',
+          'Sanduicheira', 'Desidratador', 'Fermentador', 'Slow cooker', 'Wok', 'Tagine', 'Fondue', 'Churrasqueira', 'Defumador', 'Alambique',
+          'Teodolito', 'Altímetro', 'Barômetro', 'Higrômetro', 'Anemômetro', 'Pluviômetro', 'Sismógrafo', 'Gerador', 'Transformador', 'Osciloscópio'
+        ],
+        actions: [
+          'Equilibrar na corda bamba', 'Engolir fogo', 'Escapar de camisa de força', 'Quebrar tijolos com a mão', 'Andar sobre brasas',
+          'Ler braille', 'Fazer sinalização de mergulho', 'Comunicar em libras', 'Código morse', 'Tocar instrumento com os pés',
+          'Extrair dente', 'Fazer cirurgia', 'Ressuscitar', 'Imobilizar fratura', 'Aplicar torniquete',
+          'Fazer esgrima', 'Praticar tai chi', 'Golpe de caratê', 'Arremesso de martelo', 'Lançamento de dardo olímpico',
+          'Arar terra', 'Ordenhar vaca', 'Tosquiar ovelha', 'Ferrar cavalo', 'Domar boi',
+          'Tecer no tear', 'Soprar vidro', 'Forjar metal', 'Moldar cerâmica no torno', 'Restaurar quadro',
+          'Decolar avião', 'Pousar helicóptero', 'Navegar barco a vela', 'Operar guindaste', 'Conduzir trem',
+          'Fazer rapel', 'Alpinismo em rocha', 'Tirolesa', 'Escalada livre', 'Slackline',
+          'Desativar bomba', 'Negociar reféns', 'Paraquedismo', 'Corrida de obstáculos', 'Levantamento de peso olímpico'
+        ],
+        animals: [
+          'Axolote', 'Tarsídeo', 'Fossa', 'Quokka', 'Numbat', 'Kakapo', 'Tuátara', 'Okapi', 'Takin', 'Saiga',
+          'Dugongo', 'Manatim', 'Narval', 'Beluga', 'Cachalote', 'Rorcual', 'Jubarte', 'Boto', 'Toninha', 'Franciscana',
+          'Escorpião', 'Tarântula', 'Mamba-negra', 'Taipan', 'Cobra-de-coral', 'Viperão', 'Cascavel', 'Boomslang', 'Lula-gigante', 'Polvo-de-anéis-azuis',
+          'Baiacu', 'Peixe-pedra', 'Peixe-leão', 'Cone-do-mar', 'Medusa-da-caixa', 'Vespa-asiática', 'Besouro-bombardeiro', 'Mosquito-tigre', 'Formiga-bala', 'Lagarta-de-fogo',
+          'Pangolim', 'Aye-aye', 'Loris-lento', 'Tatu-bola', 'Tatu-gigante', 'Tamanduá-bandeira', 'Preguiça-de-três-dedos', 'Ouriço-pigmeu', 'Musaranho-elefante', 'Marta-pinheira'
+        ]
+      }
     };
-    selectMode('teams'); selectDifficulty(prevDiff);
-    goTo('setup'); renderSetupPlayers();
-  }
-}
 
-// ============================================================
-// INIT
-// ============================================================
-selectMode('teams');
-selectDifficulty('easy');
-updateTimerLabel(60);
-</script>
+    let wordBank = JSON.parse(localStorage.getItem('mm_words_v2') || 'null') || JSON.parse(JSON.stringify(DEFAULT_WORDS));
+
+    let gameState = {
+      mode: 'teams', difficulty: 'easy',
+      teams: { A: [], B: [] }, players: [],
+      scores: {}, currentPlayerIdx: 0,
+      currentRound: 1, totalRounds: 3,
+      currentWord: null, usedWords: [],
+      timerDur: 60, timerInterval: null, memInterval: null,
+      timerLeft: 60, hintShown: false, wordVisible: false,
+      phase: 'preparing', totalTurns: 0, turnsDone: 0
+    };
+
+    // ============================================================
+    // STARS
+    // ============================================================
+    (function () {
+      const c = document.getElementById('stars');
+      for (let i = 0; i < 60; i++) {
+        const s = document.createElement('div'); s.className = 'star';
+        const sz = Math.random() * 2.5 + 0.5;
+        s.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random() * 100}%;top:${Math.random() * 100}%;--d:${(Math.random() * 4 + 2).toFixed(1)}s;--del:${(Math.random() * 4).toFixed(1)}s;--op:${(Math.random() * 0.5 + 0.3).toFixed(2)}`;
+        c.appendChild(s);
+      }
+    })();
+
+    // ============================================================
+    // NAVIGATION
+    // ============================================================
+    function goTo(screen) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById('screen-' + screen).classList.add('active');
+      if (screen === 'wordbank') { wbDiff = 'easy'; wbCat = 'all'; syncWBDiffUI(); syncWBCatUI(); renderWordBank(); }
+      if (screen === 'setup') { renderSetupPlayers(); updateDiffWordCount(); }
+    }
+
+    // ============================================================
+    // NOTIFICATIONS
+    // ============================================================
+    function showNotif(msg, color = 'var(--accent3)', textColor = '#0d4f17') {
+      const el = document.getElementById('notif');
+      el.textContent = msg; el.style.background = color; el.style.color = textColor;
+      el.classList.add('show'); setTimeout(() => el.classList.remove('show'), 2400);
+    }
+
+    // ============================================================
+    // DIFFICULTY (SETUP)
+    // ============================================================
+    const DIFF_META = {
+      easy: { label: '🌱 Fácil', color: 'var(--diff-easy)' },
+      normal: { label: '⚡ Normal', color: 'var(--diff-normal)' },
+      hard: { label: '🔥 Difícil', color: 'var(--diff-hard)' }
+    };
+
+    function selectDifficulty(diff) {
+      gameState.difficulty = diff;
+      ['easy', 'normal', 'hard'].forEach(d =>
+        document.getElementById('diff-' + d).classList.toggle('selected', d === diff)
+      );
+      updateDiffWordCount();
+    }
+
+    function updateDiffWordCount() {
+      const bank = wordBank[gameState.difficulty] || {};
+      let total = 0; Object.values(bank).forEach(arr => total += arr.length);
+      document.getElementById('diff-word-count').textContent =
+        `${DIFF_META[gameState.difficulty].label} · ${total} palavras disponíveis`;
+    }
+
+    // ============================================================
+    // MODE
+    // ============================================================
+    function selectMode(mode) {
+      gameState.mode = mode;
+      document.getElementById('mode-teams').classList.toggle('selected', mode === 'teams');
+      document.getElementById('mode-ffa').classList.toggle('selected', mode === 'ffa');
+      document.getElementById('step-teams').style.display = mode === 'teams' ? '' : 'none';
+      document.getElementById('step-ffa').style.display = mode === 'ffa' ? '' : 'none';
+    }
+
+    // ============================================================
+    // PLAYERS
+    // ============================================================
+    function renderSetupPlayers() { renderTeamPlayers(); renderFFAPlayers(); }
+
+    function renderTeamPlayers() {
+      ['A', 'B'].forEach(t => {
+        const cont = document.getElementById('team-' + t.toLowerCase() + '-players'); cont.innerHTML = '';
+        (gameState.teams[t] || []).forEach((p, i) => {
+          const color = t === 'A' ? 'var(--team1)' : 'var(--team2)';
+          const el = document.createElement('div'); el.className = 'player-row';
+          el.innerHTML = `<div class="player-avatar" style="background:${color}22;color:${color}">${p[0].toUpperCase()}</div><div style="flex:1;font-weight:800">${p}</div><button class="btn btn-ghost btn-sm" onclick="removeTeamPlayer('${t}',${i})">✕</button>`;
+          cont.appendChild(el);
+        });
+      });
+    }
+
+    function addTeamPlayer(team) {
+      const inp = document.getElementById('inp-team-' + team.toLowerCase());
+      const name = inp.value.trim(); if (!name) return;
+      const total = (gameState.teams.A || []).length + (gameState.teams.B || []).length;
+      if (total >= 6) { showNotif('❌ Máximo 6 jogadores!', 'var(--accent1)', 'white'); return; }
+      if ((gameState.teams[team] || []).length >= 3) { showNotif('❌ Máximo 3 por time!', 'var(--accent1)', 'white'); return; }
+      if (!gameState.teams[team]) gameState.teams[team] = [];
+      gameState.teams[team].push(name); inp.value = ''; renderTeamPlayers();
+      showNotif(`✅ ${name} no Time ${team}!`);
+    }
+
+    function removeTeamPlayer(team, idx) { gameState.teams[team].splice(idx, 1); renderTeamPlayers(); }
+
+    function renderFFAPlayers() {
+      const cont = document.getElementById('ffa-players'); cont.innerHTML = '';
+      (gameState.players || []).forEach((p, i) => {
+        const n = p.name || p;
+        const el = document.createElement('div'); el.className = 'player-row';
+        el.innerHTML = `<div class="player-avatar" style="background:rgba(255,255,255,0.08);color:white">${n[0].toUpperCase()}</div><div style="flex:1;font-weight:800">${n}</div><button class="btn btn-ghost btn-sm" onclick="removeFFAPlayer(${i})">✕</button>`;
+        cont.appendChild(el);
+      });
+    }
+
+    function addFFAPlayer() {
+      const inp = document.getElementById('inp-ffa');
+      const name = inp.value.trim(); if (!name) return;
+      if (!gameState.players) gameState.players = [];
+      if (gameState.players.length >= 6) { showNotif('❌ Máximo 6 jogadores!', 'var(--accent1)', 'white'); return; }
+      gameState.players.push(name); inp.value = ''; renderFFAPlayers();
+      showNotif(`✅ ${name} entrou!`);
+    }
+
+    function removeFFAPlayer(idx) { gameState.players.splice(idx, 1); renderFFAPlayers(); }
+
+    // ============================================================
+    // START GAME
+    // ============================================================
+    function startGame() {
+      const rounds = parseInt(document.getElementById('rounds-slider').value);
+      gameState.totalRounds = rounds;
+      gameState.timerDur = parseInt(document.getElementById('timer-slider').value) || 60;
+
+      if (gameState.mode === 'teams') {
+        const a = gameState.teams.A || [], b = gameState.teams.B || [];
+        if (a.length < 1 || b.length < 1) { showNotif('❌ Mínimo 1 por time!', 'var(--accent1)', 'white'); return; }
+        gameState.players = [];
+        const maxLen = Math.max(a.length, b.length);
+        for (let i = 0; i < maxLen; i++) {
+          if (i < a.length) gameState.players.push({ name: a[i], team: 'A' });
+          if (i < b.length) gameState.players.push({ name: b[i], team: 'B' });
+        }
+        gameState.scores = { teamA: 0, teamB: 0 };
+        a.forEach(p => gameState.scores[p] = 0);
+        b.forEach(p => gameState.scores[p] = 0);
+      } else {
+        if (!gameState.players || gameState.players.length < 3) { showNotif('❌ Mínimo 3 jogadores!', 'var(--accent1)', 'white'); return; }
+        const players = [...gameState.players];
+        gameState.players = players.map(p => ({ name: p.name || p, team: null }));
+        gameState.scores = {};
+        players.forEach(p => gameState.scores[p.name || p] = 0);
+      }
+
+      gameState.currentPlayerIdx = 0; gameState.currentRound = 1;
+      gameState.usedWords = []; gameState.turnsDone = 0;
+      gameState.totalTurns = gameState.players.length * rounds;
+      initTurn(); goTo('game');
+    }
+
+    // ============================================================
+    // TURN
+    // ============================================================
+    function initTurn() {
+      gameState.phase = 'preparing';
+      const player = gameState.players[gameState.currentPlayerIdx];
+      const roundNum = Math.floor(gameState.turnsDone / gameState.players.length) + 1;
+      document.getElementById('round-display').textContent = `Rodada ${roundNum} de ${gameState.totalRounds}`;
+      document.getElementById('current-player-name').textContent = player.name || player;
+      const badge = document.getElementById('current-team-badge');
+      if (player.team) {
+        const color = player.team === 'A' ? 'var(--team1)' : 'var(--team2)';
+        badge.innerHTML = `<span class="team-badge" style="background:${color}22;color:${color}">Time ${player.team === 'A' ? 'A 🔴' : 'B 🔵'}</span>`;
+      } else badge.innerHTML = '';
+      document.getElementById('preparing-state').style.display = '';
+      document.getElementById('memorize-state').style.display = 'none';
+      document.getElementById('playing-state').style.display = 'none';
+      renderScoreMini();
+    }
+
+    // ============================================================
+    // REVEAL + MEMORIZE
+    // ============================================================
+    function revealWord() {
+      gameState.phase = 'memorizing';
+      gameState.currentWord = pickWord();
+      const catLabels = { objects: '🧸 Objeto', actions: '🏃 Ação', animals: '🐾 Animal' };
+      document.getElementById('mem-word-display').textContent = gameState.currentWord.word;
+      document.getElementById('hint-text').textContent = catLabels[gameState.currentWord.cat] || 'Palavra';
+      document.getElementById('hint-banner').style.display = 'none';
+      document.getElementById('word-display').textContent = gameState.currentWord.word;
+      document.getElementById('word-hidden-placeholder').style.display = 'flex';
+      document.getElementById('word-visible-content').style.display = 'none';
+      document.getElementById('btn-toggle-word').textContent = '👁️ Mostrar palavra';
+      gameState.wordVisible = false;
+
+      document.getElementById('preparing-state').style.display = 'none';
+      document.getElementById('memorize-state').style.display = '';
+      document.getElementById('playing-state').style.display = 'none';
+
+      let memLeft = 5;
+      const mc = document.getElementById('memCircle'), mn = document.getElementById('mem-num');
+      updateMemCircle(memLeft, 5, mc, mn, 213.6); playBeep(600);
+      gameState.memInterval = setInterval(() => {
+        memLeft--;
+        updateMemCircle(memLeft, 5, mc, mn, 213.6);
+        if (memLeft > 0) playBeep(memLeft <= 2 ? 700 : 500);
+        if (memLeft <= 0) {
+          clearInterval(gameState.memInterval);
+          document.getElementById('memorize-state').style.display = 'none';
+          document.getElementById('playing-state').style.display = '';
+          gameState.phase = 'playing'; playBeep(880); startTimer();
+        }
+      }, 1000);
+    }
+
+    function updateMemCircle(left, total, circ, numEl, circumference) {
+      numEl.textContent = left;
+      circ.style.strokeDashoffset = circumference - (left / total) * circumference;
+    }
+
+    function toggleWordVisibility() {
+      const ph = document.getElementById('word-hidden-placeholder');
+      const vc = document.getElementById('word-visible-content');
+      const btn = document.getElementById('btn-toggle-word');
+      gameState.wordVisible = !gameState.wordVisible;
+      if (gameState.wordVisible) { ph.style.display = 'none'; vc.style.display = ''; btn.textContent = '🙈 Ocultar palavra'; }
+      else { ph.style.display = 'flex'; vc.style.display = 'none'; btn.textContent = '👁️ Mostrar palavra'; }
+    }
+
+    // ============================================================
+    // PICK WORD
+    // ============================================================
+    function pickWord() {
+      const shuffle = document.getElementById('toggle-shuffle').checked;
+      const bank = wordBank[gameState.difficulty] || {};
+      const allWords = [];
+      Object.entries(bank).forEach(([cat, words]) => words.forEach(w => allWords.push({ word: w, cat })));
+      let available = allWords.filter(w => !gameState.usedWords.includes(w.word));
+      if (available.length === 0) { gameState.usedWords = []; available = allWords; }
+      if (available.length === 0) return { word: '???', cat: 'objects' };
+      const picked = shuffle ? available[Math.floor(Math.random() * available.length)] : available[0];
+      gameState.usedWords.push(picked.word);
+      return picked;
+    }
+
+    // ============================================================
+    // TIMER
+    // ============================================================
+    function startTimer() {
+      const dur = gameState.timerDur;
+      gameState.timerLeft = dur; gameState.hintShown = false;
+      updateTimerDisplay(dur, dur);
+      clearInterval(gameState.timerInterval);
+      gameState.timerInterval = setInterval(() => {
+        gameState.timerLeft--;
+        updateTimerDisplay(gameState.timerLeft, dur);
+        const elapsed = dur - gameState.timerLeft;
+        if (!gameState.hintShown && elapsed >= Math.floor(dur * 0.75)) {
+          gameState.hintShown = true;
+          const hint = document.getElementById('hint-banner');
+          hint.style.display = '';
+          hint.animate([{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 400, fill: 'forwards' });
+          playBeep(523);
+        }
+        if (document.getElementById('toggle-sound').checked && gameState.timerLeft <= 10 && gameState.timerLeft > 0)
+          playBeep(gameState.timerLeft <= 3 ? 880 : 440);
+        if (gameState.timerLeft <= 0) { clearInterval(gameState.timerInterval); markResult(false, true); }
+      }, 1000);
+    }
+
+    function updateTimerDisplay(left, total) {
+      document.getElementById('timer-num').textContent = left;
+      const circ = document.getElementById('timerCircle');
+      circ.style.strokeDashoffset = 427.3 - (left / total) * 427.3;
+      circ.style.stroke = left > total * 0.5 ? '#ffd93d' : left > total * 0.25 ? '#ff8e53' : '#ff4757';
+    }
+
+    function updateTimerLabel(val) {
+      document.getElementById('timer-val').textContent = val + 's';
+      gameState.timerDur = parseInt(val);
+    }
+
+    function playBeep(freq = 440) {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator(), gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.1, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
+        osc.start(); osc.stop(ctx.currentTime + 0.2);
+      } catch (e) { }
+    }
+
+    // ============================================================
+    // RESULT
+    // ============================================================
+    function markResult(correct, timeUp = false) {
+      clearInterval(gameState.timerInterval); clearInterval(gameState.memInterval);
+      document.getElementById('memorize-state').style.display = 'none';
+      const player = gameState.players[gameState.currentPlayerIdx];
+      const pName = player.name || player;
+      const emoji = document.getElementById('resultEmoji');
+      const title = document.getElementById('resultTitle');
+      const sub = document.getElementById('resultSub');
+
+      if (correct) {
+        if (gameState.mode === 'teams') {
+          gameState.scores['team' + player.team] = (gameState.scores['team' + player.team] || 0) + 10;
+          gameState.scores[pName] = (gameState.scores[pName] || 0) + 10;
+        } else { gameState.scores[pName] = (gameState.scores[pName] || 0) + 10; }
+        emoji.textContent = '🎉'; title.textContent = 'Acertou!'; title.style.color = '#6bcb77';
+        sub.textContent = gameState.mode === 'teams'
+          ? `+10 pontos para o Time ${player.team === 'A' ? 'A 🔴' : 'B 🔵'}`
+          : `+10 pontos para ${pName}!`;
+        launchConfetti(); playBeep(523);
+      } else {
+        if (document.getElementById('toggle-penalty').checked && !timeUp) {
+          if (gameState.mode === 'teams') {
+            gameState.scores['team' + player.team] = Math.max(0, (gameState.scores['team' + player.team] || 0) - 10);
+            gameState.scores[pName] = Math.max(0, (gameState.scores[pName] || 0) - 10);
+          } else { gameState.scores[pName] = Math.max(0, (gameState.scores[pName] || 0) - 10); }
+          sub.textContent = '-10 pontos (penalidade por skip)';
+        } else { sub.textContent = timeUp ? 'O tempo acabou! Sem pontos.' : 'Palavra pulada. Sem pontos.'; }
+        emoji.textContent = timeUp ? '⏰' : '😅';
+        title.textContent = timeUp ? 'Tempo esgotado!' : 'Errou!';
+        title.style.color = '#ff6b6b';
+      }
+      document.getElementById('resultOverlay').classList.add('show');
+    }
+
+    function nextTurn() {
+      document.getElementById('resultOverlay').classList.remove('show');
+      gameState.turnsDone++;
+      if (gameState.turnsDone >= gameState.totalTurns) { showFinalScore(); return; }
+      gameState.currentPlayerIdx = (gameState.currentPlayerIdx + 1) % gameState.players.length;
+      if (gameState.currentPlayerIdx === 0) { gameState.currentRound++; showMidScore(); }
+      else initTurn();
+    }
+
+    // ============================================================
+    // SCOREBOARDS
+    // ============================================================
+    function renderScoreMini() {
+      const cont = document.getElementById('score-mini'); cont.innerHTML = '';
+      if (gameState.mode === 'teams') {
+        ['A', 'B'].forEach(t => {
+          const color = t === 'A' ? 'var(--team1)' : 'var(--team2)';
+          const el = document.createElement('div');
+          el.style.cssText = `background:${color}22;border:1px solid ${color}44;border-radius:12px;padding:8px 14px;display:flex;align-items:center;gap:8px;white-space:nowrap`;
+          el.innerHTML = `<span style="font-weight:800;color:${color}">Time ${t}</span><span style="font-family:'Fredoka One',cursive;font-size:1.2rem;color:${color}">${gameState.scores['team' + t] || 0}</span>`;
+          cont.appendChild(el);
+        });
+      } else {
+        gameState.players.forEach(p => {
+          const n = p.name || p;
+          const el = document.createElement('div');
+          el.style.cssText = `background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:8px 14px;display:flex;align-items:center;gap:8px;white-space:nowrap`;
+          el.innerHTML = `<span style="font-weight:800;font-size:0.85rem">${n}</span><span style="font-family:'Fredoka One',cursive;font-size:1.2rem;color:var(--accent2)">${gameState.scores[n] || 0}</span>`;
+          cont.appendChild(el);
+        });
+      }
+    }
+
+    function renderFullScoreboard(isFinal = false) {
+      const cont = document.getElementById(isFinal ? 'final-scoreboard' : 'scoreboard-list'); cont.innerHTML = '';
+      let entries = [];
+      if (gameState.mode === 'teams') {
+        entries = [{ name: '🔴 Time A', pts: gameState.scores.teamA || 0, team: 'A' }, { name: '🔵 Time B', pts: gameState.scores.teamB || 0, team: 'B' }];
+      } else {
+        entries = gameState.players.map(p => ({ name: p.name || p, pts: gameState.scores[p.name || p] || 0 }));
+      }
+      entries.sort((a, b) => b.pts - a.pts);
+      const ranks = ['🥇', '🥈', '🥉'];
+      entries.forEach((e, i) => {
+        const div = document.createElement('div');
+        div.className = 'score-row' + (i === 0 ? ' first' : i === 1 ? ' second' : i === 2 ? ' third' : '');
+        const color = e.team === 'A' ? 'var(--team1)' : e.team === 'B' ? 'var(--team2)' : '';
+        div.innerHTML = `<div class="rank-badge">${ranks[i] || (i + 1)}</div><div class="score-name" style="flex:1;${color ? 'color:' + color : ''}">${e.name}</div><div class="score-pts">${e.pts} <span style="font-size:0.8rem;color:var(--text3)">pts</span></div>`;
+        cont.appendChild(div);
+      });
+    }
+
+    function showMidScore() {
+      goTo('score'); renderFullScoreboard(false);
+      const roundDone = gameState.currentRound - 1;
+      const remaining = gameState.totalRounds - roundDone;
+      document.getElementById('score-subtitle').textContent = `Fim da Rodada ${roundDone} — ${remaining} rodada${remaining !== 1 ? 's' : ''} restante${remaining !== 1 ? 's' : ''}!`;
+      document.getElementById('next-round-info').textContent = `Rodada ${gameState.currentRound} de ${gameState.totalRounds}`;
+    }
+
+    function continueGame() { goTo('game'); initTurn(); }
+
+    function showFinalScore() {
+      goTo('final'); renderFullScoreboard(true);
+      let winner = '';
+      if (gameState.mode === 'teams') {
+        const a = gameState.scores.teamA || 0, b = gameState.scores.teamB || 0;
+        if (a > b) winner = '🔴 Time A'; else if (b > a) winner = '🔵 Time B'; else winner = 'EMPATE!';
+        document.getElementById('final-trophy').textContent = (a === b) ? '🤝' : '🏆';
+      } else {
+        const sorted = gameState.players.map(p => ({ name: p.name || p, pts: gameState.scores[p.name || p] || 0 })).sort((a, b) => b.pts - a.pts);
+        winner = sorted[0].name;
+        const isTie = sorted.length > 1 && sorted[0].pts === sorted[1].pts;
+        if (isTie) { winner = 'EMPATE!'; document.getElementById('final-trophy').textContent = '🤝'; }
+        else document.getElementById('final-trophy').textContent = '🏆';
+      }
+      document.getElementById('final-winner').textContent = winner;
+      launchConfetti(80);
+    }
+
+    // ============================================================
+    // WORD BANK
+    // ============================================================
+    let wbDiff = 'easy';
+    let wbCat = 'all';
+
+    function syncWBDiffUI() {
+      ['easy', 'normal', 'hard'].forEach(d =>
+        document.getElementById('wb-diff-' + d).classList.toggle('selected', d === wbDiff)
+      );
+      const labels = { easy: '🌱 Fácil', normal: '⚡ Normal', hard: '🔥 Difícil' };
+      document.getElementById('wb-diff-label').textContent = labels[wbDiff];
+    }
+
+    function syncWBCatUI() {
+      ['all', 'objects', 'actions', 'animals'].forEach(t =>
+        document.getElementById('tab-' + t)?.classList.toggle('active', t === wbCat)
+      );
+    }
+
+    function switchWBDiff(diff) { wbDiff = diff; syncWBDiffUI(); renderWordBank(); }
+
+    function switchWordTab(tab) { wbCat = tab; syncWBCatUI(); renderWordBank(); }
+
+    function renderWordBank() {
+      const cont = document.getElementById('words-list'); cont.innerHTML = '';
+      let count = 0;
+      const bank = wordBank[wbDiff] || {};
+      const cats = wbCat === 'all' ? ['objects', 'actions', 'animals'] : [wbCat];
+      const catIcon = { objects: '🧸', actions: '🏃', animals: '🐾' };
+      cats.forEach(cat => {
+        (bank[cat] || []).forEach(word => {
+          count++;
+          const tag = document.createElement('span'); tag.className = 'word-tag';
+          const idx = (wordBank[wbDiff][cat] || []).indexOf(word);
+          tag.innerHTML = `${catIcon[cat] || ''} ${word} <span class="del-btn" onclick="removeWord('${cat}',${idx})">✕</span>`;
+          cont.appendChild(tag);
+        });
+      });
+      document.getElementById('word-count').textContent = count;
+    }
+
+    function addWord() {
+      const inp = document.getElementById('inp-new-word');
+      const cat = document.getElementById('inp-word-cat').value;
+      const word = inp.value.trim(); if (!word) return;
+      if (!wordBank[wbDiff]) wordBank[wbDiff] = {};
+      if (!wordBank[wbDiff][cat]) wordBank[wbDiff][cat] = [];
+      if (wordBank[wbDiff][cat].includes(word)) { showNotif('⚠️ Palavra já existe!', 'var(--accent2)', '#333'); return; }
+      wordBank[wbDiff][cat].push(word);
+      saveWords(); inp.value = ''; renderWordBank();
+      const labels = { easy: '🌱 Fácil', normal: '⚡ Normal', hard: '🔥 Difícil' };
+      showNotif(`✅ "${word}" adicionada (${labels[wbDiff]})!`);
+    }
+
+    function removeWord(cat, idx) {
+      if (!wordBank[wbDiff]?.[cat]) return;
+      wordBank[wbDiff][cat].splice(idx, 1);
+      saveWords(); renderWordBank();
+    }
+
+    function resetWords() {
+      if (confirm('Restaurar o banco de palavras padrão? Palavras customizadas serão perdidas.')) {
+        wordBank = JSON.parse(JSON.stringify(DEFAULT_WORDS));
+        saveWords(); renderWordBank(); showNotif('✅ Banco restaurado!');
+      }
+    }
+
+    function saveWords() { localStorage.setItem('mm_words_v2', JSON.stringify(wordBank)); }
+
+    // ============================================================
+    // CONFETTI
+    // ============================================================
+    function launchConfetti(count = 40) {
+      const colors = ['#ff6b6b', '#ffd93d', '#6bcb77', '#4d96ff', '#c77dff', '#ff8e53'];
+      for (let i = 0; i < count; i++) {
+        const el = document.createElement('div'); el.className = 'confetti-piece';
+        el.style.cssText = `left:${Math.random() * 100}vw;top:-10px;background:${colors[Math.floor(Math.random() * colors.length)]};border-radius:${Math.random() > 0.5 ? '50%' : '2px'};--dur:${(Math.random() * 1.5 + 1.5).toFixed(1)}s;--del2:${(Math.random() * 1).toFixed(2)}s;`;
+        document.body.appendChild(el); setTimeout(() => el.remove(), 4000);
+      }
+    }
+
+    // ============================================================
+    // RESTART
+    // ============================================================
+    function confirmRestart() {
+      if (confirm('Reiniciar o jogo? Todo o progresso será perdido.')) {
+        clearInterval(gameState.timerInterval); clearInterval(gameState.memInterval);
+        document.getElementById('resultOverlay').classList.remove('show');
+        const prevDiff = gameState.difficulty;
+        gameState = {
+          mode: 'teams', difficulty: prevDiff,
+          teams: { A: [], B: [] }, players: [],
+          scores: {}, currentPlayerIdx: 0, currentRound: 1, totalRounds: 3,
+          currentWord: null, usedWords: [],
+          timerDur: parseInt(document.getElementById('timer-slider').value) || 60,
+          timerInterval: null, memInterval: null,
+          timerLeft: 60, hintShown: false, wordVisible: false,
+          phase: 'preparing', totalTurns: 0, turnsDone: 0
+        };
+        selectMode('teams'); selectDifficulty(prevDiff);
+        goTo('setup'); renderSetupPlayers();
+      }
+    }
+
+    // ============================================================
+    // INIT
+    // ============================================================
+    selectMode('teams');
+    selectDifficulty('easy');
+    updateTimerLabel(60);
+  </script>
 </body>
+
 </html>

@@ -28,8 +28,8 @@
   <!-- ========== HOME ========== -->
   <div class="screen active" id="screen-home">
     <div class="page-shell">
-      <div class="logo">MimiMania</div>
-      <div class="logo-sub">🎭 O jogo da mímica</div>
+      <h1 class="logo">MimiMania</h1>
+      <p class="logo-sub">🎭 O jogo da mímica</p>
       <div class="card mb">
         <div class="flex-col">
           <button class="btn btn-primary btn-lg btn-block" data-nav="setup">🎮 Nova Partida</button>
@@ -38,7 +38,7 @@
         </div>
       </div>
       <div class="card">
-        <div class="card-title">🏆 Como jogar</div>
+        <h2 class="card-title">🏆 Como jogar</h2>
         <div class="how-to-list">
           <div class="media-row media-row-start">
             <div class="emoji-lg emoji-fixed">👤</div>
@@ -69,14 +69,14 @@
   <!-- ========== SETUP ========== -->
   <div class="screen" id="screen-setup">
     <div class="page-shell">
-      <div class="page-header">
+      <header class="page-header">
         <button class="btn btn-ghost btn-sm" data-nav="home">← Voltar</button>
-        <div class="page-title">Nova Partida</div>
-      </div>
+        <h1 class="page-title">Nova Partida</h1>
+      </header>
 
       <!-- STEP 1: MODE -->
       <div class="card mb">
-        <div class="card-title">1️⃣ Modo de Jogo</div>
+        <h2 class="card-title">1️⃣ Modo de Jogo</h2>
         <div class="mode-grid">
           <div class="mode-card selected" id="mode-teams" data-mode="teams">
             <div class="mode-icon">🤝</div>
@@ -93,7 +93,7 @@
 
       <!-- STEP 2: PLAYERS TEAMS -->
       <div class="card mb" id="step-teams">
-        <div class="card-title">2️⃣ Jogadores por Time</div>
+        <h2 class="card-title">2️⃣ Jogadores por Time</h2>
         <input class="inp mb-sm" id="team-name-a" placeholder="Nome do Time A" value="Time A" data-team-name="A">
         <div class="section-head"><span id="team-label-a" class="team-label team-label-a">🔴 Time A</span></div>
         <div id="team-a-players" class="flex-col mb"></div>
@@ -116,7 +116,7 @@
 
       <!-- STEP 2 FFA -->
       <div class="card mb hidden" id="step-ffa">
-        <div class="card-title">2️⃣ Jogadores</div>
+        <h2 class="card-title">2️⃣ Jogadores</h2>
         <div id="ffa-players" class="flex-col mb"></div>
         <div class="flex-row">
           <input class="inp" id="inp-ffa" placeholder="Nome do jogador..." data-enter-submit="ffa">
@@ -130,7 +130,7 @@
 
       <!-- STEP 3: DIFFICULTY -->
       <div class="card mb">
-        <div class="card-title">3️⃣ Dificuldade</div>
+        <h2 class="card-title">3️⃣ Dificuldade</h2>
         <div class="diff-grid">
           <div class="diff-card easy selected" id="diff-easy" data-difficulty="easy">
             <div class="diff-icon">🌱</div>
@@ -153,7 +153,7 @@
 
       <!-- STEP 4: CHALLENGE & CATEGORIES -->
       <div class="card mb">
-        <div class="card-title">4️⃣ Opções de Jogo</div>
+        <h2 class="card-title">4️⃣ Opções de Jogo</h2>
         <div class="toggle-wrap">
           <div>
             <div class="toggle-label">Desafio Aleatório</div>
@@ -174,7 +174,7 @@
 
       <!-- STEP 5: ROUNDS -->
       <div class="card mb">
-        <div class="card-title">5️⃣ Configurar Partida</div>
+        <h2 class="card-title">5️⃣ Configurar Partida</h2>
         <div class="toggle-wrap toggle-wrap-last">
           <div>
             <div class="toggle-label">Número de Rodadas</div>
@@ -194,7 +194,7 @@
 
   <!-- ========== GAME ========== -->
   <div class="screen" id="screen-game">
-    <div class="page-shell page-shell-wide">
+    <div class="page-shell page-shell-game">
       <div class="action-row action-row-between mb-sm">
         <div class="round-info" id="round-display">Rodada 1 de 3</div>
         <button class="btn btn-ghost btn-sm" data-action="confirm-restart">🔄 Reiniciar</button>
@@ -209,8 +209,7 @@
       <!-- PREPARING -->
       <div id="preparing-state" class="card center">
         <div class="emoji-hero mb-sm">🎭</div>
-        <div class="section-title section-title-light mb-xs">Prontos para ver a palavra?
-        </div>
+        <h2 class="section-title section-title-light mb-xs">Prontos para ver a palavra?</h2>
         <div class="text-sm mb-lg">Só o mimo deve ver! Os outros fechem os olhos! 👀</div>
         <button class="btn btn-primary btn-lg btn-block" data-action="reveal-word">🎲 Revelar Palavra</button>
       </div>
@@ -288,12 +287,11 @@
   <!-- ========== SCOREBOARD ========== -->
   <div class="screen" id="screen-score">
     <div class="page-shell">
-      <div class="hero-title hero-title-score">
-        🏆 Placar</div>
+      <h1 class="hero-title hero-title-score">🏆 Placar</h1>
       <div class="text-sm center mb" id="score-subtitle"></div>
       <div id="scoreboard-list" class="mb"></div>
       <div class="card mb">
-        <div class="card-title card-title-sm">🎊 Próxima Rodada</div>
+        <h2 class="card-title card-title-sm">🎊 Próxima Rodada</h2>
         <div id="next-round-info" class="text-sm mb"></div>
         <div class="action-row">
           <button class="btn btn-primary btn-block" data-action="continue-game">▶️ Continuar</button>
@@ -307,10 +305,10 @@
   <div class="screen" id="screen-final">
     <div class="page-shell center">
       <div class="emoji-trophy mb-sm" id="final-trophy">🏆</div>
-      <div class="logo logo-final" id="final-winner">--</div>
-      <div class="logo-sub">VENCEDOR!</div>
+      <h1 class="logo logo-final" id="final-winner">--</h1>
+      <p class="logo-sub">VENCEDOR!</p>
       <div class="card my-lg text-left">
-        <div class="card-title">📊 Resultado Final</div>
+        <h2 class="card-title">📊 Resultado Final</h2>
         <div id="final-scoreboard"></div>
       </div>
       <div class="action-row action-row-wrap">
@@ -323,10 +321,10 @@
   <!-- ========== WORD BANK ========== -->
   <div class="screen" id="screen-wordbank">
     <div class="page-shell">
-      <div class="page-header page-header-tight">
+      <header class="page-header page-header-tight">
         <button class="btn btn-ghost btn-sm" data-nav="home">← Voltar</button>
-        <div class="page-title">Banco de Palavras</div>
-      </div>
+        <h1 class="page-title">Banco de Palavras</h1>
+      </header>
 
       <!-- DIFFICULTY SELECTOR -->
       <div class="diff-grid mb-sm">
@@ -356,7 +354,7 @@
 
       <!-- ADD WORD -->
       <div class="card mb">
-        <div class="card-title card-title-sm">➕ Adicionar Palavra</div>
+        <h2 class="card-title card-title-sm">➕ Adicionar Palavra</h2>
         <div class="flex-col">
           <input class="inp" id="inp-new-word" placeholder="Digite a palavra..." data-enter-submit="add-word">
           <select class="inp" id="inp-word-cat">
@@ -376,7 +374,7 @@
       <!-- LIST -->
       <div class="card">
         <div class="action-row action-row-between mb">
-          <div class="card-title card-title-sm card-title-inline">📋 Palavras (<span id="word-count">0</span>)</div>
+          <h2 class="card-title card-title-sm card-title-inline">📋 Palavras (<span id="word-count">0</span>)</h2>
           <button class="btn btn-ghost btn-sm" data-action="reset-words">↺ Restaurar</button>
         </div>
         <div class="words-container" id="words-list"></div>
@@ -387,12 +385,12 @@
   <!-- ========== SETTINGS ========== -->
   <div class="screen" id="screen-settings">
     <div class="page-shell">
-      <div class="page-header">
+      <header class="page-header">
         <button class="btn btn-ghost btn-sm" data-nav="home">← Voltar</button>
-        <div class="page-title">Configurações</div>
-      </div>
+        <h1 class="page-title">Configurações</h1>
+      </header>
       <div class="card">
-        <div class="card-title">⏱️ Timer</div>
+        <h2 class="card-title">⏱️ Timer</h2>
         <div class="toggle-wrap">
           <div>
             <div class="toggle-label">Tempo por Rodada</div>
@@ -408,8 +406,9 @@
             <div class="toggle-label">Som de Alerta</div>
             <div class="toggle-sub">Beep nos últimos 10 segundos</div>
           </div>
-          <label><input type="checkbox" class="toggle-input" id="toggle-sound" checked>
-            <div class="toggle-switch"></div>
+          <label class="toggle">
+            <input type="checkbox" id="toggle-sound" checked>
+            <span class="toggle-slider"></span>
           </label>
         </div>
         <div class="toggle-wrap toggle-wrap-last">
@@ -417,20 +416,22 @@
             <div class="toggle-label">Penalidade por Skip</div>
             <div class="toggle-sub">−10 pontos ao pular</div>
           </div>
-          <label><input type="checkbox" class="toggle-input" id="toggle-penalty">
-            <div class="toggle-switch"></div>
+          <label class="toggle">
+            <input type="checkbox" id="toggle-penalty">
+            <span class="toggle-slider"></span>
           </label>
         </div>
       </div>
       <div class="card mt">
-        <div class="card-title">🎲 Palavras</div>
+        <h2 class="card-title">🎲 Palavras</h2>
         <div class="toggle-wrap toggle-wrap-last">
           <div>
             <div class="toggle-label">Embaralhar Palavras</div>
             <div class="toggle-sub">Ordem aleatória a cada jogo</div>
           </div>
-          <label><input type="checkbox" class="toggle-input" id="toggle-shuffle" checked>
-            <div class="toggle-switch"></div>
+          <label class="toggle">
+            <input type="checkbox" id="toggle-shuffle" checked>
+            <span class="toggle-slider"></span>
           </label>
         </div>
       </div>

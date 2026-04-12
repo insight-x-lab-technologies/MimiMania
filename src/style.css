@@ -19,6 +19,9 @@
       --diff-easy: #6bcb77;
       --diff-normal: #ffd93d;
       --diff-hard: #ff6b6b;
+      --page-width: 480px;
+      --page-width-game: 480px;
+      --range-control-width: 148px;
     }
 
     * {
@@ -93,20 +96,6 @@
       flex-direction: column;
     }
 
-    #screen-home {
-      align-items: center;
-    }
-
-    #screen-home .page-shell {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    #screen-home .page-shell > .card {
-      width: 100%;
-    }
-
     .logo {
       font-family: 'Fredoka One', cursive;
       font-size: clamp(3rem, 8vw, 5.5rem);
@@ -137,7 +126,6 @@
       padding: 28px;
       box-shadow: var(--shadow);
       width: 100%;
-      max-width: 480px;
     }
 
     .card-title {
@@ -602,13 +590,14 @@
     }
 
     .page-shell {
-      width: 100%;
-      max-width: 480px;
+      width: min(100%, var(--page-shell-max-width, var(--page-width)));
       margin: 0 auto;
+      display: flex;
+      flex-direction: column;
     }
 
-    .page-shell-wide {
-      max-width: 480px;
+    .page-shell-game {
+      --page-shell-max-width: var(--page-width-game);
     }
 
     .page-header {
@@ -1007,41 +996,6 @@
       margin-top: 2px;
     }
 
-    .toggle-input {
-      display: none;
-    }
-
-    .toggle-switch {
-      width: 48px;
-      height: 26px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 13px;
-      position: relative;
-      cursor: pointer;
-      transition: background 0.2s;
-      flex-shrink: 0;
-    }
-
-    .toggle-switch::after {
-      content: '';
-      position: absolute;
-      left: 3px;
-      top: 3px;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: white;
-      transition: transform 0.2s;
-    }
-
-    .toggle-input:checked+.toggle-switch {
-      background: var(--accent3);
-    }
-
-    .toggle-input:checked+.toggle-switch::after {
-      transform: translateX(22px);
-    }
-
     .toggle {
       position: relative;
       display: inline-block;
@@ -1079,11 +1033,11 @@
       border-radius: 50%;
     }
 
-    input:checked + .toggle-slider {
+    .toggle input:checked + .toggle-slider {
       background-color: var(--accent3);
     }
 
-    input:checked + .toggle-slider:before {
+    .toggle input:checked + .toggle-slider:before {
       transform: translateX(22px);
     }
 
@@ -1126,17 +1080,7 @@
     }
 
     .range-wrap-fixed {
-      width: 160px;
-    }
-
-    #screen-setup .range-wrap-fixed {
-      width: 148px;
-      padding-right: 8px;
-      justify-content: flex-end;
-    }
-
-    #screen-settings .range-wrap-fixed {
-      width: 148px;
+      width: var(--range-control-width);
       padding-right: 8px;
       justify-content: flex-end;
     }
@@ -1318,14 +1262,6 @@
     @media (min-width: 900px) {
       .screen {
         padding: 32px;
-      }
-
-      .page-shell {
-        max-width: 480px;
-      }
-
-      .page-shell-wide {
-        max-width: 480px;
       }
 
       .card {

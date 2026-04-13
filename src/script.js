@@ -110,6 +110,8 @@
     ];
 
     let wordBank = JSON.parse(localStorage.getItem('mm_words_v2') || 'null') || JSON.parse(JSON.stringify(DEFAULT_WORDS));
+    const SETTINGS_KEY = 'mm_settings_v2';
+    const AVAILABLE_THEMES = ['cosmic', 'liquid-glass', 'material3'];
 
     let gameState = {
       mode: 'teams', difficulty: 'easy',
@@ -147,13 +149,62 @@
       if (screen === 'setup') { renderSetupPlayers(); updateDiffWordCount(); renderCategorySelection(); }
     }
 
+    function getThemeVar(name) {
+      return getComputedStyle(document.body).getPropertyValue(name).trim();
+    }
+
     // ============================================================
     // NOTIFICATIONS
     // ============================================================
-    function showNotif(msg, color = 'var(--accent3)', textColor = '#0d4f17') {
+    function showNotif(msg, color = 'var(--accent3)', textColor = 'var(--notif-text)') {
       const el = document.getElementById('notif');
       el.textContent = msg; el.style.background = color; el.style.color = textColor;
       el.classList.add('show'); setTimeout(() => el.classList.remove('show'), 2400);
+    }
+
+    function applyTheme(theme = 'cosmic') {
+      const nextTheme = AVAILABLE_THEMES.includes(theme) ? theme : 'cosmic';
+      document.body.classList.remove(...AVAILABLE_THEMES.map(item => `theme-${item}`));
+      document.body.classList.add(`theme-${nextTheme}`);
+      const select = document.getElementById('theme-select');
+      if (select && select.value !== nextTheme) select.value = nextTheme;
+      return nextTheme;
+    }
+
+    function collectSettings() {
+      return {
+        timerDur: parseInt(document.getElementById('timer-slider').value, 10) || 60,
+        soundEnabled: document.getElementById('toggle-sound').checked,
+        penaltyEnabled: document.getElementById('toggle-penalty').checked,
+        shuffleEnabled: document.getElementById('toggle-shuffle').checked,
+        theme: document.getElementById('theme-select').value || 'cosmic'
+      };
+    }
+
+    function saveSettings() {
+      localStorage.setItem(SETTINGS_KEY, JSON.stringify(collectSettings()));
+    }
+
+    function initializeSettings() {
+      const defaults = {
+        timerDur: 60,
+        soundEnabled: true,
+        penaltyEnabled: false,
+        shuffleEnabled: true,
+        theme: 'cosmic'
+      };
+
+      let saved = defaults;
+      try {
+        saved = { ...defaults, ...(JSON.parse(localStorage.getItem(SETTINGS_KEY) || 'null') || {}) };
+      } catch (e) { }
+
+      document.getElementById('timer-slider').value = saved.timerDur;
+      document.getElementById('toggle-sound').checked = Boolean(saved.soundEnabled);
+      document.getElementById('toggle-penalty').checked = Boolean(saved.penaltyEnabled);
+      document.getElementById('toggle-shuffle').checked = Boolean(saved.shuffleEnabled);
+      document.getElementById('theme-select').value = applyTheme(saved.theme);
+      updateTimerLabel(saved.timerDur);
     }
 
     // ============================================================
@@ -277,8 +328,8 @@
       const inp = document.getElementById('inp-team-' + team.toLowerCase());
       const name = inp.value.trim(); if (!name) return;
       const total = (gameState.teams.A || []).length + (gameState.teams.B || []).length;
-      if (total >= 6) { showNotif('❌ Máximo 6 jogadores!', 'var(--accent1)', 'white'); return; }
-      if ((gameState.teams[team] || []).length >= 3) { showNotif('❌ Máximo 3 por time!', 'var(--accent1)', 'white'); return; }
+      if (total >= 6) { showNotif('❌ Máximo 6 jogadores!', 'var(--accent1)', 'var(--btn-danger-text)'); return; }
+      if ((gameState.teams[team] || []).length >= 3) { showNotif('❌ Máximo 3 por time!', 'var(--accent1)', 'var(--btn-danger-text)'); return; }
       if (!gameState.teams[team]) gameState.teams[team] = [];
       gameState.teams[team].push(name); inp.value = ''; renderTeamPlayers();
       showNotif(`✅ ${name} no Time ${team}!`);
@@ -291,7 +342,7 @@
       (gameState.players || []).forEach((p, i) => {
         const n = p.name || p;
         const el = document.createElement('div'); el.className = 'player-row';
-        el.innerHTML = `<div class="player-avatar" style="background:rgba(255,255,255,0.08);color:white">${n[0].toUpperCase()}</div><div class="player-name">${n}</div><button class="btn btn-ghost btn-sm" data-action="remove-ffa-player" data-index="${i}">✕</button>`;
+        el.innerHTML = `<div class="player-avatar" style="background:var(--player-avatar-bg);color:var(--player-avatar-text)">${n[0].toUpperCase()}</div><div class="player-name">${n}</div><button class="btn btn-ghost btn-sm" data-action="remove-ffa-player" data-index="${i}">✕</button>`;
         cont.appendChild(el);
       });
     }
@@ -300,7 +351,7 @@
       const inp = document.getElementById('inp-ffa');
       const name = inp.value.trim(); if (!name) return;
       if (!gameState.players) gameState.players = [];
-      if (gameState.players.length >= 6) { showNotif('❌ Máximo 6 jogadores!', 'var(--accent1)', 'white'); return; }
+      if (gameState.players.length >= 6) { showNotif('❌ Máximo 6 jogadores!', 'var(--accent1)', 'var(--btn-danger-text)'); return; }
       gameState.players.push(name); inp.value = ''; renderFFAPlayers();
       showNotif(`✅ ${name} entrou!`);
     }
@@ -317,7 +368,7 @@
 
       if (gameState.mode === 'teams') {
         const a = gameState.teams.A || [], b = gameState.teams.B || [];
-        if (a.length < 1 || b.length < 1) { showNotif('❌ Mínimo 1 por time!', 'var(--accent1)', 'white'); return; }
+        if (a.length < 1 || b.length < 1) { showNotif('❌ Mínimo 1 por time!', 'var(--accent1)', 'var(--btn-danger-text)'); return; }
         gameState.players = [];
         const maxLen = Math.max(a.length, b.length);
         for (let i = 0; i < maxLen; i++) {
@@ -328,7 +379,7 @@
         a.forEach(p => gameState.scores[p] = 0);
         b.forEach(p => gameState.scores[p] = 0);
       } else {
-        if (!gameState.players || gameState.players.length < 3) { showNotif('❌ Mínimo 3 jogadores!', 'var(--accent1)', 'white'); return; }
+        if (!gameState.players || gameState.players.length < 3) { showNotif('❌ Mínimo 3 jogadores!', 'var(--accent1)', 'var(--btn-danger-text)'); return; }
         const players = [...gameState.players];
         gameState.players = players.map(p => ({ name: p.name || p, team: null }));
         gameState.scores = {};
@@ -498,7 +549,11 @@
       document.getElementById('timer-num').textContent = left;
       const circ = document.getElementById('timerCircle');
       circ.style.strokeDashoffset = 427.3 - (left / total) * 427.3;
-      circ.style.stroke = left > total * 0.5 ? '#ffd93d' : left > total * 0.25 ? '#ff8e53' : '#ff4757';
+      circ.style.stroke = left > total * 0.5
+        ? getThemeVar('--timer-color-safe')
+        : left > total * 0.25
+          ? getThemeVar('--timer-color-warning')
+          : getThemeVar('--timer-color-danger');
     }
 
     function updateTimerLabel(val) {
@@ -595,7 +650,7 @@
 
         emoji.textContent = '🎉';
         title.textContent = 'Acertou!';
-        title.style.color = '#6bcb77';
+        title.style.color = 'var(--accent3)';
         sub.textContent = gameState.mode === 'teams'
           ? `+10 pontos para o Time ${player.team === 'A' ? 'A 🔴' : 'B 🔵'}`
           : `+10 pontos para ${pName}!`;
@@ -615,7 +670,7 @@
         }
         emoji.textContent = timeUp ? '⏰' : '😅';
         title.textContent = timeUp ? 'Tempo esgotado!' : 'Errou!';
-        title.style.color = '#ff6b6b';
+        title.style.color = 'var(--accent1)';
       }
 
       document.getElementById('resultOverlay').classList.add('show');
@@ -648,15 +703,15 @@
           const el = document.createElement('div');
           el.style.cssText = `background:${color}22;border:1px solid ${color}44;border-radius:12px;padding:8px 14px;display:flex;align-items:center;gap:8px;white-space:nowrap`;
           const label = gameState.teamNames[t] || `Time ${t}`;
-          el.innerHTML = `<span style="font-weight:800;color:${color}">${label}</span><span style="font-family:'Fredoka One',cursive;font-size:1.2rem;color:${color}">${gameState.scores['team' + t] || 0}</span>`;
+          el.innerHTML = `<span style="font-weight:800;color:${color}">${label}</span><span style="font-family:var(--font-display);font-size:1.2rem;color:${color}">${gameState.scores['team' + t] || 0}</span>`;
           cont.appendChild(el);
         });
       } else {
         gameState.players.forEach(p => {
           const n = p.name || p;
           const el = document.createElement('div');
-          el.style.cssText = `background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:8px 14px;display:flex;align-items:center;gap:8px;white-space:nowrap`;
-          el.innerHTML = `<span style="font-weight:800;font-size:0.85rem">${n}</span><span style="font-family:'Fredoka One',cursive;font-size:1.2rem;color:var(--accent2)">${gameState.scores[n] || 0}</span>`;
+          el.style.cssText = `background:var(--surface-bg);border:1px solid var(--surface-border);border-radius:12px;padding:8px 14px;display:flex;align-items:center;gap:8px;white-space:nowrap`;
+          el.innerHTML = `<span style="font-weight:800;font-size:0.85rem">${n}</span><span style="font-family:var(--font-display);font-size:1.2rem;color:var(--accent2)">${gameState.scores[n] || 0}</span>`;
           cont.appendChild(el);
         });
       }
@@ -759,7 +814,7 @@
       const word = inp.value.trim(); if (!word) return;
       if (!wordBank[wbDiff]) wordBank[wbDiff] = {};
       if (!wordBank[wbDiff][cat]) wordBank[wbDiff][cat] = [];
-      if (wordBank[wbDiff][cat].includes(word)) { showNotif('⚠️ Palavra já existe!', 'var(--accent2)', '#333'); return; }
+      if (wordBank[wbDiff][cat].includes(word)) { showNotif('⚠️ Palavra já existe!', 'var(--accent2)', 'var(--text)'); return; }
       wordBank[wbDiff][cat].push(word);
       saveWords(); inp.value = ''; renderWordBank();
       const labels = { easy: '🌱 Fácil', normal: '⚡ Normal', hard: '🔥 Difícil' };
@@ -785,7 +840,14 @@
     // CONFETTI
     // ============================================================
     function launchConfetti(count = 40) {
-      const colors = ['#ff6b6b', '#ffd93d', '#6bcb77', '#4d96ff', '#c77dff', '#ff8e53'];
+      const colors = [
+        getThemeVar('--accent1'),
+        getThemeVar('--accent2'),
+        getThemeVar('--accent3'),
+        getThemeVar('--accent4'),
+        getThemeVar('--accent5'),
+        getThemeVar('--timer-color-warning')
+      ];
       for (let i = 0; i < count; i++) {
         const el = document.createElement('div'); el.className = 'confetti-piece';
         el.style.cssText = `left:${Math.random() * 100}vw;top:-10px;background:${colors[Math.floor(Math.random() * colors.length)]};border-radius:${Math.random() > 0.5 ? '50%' : '2px'};--dur:${(Math.random() * 1.5 + 1.5).toFixed(1)}s;--del2:${(Math.random() * 1).toFixed(2)}s;`;
@@ -935,10 +997,19 @@
 
       document.getElementById('timer-slider').addEventListener('input', event => {
         updateTimerLabel(event.target.value);
+        saveSettings();
       });
 
       document.getElementById('random-challenge-toggle').addEventListener('change', event => {
         toggleRandomChallenge(event.target.checked);
+      });
+
+      document.getElementById('toggle-sound').addEventListener('change', saveSettings);
+      document.getElementById('toggle-penalty').addEventListener('change', saveSettings);
+      document.getElementById('toggle-shuffle').addEventListener('change', saveSettings);
+      document.getElementById('theme-select').addEventListener('change', event => {
+        applyTheme(event.target.value);
+        saveSettings();
       });
 
       const previewSelect = document.getElementById('dev-layout-preview');
@@ -953,7 +1024,7 @@
     // INIT
     // ============================================================
     initializeLayoutPreview();
+    initializeSettings();
     registerEventListeners();
     selectMode('teams');
     selectDifficulty('easy');
-    updateTimerLabel(60);

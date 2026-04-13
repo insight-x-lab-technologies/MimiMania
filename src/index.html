@@ -5,12 +5,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MimiMania 🎭</title>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap"
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Manrope:wght@500;700;800&family=Nunito:wght@400;600;700;800;900&family=Outfit:wght@600;700;800&display=swap"
     rel="stylesheet">
+  <link rel="stylesheet" href="themes.css">
   <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+<body class="theme-cosmic">
 
   <div class="stars" id="stars"></div>
   <div class="notif" id="notif">✅</div>
@@ -46,37 +47,38 @@
           </select>
         </div>
       </div>
-    -->
-
-      <div class="card mb">
-        <div class="flex-col">
-          <button class="btn btn-primary btn-lg btn-block" data-nav="setup">🎮 Nova Partida</button>
-          <button class="btn btn-ghost btn-lg btn-block" data-nav="wordbank">📝 Banco de Palavras</button>
-          <button class="btn btn-ghost btn-lg btn-block" data-nav="settings">⚙️ Configurações</button>
+      -->
+      <div class="home-grid">
+        <div class="card home-card">
+          <div class="flex-col">
+            <button class="btn btn-primary btn-lg btn-block" data-nav="setup">🎮 Nova Partida</button>
+            <button class="btn btn-ghost btn-lg btn-block" data-nav="wordbank">📝 Banco de Palavras</button>
+            <button class="btn btn-ghost btn-lg btn-block" data-nav="settings">⚙️ Configurações</button>
+          </div>
         </div>
-      </div>
-      <div class="card">
-        <h2 class="card-title">🏆 Como jogar</h2>
-        <div class="how-to-list">
-          <div class="media-row media-row-start">
-            <div class="emoji-lg emoji-fixed">👤</div>
-            <div>
-              <div class="text-strong text-sm-title">O Mimo</div>
-              <div class="text-sm">Vê a palavra e faz a mímica sem falar nada!</div>
+        <div class="card home-card">
+          <h2 class="card-title">🏆 Como jogar</h2>
+          <div class="how-to-list">
+            <div class="media-row media-row-start">
+              <div class="emoji-lg emoji-fixed">👤</div>
+              <div>
+                <div class="text-strong text-sm-title">O Mimo</div>
+                <div class="text-sm">Vê a palavra e faz a mímica sem falar nada!</div>
+              </div>
             </div>
-          </div>
-          <div class="media-row media-row-start">
-            <div class="emoji-lg emoji-fixed">🕐</div>
-            <div>
-              <div class="text-strong text-sm-title">O Tempo</div>
-              <div class="text-sm">Tentem adivinhar antes do timer acabar!</div>
+            <div class="media-row media-row-start">
+              <div class="emoji-lg emoji-fixed">🕐</div>
+              <div>
+                <div class="text-strong text-sm-title">O Tempo</div>
+                <div class="text-sm">Tentem adivinhar antes do timer acabar!</div>
+              </div>
             </div>
-          </div>
-          <div class="media-row media-row-start">
-            <div class="emoji-lg emoji-fixed">⭐</div>
-            <div>
-              <div class="text-strong text-sm-title">Os Pontos</div>
-              <div class="text-sm">Cada acerto vale 10 pontos. Quem tiver mais pontos vence!</div>
+            <div class="media-row media-row-start">
+              <div class="emoji-lg emoji-fixed">⭐</div>
+              <div>
+                <div class="text-strong text-sm-title">Os Pontos</div>
+                <div class="text-sm">Cada acerto vale 10 pontos. Quem tiver mais pontos vence!</div>
+              </div>
             </div>
           </div>
         </div>
@@ -91,9 +93,10 @@
         <button class="btn btn-ghost btn-sm" data-nav="home">← Voltar</button>
         <h1 class="page-title">Nova Partida</h1>
       </header>
+      <div class="setup-grid">
 
       <!-- STEP 1: MODE -->
-      <div class="card mb">
+      <div class="card mb setup-block-full">
         <h2 class="card-title">1️⃣ Modo de Jogo</h2>
         <div class="mode-grid">
           <div class="mode-card selected" id="mode-teams" data-mode="teams">
@@ -110,7 +113,7 @@
       </div>
 
       <!-- STEP 2: PLAYERS TEAMS -->
-      <div class="card mb" id="step-teams">
+      <div class="card mb setup-block-players" id="step-teams">
         <h2 class="card-title">2️⃣ Jogadores por Time</h2>
         <input class="inp mb-sm" id="team-name-a" placeholder="Nome do Time A" value="Time A" data-team-name="A">
         <div class="section-head"><span id="team-label-a" class="team-label team-label-a">🔴 Time A</span></div>
@@ -133,7 +136,7 @@
       </div>
 
       <!-- STEP 2 FFA -->
-      <div class="card mb hidden" id="step-ffa">
+      <div class="card mb hidden setup-block-players" id="step-ffa">
         <h2 class="card-title">2️⃣ Jogadores</h2>
         <div id="ffa-players" class="flex-col mb"></div>
         <div class="flex-row">
@@ -205,8 +208,9 @@
         </div>
       </div>
 
-      <button class="btn btn-primary btn-lg btn-block mb-lg" data-action="start-game">🎭 Começar o
+      <button class="btn btn-primary btn-lg btn-block mb-lg setup-cta" data-action="start-game">🎭 Começar o
         Jogo!</button>
+      </div>
     </div>
   </div>
 
@@ -262,41 +266,47 @@
 
       <!-- PLAYING -->
       <div id="playing-state" class="hidden">
-        <div class="timer-wrap">
-          <svg class="timer-svg" viewBox="0 0 160 160">
-            <circle class="timer-track" cx="80" cy="80" r="68" />
-            <circle class="timer-prog" id="timerCircle" cx="80" cy="80" r="68" stroke="#ffd93d" stroke-dasharray="427.3"
-              stroke-dashoffset="0" />
-          </svg>
-          <div class="timer-num" id="timer-num">60</div>
-          <div class="timer-label">SEGUNDOS</div>
-        </div>
-        <div class="word-card">
-          <div id="word-hidden-placeholder" class="word-placeholder">
-            <div class="emoji-xl emoji-tight">🙈</div>
-            <div class="eyebrow eyebrow-muted">
-              Palavra oculta</div>
-          </div>
-          <div id="word-visible-content" class="hidden">
-            <div class="word-text" id="word-display">---</div>
-            <div id="game-challenge-display" class="challenge-text hidden">
-              🎯 Desafio: <span id="game-challenge-text">---</span>
+        <div class="game-play-layout">
+          <div class="game-play-side">
+            <div class="timer-wrap">
+              <svg class="timer-svg" viewBox="0 0 160 160">
+                <circle class="timer-track" cx="80" cy="80" r="68" />
+                <circle class="timer-prog" id="timerCircle" cx="80" cy="80" r="68" stroke="#ffd93d" stroke-dasharray="427.3"
+                  stroke-dashoffset="0" />
+              </svg>
+              <div class="timer-num" id="timer-num">60</div>
+              <div class="timer-label">SEGUNDOS</div>
             </div>
           </div>
-          <div id="hint-banner" class="hint-banner hidden">
-            <div class="eyebrow eyebrow-hint mb-xxs">
-              💡 Dica</div>
-            <div id="hint-text" class="hint-text">---
+          <div class="game-play-main">
+            <div class="word-card">
+              <div id="word-hidden-placeholder" class="word-placeholder">
+                <div class="emoji-xl emoji-tight">🙈</div>
+                <div class="eyebrow eyebrow-muted">
+                  Palavra oculta</div>
+              </div>
+              <div id="word-visible-content" class="hidden">
+                <div class="word-text" id="word-display">---</div>
+                <div id="game-challenge-display" class="challenge-text hidden">
+                  🎯 Desafio: <span id="game-challenge-text">---</span>
+                </div>
+              </div>
+              <div id="hint-banner" class="hint-banner hidden">
+                <div class="eyebrow eyebrow-hint mb-xxs">
+                  💡 Dica</div>
+                <div id="hint-text" class="hint-text">---
+                </div>
+              </div>
+            </div>
+            <div class="action-row action-row-center action-row-compact">
+              <button id="btn-toggle-word" class="btn btn-ghost btn-sm" data-action="toggle-word">👁️ Mostrar
+                palavra</button>
+            </div>
+            <div class="game-actions-grid">
+              <button class="btn btn-success btn-lg" data-action="mark-correct">✅ Acertou!</button>
+              <button class="btn btn-danger btn-lg" data-action="mark-wrong">❌ Errou / Skip</button>
             </div>
           </div>
-        </div>
-        <div class="action-row action-row-center action-row-compact">
-          <button id="btn-toggle-word" class="btn btn-ghost btn-sm" data-action="toggle-word">👁️ Mostrar
-            palavra</button>
-        </div>
-        <div class="game-actions-grid">
-          <button class="btn btn-success btn-lg" data-action="mark-correct">✅ Acertou!</button>
-          <button class="btn btn-danger btn-lg" data-action="mark-wrong">❌ Errou / Skip</button>
         </div>
       </div>
     </div>
@@ -343,59 +353,65 @@
         <button class="btn btn-ghost btn-sm" data-nav="home">← Voltar</button>
         <h1 class="page-title">Banco de Palavras</h1>
       </header>
+      <div class="wordbank-layout">
+        <div class="wordbank-sidebar">
+          <div class="card wordbank-filter-card">
 
       <!-- DIFFICULTY SELECTOR -->
-      <div class="diff-grid mb-sm">
-        <div class="diff-card easy selected" id="wb-diff-easy" data-wb-difficulty="easy">
-          <div class="diff-icon">🌱</div>
-          <div class="diff-name">Fácil</div>
-        </div>
-        <div class="diff-card normal" id="wb-diff-normal" data-wb-difficulty="normal">
-          <div class="diff-icon">⚡</div>
-          <div class="diff-name">Normal</div>
-        </div>
-        <div class="diff-card hard" id="wb-diff-hard" data-wb-difficulty="hard">
-          <div class="diff-icon">🔥</div>
-          <div class="diff-name">Difícil</div>
-        </div>
-      </div>
+            <div class="diff-grid mb-sm">
+              <div class="diff-card easy selected" id="wb-diff-easy" data-wb-difficulty="easy">
+                <div class="diff-icon">🌱</div>
+                <div class="diff-name">Fácil</div>
+              </div>
+              <div class="diff-card normal" id="wb-diff-normal" data-wb-difficulty="normal">
+                <div class="diff-icon">⚡</div>
+                <div class="diff-name">Normal</div>
+              </div>
+              <div class="diff-card hard" id="wb-diff-hard" data-wb-difficulty="hard">
+                <div class="diff-icon">🔥</div>
+                <div class="diff-name">Difícil</div>
+              </div>
+            </div>
 
       <!-- CATEGORY TABS -->
-      <div class="tab-bar">
-        <button class="tab-btn active" data-wb-tab="objects" id="tab-objects">🧸 Objetos</button>
-        <button class="tab-btn" data-wb-tab="actions" id="tab-actions">🏃 Ações</button>
-        <button class="tab-btn" data-wb-tab="animals" id="tab-animals">🐾 Animais</button>
-        <button class="tab-btn" data-wb-tab="movies" id="tab-movies">🎬 Filmes</button>
-        <button class="tab-btn" data-wb-tab="professions" id="tab-professions">👔 Profissões</button>
-        <button class="tab-btn" data-wb-tab="celebrities" id="tab-celebrities">⭐ Celebridades</button>
-      </div>
+            <div class="tab-bar wordbank-tabs">
+              <button class="tab-btn active" data-wb-tab="objects" id="tab-objects">🧸 Objetos</button>
+              <button class="tab-btn" data-wb-tab="actions" id="tab-actions">🏃 Ações</button>
+              <button class="tab-btn" data-wb-tab="animals" id="tab-animals">🐾 Animais</button>
+              <button class="tab-btn" data-wb-tab="movies" id="tab-movies">🎬 Filmes</button>
+              <button class="tab-btn" data-wb-tab="professions" id="tab-professions">👔 Profissões</button>
+              <button class="tab-btn" data-wb-tab="celebrities" id="tab-celebrities">⭐ Celebridades</button>
+            </div>
+          </div>
 
       <!-- ADD WORD -->
-      <div class="card mb">
-        <h2 class="card-title card-title-sm">➕ Adicionar Palavra</h2>
-        <div class="flex-col">
-          <input class="inp" id="inp-new-word" placeholder="Digite a palavra..." data-enter-submit="add-word">
-          <select class="inp" id="inp-word-cat">
-            <option value="objects">🧸 Objetos</option>
-            <option value="actions">🏃 Ações</option>
-            <option value="animals">🐾 Animais</option>
-            <option value="movies">🎬 Filmes</option>
-            <option value="professions">👔 Profissões</option>
-            <option value="celebrities">⭐ Celebridades</option>
-          </select>
-          <div class="text-meta px-xs">Será adicionada à dificuldade:
-            <span id="wb-diff-label" class="text-accent">🌱 Fácil</span></div>
-          <button class="btn btn-secondary btn-block" data-action="add-word">➕ Adicionar Palavra</button>
+          <div class="card mb wordbank-add-card">
+            <h2 class="card-title card-title-sm">➕ Adicionar Palavra</h2>
+            <div class="flex-col">
+              <input class="inp" id="inp-new-word" placeholder="Digite a palavra..." data-enter-submit="add-word">
+              <select class="inp" id="inp-word-cat">
+                <option value="objects">🧸 Objetos</option>
+                <option value="actions">🏃 Ações</option>
+                <option value="animals">🐾 Animais</option>
+                <option value="movies">🎬 Filmes</option>
+                <option value="professions">👔 Profissões</option>
+                <option value="celebrities">⭐ Celebridades</option>
+              </select>
+              <div class="text-meta px-xs">Será adicionada à dificuldade:
+                <span id="wb-diff-label" class="text-accent">🌱 Fácil</span></div>
+              <button class="btn btn-secondary btn-block" data-action="add-word">➕ Adicionar Palavra</button>
+            </div>
+          </div>
         </div>
-      </div>
 
       <!-- LIST -->
-      <div class="card">
-        <div class="action-row action-row-between mb">
-          <h2 class="card-title card-title-sm card-title-inline">📋 Palavras (<span id="word-count">0</span>)</h2>
-          <button class="btn btn-ghost btn-sm" data-action="reset-words">↺ Restaurar</button>
+        <div class="card wordbank-list-card">
+          <div class="action-row action-row-between mb">
+            <h2 class="card-title card-title-sm card-title-inline">📋 Palavras (<span id="word-count">0</span>)</h2>
+            <button class="btn btn-ghost btn-sm" data-action="reset-words">↺ Restaurar</button>
+          </div>
+          <div class="words-container" id="words-list"></div>
         </div>
-        <div class="words-container" id="words-list"></div>
       </div>
     </div>
   </div>
@@ -407,6 +423,7 @@
         <button class="btn btn-ghost btn-sm" data-nav="home">← Voltar</button>
         <h1 class="page-title">Configurações</h1>
       </header>
+      <div class="settings-grid">
       <div class="card">
         <h2 class="card-title">⏱️ Timer</h2>
         <div class="toggle-wrap">
@@ -440,7 +457,7 @@
           </label>
         </div>
       </div>
-      <div class="card mt">
+      <div class="card">
         <h2 class="card-title">🎲 Palavras</h2>
         <div class="toggle-wrap toggle-wrap-last">
           <div>
@@ -453,11 +470,26 @@
           </label>
         </div>
       </div>
+      <div class="card">
+        <h2 class="card-title">🎨 Aparência</h2>
+        <div class="flex-col">
+          <div>
+            <label class="toggle-label" for="theme-select">Tema visual</label>
+            <div class="toggle-sub mt-xs">Troque cores, transparências e tipografia da interface</div>
+          </div>
+          <select class="inp" id="theme-select">
+            <option value="cosmic">Cósmico</option>
+            <option value="liquid-glass">Outono</option>
+            <option value="material3">Primavera</option>
+          </select>
+        </div>
+      </div>
+      </div>
     </div>
   </div>
 
   <footer class="site-footer">
-    © 2025 MimiMania · Flavio Matiello · Publicado no <a href="https://github.com/matiello" target="_blank"
+    © 2025 MimiMania v2.0 · Flavio Matiello · Publicado no <a href="https://github.com/matiello" target="_blank"
       class="site-footer-link">GitHub Pages</a>
   </footer>
 

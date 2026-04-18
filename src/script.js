@@ -456,18 +456,18 @@
 
       let memLeft = 5;
       const mc = document.getElementById('memCircle'), mn = document.getElementById('mem-num');
-      updateMemCircle(memLeft, 5, mc, mn, 213.6); playBeep(600);
+      updateMemCircle(memLeft, 5, mc, mn, 213.6); playAlertBeep(600);
       gameState.memInterval = setInterval(() => {
         memLeft--;
         updateMemCircle(memLeft, 5, mc, mn, 213.6);
-        if (memLeft > 0) playBeep(memLeft <= 2 ? 700 : 500);
+        if (memLeft > 0) playAlertBeep(memLeft <= 2 ? 700 : 500);
         if (memLeft <= 0) {
           clearInterval(gameState.memInterval);
           // Hide challenge after memorization
           challengeEl.classList.add('hidden');
           document.getElementById('memorize-state').classList.add('hidden');
           document.getElementById('playing-state').classList.remove('hidden');
-          gameState.phase = 'playing'; playBeep(880); startTimer();
+          gameState.phase = 'playing'; playAlertBeep(880); startTimer();
         }
       }, 1000);
     }
@@ -540,10 +540,10 @@
           const hint = document.getElementById('hint-banner');
           hint.classList.remove('hidden');
           hint.animate([{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 400, fill: 'forwards' });
-          playBeep(523);
+          playAlertBeep(523);
         }
-        if (document.getElementById('toggle-sound').checked && gameState.timerLeft <= 10 && gameState.timerLeft > 0)
-          playBeep(gameState.timerLeft <= 3 ? 880 : 440);
+        if (gameState.timerLeft <= 10 && gameState.timerLeft > 0)
+          playAlertBeep(gameState.timerLeft <= 3 ? 880 : 440);
         if (gameState.timerLeft <= 0) { clearInterval(gameState.timerInterval); markResult(false, true); }
       }, 1000);
     }
@@ -564,6 +564,11 @@
       gameState.timerDur = parseInt(val);
     }
 
+    function isAlertSoundEnabled() {
+      const toggle = document.getElementById('toggle-sound');
+      return toggle ? toggle.checked : true;
+    }
+
     function playBeep(freq = 440) {
       try {
         const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -574,6 +579,11 @@
         gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
         osc.start(); osc.stop(ctx.currentTime + 0.2);
       } catch (e) { }
+    }
+
+    function playAlertBeep(freq = 440) {
+      if (!isAlertSoundEnabled()) return;
+      playBeep(freq);
     }
 
     function isNavigationSoundEnabled() {
@@ -591,6 +601,7 @@
     }
 
     function playCorrectSound() {
+      if (!isNavigationSoundEnabled()) return;
       try {
         const ctx = new (window.AudioContext || window.webkitAudioContext)();
         const osc = ctx.createOscillator(), gain = ctx.createGain();
@@ -605,6 +616,7 @@
     }
 
     function playWrongSound() {
+      if (!isNavigationSoundEnabled()) return;
       try {
         const ctx = new (window.AudioContext || window.webkitAudioContext)();
         const osc = ctx.createOscillator(), gain = ctx.createGain();
@@ -668,7 +680,6 @@
           ? `+10 pontos para o Time ${player.team === 'A' ? 'A 🔴' : 'B 🔵'}`
           : `+10 pontos para ${pName}!`;
         launchConfetti();
-        playBeep(523);
       } else {
         if (document.getElementById('toggle-penalty').checked && !timeUp) {
           if (gameState.mode === 'teams') {

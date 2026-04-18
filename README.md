@@ -1,55 +1,79 @@
-# 🎭 Mimi Mania - Diversão em Família
+# 🎭 Mimi Mania - Family Fun for Everyone
 
-![Versão](https://img.shields.io/badge/vers%C3%A3o-1.0.0-blueviolet)
-![Licença](https://img.shields.io/badge/licen%C3%A7a-MIT-green)
+![Version](https://img.shields.io/badge/version-1.0.0-blueviolet)
+![License](https://img.shields.io/badge/license-MIT-green)
 
-Este jogo foi criado para uso familiar por todas as famílias que querem se divertir com seus filhos, aproveitando cada momento em casa. O **Mímica Party** transforma o seu tablet ou laptop em um palco de criatividade, risadas e conexão, incentivando a expressão corporal e o trabalho em equipe.
-
----
-
-## 🌟 Sobre o Jogo
-
-O **Mimi Mania** é um jogo web leve e interativo, focado na simplicidade e na diversão imediata. Sem distrações ou anúncios, o objetivo é apenas um: adivinhar a palavra sorteada através de gestos antes que o tempo acabe!
-
-### Principais Funcionalidades:
-* **Dois Modos de Jogo:** Escolha entre "Times" (pais vs. filhos) ou "Cada um por si" (individual).
-* **Totalmente Customizável:** Edite o banco de palavras diretamente na interface para incluir piadas internas da família, nomes de bichos de estimação ou temas favoritos.
-* **Interface Responsiva:** Design otimizado para rodar perfeitamente em tablets e laptops (Desktop).
-* **Sistema de Pontuação e Timer:** Gestão automática dos pontos e um cronômetro visual para manter a adrenalina alta.
+This game was created for families who want to have fun with their children and make the most of every moment at home. **Mimi Mania** turns your tablet or laptop into a stage for creativity, laughter, and connection, encouraging body expression, teamwork, and unforgettable family moments.
 
 ---
 
-## 🚀 Como Jogar
+## 🌟 About the Game
 
-1.  **Acesse o link:** http://matiello.github.io/MimiMania
-2.  **Escolha o modo:**
-    * **Dois Times:** Cadastre o nome das duas equipes.
-    * **Cada um por si:** Cadastre de 3 a 6 jogadores.
-3.  **Configure (Opcional):** Personalize o jogo e/ou adicione ou removova palavras do banco de dados.
-4.  **Ação:** O jogador da vez clica em "Ver Palavra" (sem mostrar para os outros!) e inicia a mímica assim que o botão de ação for acionado.
-5.  **Pontue:** Se alguém adivinhar, clique em "Acertou!". Caso o tempo acabe, o turno passa para o próximo.
+**Mimi Mania** is a lightweight and interactive web game focused on simplicity and instant fun. No distractions, no ads — just one goal: guess the selected word through gestures before time runs out!
 
----
+### Main Features
 
-## 🛠️ Tecnologias Utilizadas
-
-O jogo foi construído utilizando tecnologias web padrão, garantindo que funcione em qualquer navegador moderno sem instalações:
-
-* **HTML5:** Estrutura semântica.
-* **CSS3:** Estilização moderna e layout responsivo.
-* **JavaScript (Vanilla):** Lógica do jogo, sistema de turnos e cronômetro.
+* **Two Game Modes:** Choose between "Teams" (parents vs. kids, friends vs. friends) or "Free for All" (individual competition).
+* **Fully Customizable:** Edit the word bank directly from the interface to include family jokes, pet names, favorite themes, or personalized challenges.
+* **Responsive Interface:** Optimized design for tablets, laptops, and desktop devices.
+* **Score System and Visual Timer:** Automatic score management and a visual countdown timer to keep the excitement high.
 
 ---
 
-## 👨‍👩‍👧‍👦 Contribuição Familiar
+## 🚀 How to Play
 
-Este é um projeto aberto! Se você tiver sugestões de novas funcionalidades ou bancos de palavras temáticos, sinta-se à vontade para abrir uma *Issue* ou fazer um *Fork* deste repositório.
+1. **Access the game:**  
+   https://insightxlabgames.github.io/MimiMania
+
+2. **Choose the game mode:**
+   * **Two Teams:** Register the names of both teams.
+   * **Free for All:** Register between 3 and 6 players.
+
+3. **Customize (Optional):**  
+   Personalize the game settings and add or remove words from the word bank.
+
+4. **Action Time:**  
+   The current player clicks on **"Reveal Word"** (without showing others!) and starts acting as soon as the round begins.
+
+5. **Score Points:**  
+   If someone guesses correctly, click **"Correct!"**. If time runs out, the turn moves to the next player.
 
 ---
 
-## 📄 Licença
+## 🛠️ Technologies Used
 
-Este projeto está sob a licença MIT - sinta-se à vontade para usar, modificar e compartilhar com outras famílias.
+The game was built using standard web technologies, ensuring it runs smoothly on any modern browser without installations:
+
+* **HTML5:** Semantic structure
+* **CSS3:** Modern styling and responsive layout
+* **JavaScript (Vanilla):** Game logic, turn system, timer, and interactions
 
 ---
-*Criado com ❤️ para transformar momentos simples em memórias inesquecíveis.*
+
+## 👨‍👩‍👧‍👦 Community Contributions
+
+This is an open project!
+
+If you have ideas for new features, improvements, or themed word packs, feel free to open an *Issue* or create a *Fork* of this repository.
+
+We believe the best family games grow with the community.
+
+---
+
+## 🏢 About the Studio
+
+Developed by **Insight X Lab Technologies**
+
+We create fun, accessible, and creative digital experiences focused on family entertainment, party games, and browser-based social gaming.
+
+Our goal is simple: transform ordinary moments into memorable experiences.
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License — feel free to use, modify, and share it with other families and friends.
+
+---
+
+*Created with ❤️ by Insight X Lab Technologies to turn simple moments into unforgettable memories.*

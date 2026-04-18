@@ -19,10 +19,10 @@
   <!-- RESULT OVERLAY -->
   <div class="result-overlay" id="resultOverlay">
     <div class="result-emoji" id="resultEmoji">🎉</div>
-    <div class="result-title" id="resultTitle">Acertou!</div>
+    <div class="result-title" id="resultTitle" data-i18n="result.correctTitle">Acertou!</div>
     <div class="result-sub" id="resultSub">+10 pontos</div>
     <div class="action-row action-row-center action-row-wrap">
-      <button class="btn btn-success btn-lg" data-action="next-turn">➡️ Próximo turno</button>
+      <button class="btn btn-success btn-lg" data-action="next-turn" data-i18n="result.nextTurn">➡️ Próximo turno</button>
     </div>
   </div>
 
@@ -30,52 +30,52 @@
   <div class="screen active" id="screen-home">
     <div class="page-shell">
       <h1 class="logo">MimiMania</h1>
-      <p class="logo-sub">🎭 O jogo da mímica</p>
+      <p class="logo-sub" data-i18n="home.subtitle">🎭 O jogo da mímica</p>
       <div class="dev-preview-panel mb">
         <div class="dev-preview-copy">
-          <div class="eyebrow eyebrow-accent">Modo de desenvolvimento</div>
-          <div class="text-sm">Teste rapidamente o layout em mobile, tablet e desktop.</div>
+          <div class="eyebrow eyebrow-accent" data-i18n="dev.mode">Modo de desenvolvimento</div>
+          <div class="text-sm" data-i18n="dev.description">Teste rapidamente o layout em mobile, tablet e desktop.</div>
         </div>
         <div class="dev-preview-field">
-          <label class="text-strong text-sm-title" for="dev-layout-preview">Prévia de layout</label>
+          <label class="text-strong text-sm-title" for="dev-layout-preview" data-i18n="dev.previewLabel">Prévia de layout</label>
           <select id="dev-layout-preview" class="inp dev-preview-select">
-            <option value="auto">Auto</option>
-            <option value="mobile">Mobile</option>
-            <option value="tablet">Tablet</option>
-            <option value="desktop">Desktop</option>
+            <option value="auto" data-i18n="dev.preview.auto">Auto</option>
+            <option value="mobile" data-i18n="dev.preview.mobile">Mobile</option>
+            <option value="tablet" data-i18n="dev.preview.tablet">Tablet</option>
+            <option value="desktop" data-i18n="dev.preview.desktop">Desktop</option>
           </select>
         </div>
       </div>
       <div class="home-grid">
         <div class="card home-card">
           <div class="flex-col">
-            <button class="btn btn-primary btn-lg btn-block" data-nav="setup">🎮 Nova Partida</button>
-            <button class="btn btn-ghost btn-lg btn-block" data-nav="wordbank">📝 Banco de Palavras</button>
-            <button class="btn btn-ghost btn-lg btn-block" data-nav="settings">⚙️ Configurações</button>
+            <button class="btn btn-primary btn-lg btn-block" data-nav="setup" data-i18n="home.newGame">🎮 Nova Partida</button>
+            <button class="btn btn-ghost btn-lg btn-block" data-nav="wordbank" data-i18n="home.wordBank">📝 Banco de Palavras</button>
+            <button class="btn btn-ghost btn-lg btn-block" data-nav="settings" data-i18n="home.settings">⚙️ Configurações</button>
           </div>
         </div>
         <div class="card home-card">
-          <h2 class="card-title">🏆 Como jogar</h2>
+          <h2 class="card-title" data-i18n="home.howToTitle">🏆 Como jogar</h2>
           <div class="how-to-list">
             <div class="media-row media-row-start">
               <div class="emoji-lg emoji-fixed">👤</div>
               <div>
-                <div class="text-strong text-sm-title">O Mimo</div>
-                <div class="text-sm">Vê a palavra e faz a mímica sem falar nada!</div>
+                <div class="text-strong text-sm-title" data-i18n="home.howTo.mimeTitle">O Mimo</div>
+                <div class="text-sm" data-i18n="home.howTo.mimeDesc">Vê a palavra e faz a mímica sem falar nada!</div>
               </div>
             </div>
             <div class="media-row media-row-start">
               <div class="emoji-lg emoji-fixed">🕐</div>
               <div>
-                <div class="text-strong text-sm-title">O Tempo</div>
-                <div class="text-sm">Tentem adivinhar antes do timer acabar!</div>
+                <div class="text-strong text-sm-title" data-i18n="home.howTo.timeTitle">O Tempo</div>
+                <div class="text-sm" data-i18n="home.howTo.timeDesc">Tentem adivinhar antes do timer acabar!</div>
               </div>
             </div>
             <div class="media-row media-row-start">
               <div class="emoji-lg emoji-fixed">⭐</div>
               <div>
-                <div class="text-strong text-sm-title">Os Pontos</div>
-                <div class="text-sm">Cada acerto vale 10 pontos. Quem tiver mais pontos vence!</div>
+                <div class="text-strong text-sm-title" data-i18n="home.howTo.pointsTitle">Os Pontos</div>
+                <div class="text-sm" data-i18n="home.howTo.pointsDesc">Cada acerto vale 10 pontos. Quem tiver mais pontos vence!</div>
               </div>
             </div>
           </div>
@@ -88,126 +88,132 @@
   <div class="screen" id="screen-setup">
     <div class="page-shell">
       <header class="page-header">
-        <button class="btn btn-ghost btn-sm" data-nav="home">← Voltar</button>
-        <h1 class="page-title">Nova Partida</h1>
+        <button class="btn btn-ghost btn-sm" data-nav="home" data-i18n="common.back">← Voltar</button>
+        <h1 class="page-title" data-i18n="setup.title">Nova Partida</h1>
       </header>
       <div class="setup-grid">
 
-      <!-- STEP 1: MODE -->
-      <div class="card mb setup-block-full">
-        <h2 class="card-title">1️⃣ Modo de Jogo</h2>
-        <div class="mode-grid">
-          <div class="mode-card selected" id="mode-teams" data-mode="teams">
-            <div class="mode-icon">🤝</div>
-            <div class="mode-name">Dois Times</div>
-            <div class="mode-desc">Equipes competem</div>
-          </div>
-          <div class="mode-card" id="mode-ffa" data-mode="ffa">
-            <div class="mode-icon">🏆</div>
-            <div class="mode-name">Cada um por si</div>
-            <div class="mode-desc">Todos contra todos</div>
+        <!-- STEP 1: MODE -->
+        <div class="card mb setup-block-full">
+          <h2 class="card-title" data-i18n="setup.modeTitle">1️⃣ Modo de Jogo</h2>
+          <div class="mode-grid">
+            <div class="mode-card selected" id="mode-teams" data-mode="teams">
+              <div class="mode-icon">🤝</div>
+              <div class="mode-name" data-i18n="setup.modeTeamsName">Dois Times</div>
+              <div class="mode-desc" data-i18n="setup.modeTeamsDesc">Equipes competem</div>
+            </div>
+            <div class="mode-card" id="mode-ffa" data-mode="ffa">
+              <div class="mode-icon">🏆</div>
+              <div class="mode-name" data-i18n="setup.modeFfaName">Cada um por si</div>
+              <div class="mode-desc" data-i18n="setup.modeFfaDesc">Todos contra todos</div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- STEP 2: PLAYERS TEAMS -->
-      <div class="card mb setup-block-players" id="step-teams">
-        <h2 class="card-title">2️⃣ Jogadores por Time</h2>
-        <input class="inp mb-sm" id="team-name-a" placeholder="Nome do Time A" value="Time A" data-team-name="A">
-        <div class="section-head"><span id="team-label-a" class="team-label team-label-a">🔴 Time A</span></div>
-        <div id="team-a-players" class="flex-col mb"></div>
-        <div class="flex-row">
-          <input class="inp" id="inp-team-a" placeholder="Nome do jogador..." data-enter-submit="team-A">
-          <button class="btn btn-sm btn-team-a btn-nowrap" data-action="add-team-player" data-team="A">+ Adicionar</button>
+        <!-- STEP 2: PLAYERS TEAMS -->
+        <div class="card mb setup-block-players" id="step-teams">
+          <h2 class="card-title" data-i18n="setup.teamPlayersTitle">2️⃣ Jogadores por Time</h2>
+          <input class="inp mb-sm" id="team-name-a" placeholder="Nome do Time A" value="Time A" data-team-name="A"
+            data-i18n-placeholder="setup.teamAPlaceholder">
+          <div class="section-head"><span id="team-label-a" class="team-label team-label-a">🔴 Time A</span></div>
+          <div id="team-a-players" class="flex-col mb"></div>
+          <div class="flex-row">
+            <input class="inp" id="inp-team-a" placeholder="Nome do jogador..." data-enter-submit="team-A"
+              data-i18n-placeholder="setup.playerNamePlaceholder">
+            <button class="btn btn-sm btn-team-a btn-nowrap" data-action="add-team-player" data-team="A"
+              data-i18n="common.add">+ Adicionar</button>
+          </div>
+          <div class="divider"></div>
+          <input class="inp mb-sm" id="team-name-b" placeholder="Nome do Time B" value="Time B" data-team-name="B"
+            data-i18n-placeholder="setup.teamBPlaceholder">
+          <div class="section-head"><span id="team-label-b" class="team-label team-label-b">🔵 Time B</span></div>
+          <div id="team-b-players" class="flex-col mb"></div>
+          <div class="flex-row">
+            <input class="inp" id="inp-team-b" placeholder="Nome do jogador..." data-enter-submit="team-B"
+              data-i18n-placeholder="setup.playerNamePlaceholder">
+            <button class="btn btn-sm btn-team-b btn-nowrap" data-action="add-team-player" data-team="B"
+              data-i18n="common.add">+ Adicionar</button>
+          </div>
+          <div class="helper-box mt" data-i18n="setup.teamHelper">
+            💡 Mínimo 1 por time, máximo 3 por time (até 6 jogadores)
+          </div>
         </div>
-        <div class="divider"></div>
-        <input class="inp mb-sm" id="team-name-b" placeholder="Nome do Time B" value="Time B" data-team-name="B">
-        <div class="section-head"><span id="team-label-b" class="team-label team-label-b">🔵 Time B</span></div>
-        <div id="team-b-players" class="flex-col mb"></div>
-        <div class="flex-row">
-          <input class="inp" id="inp-team-b" placeholder="Nome do jogador..." data-enter-submit="team-B">
-          <button class="btn btn-sm btn-team-b btn-nowrap" data-action="add-team-player" data-team="B">+ Adicionar</button>
-        </div>
-        <div class="helper-box mt">
-          💡 Mínimo 1 por time, máximo 3 por time (até 6 jogadores)
-        </div>
-      </div>
 
-      <!-- STEP 2 FFA -->
-      <div class="card mb hidden setup-block-players" id="step-ffa">
-        <h2 class="card-title">2️⃣ Jogadores</h2>
-        <div id="ffa-players" class="flex-col mb"></div>
-        <div class="flex-row">
-          <input class="inp" id="inp-ffa" placeholder="Nome do jogador..." data-enter-submit="ffa">
-          <button class="btn btn-secondary btn-sm btn-nowrap" data-action="add-ffa-player">+
-            Adicionar</button>
+        <!-- STEP 2 FFA -->
+        <div class="card mb hidden setup-block-players" id="step-ffa">
+          <h2 class="card-title" data-i18n="setup.playersTitle">2️⃣ Jogadores</h2>
+          <div id="ffa-players" class="flex-col mb"></div>
+          <div class="flex-row">
+            <input class="inp" id="inp-ffa" placeholder="Nome do jogador..." data-enter-submit="ffa"
+              data-i18n-placeholder="setup.playerNamePlaceholder">
+            <button class="btn btn-secondary btn-sm btn-nowrap" data-action="add-ffa-player" data-i18n="common.add">+ Adicionar</button>
+          </div>
+          <div class="helper-box mt" data-i18n="setup.ffaHelper">
+            💡 Mínimo 3, máximo 6 jogadores
+          </div>
         </div>
-        <div class="helper-box mt">
-          💡 Mínimo 3, máximo 6 jogadores
-        </div>
-      </div>
 
-      <!-- STEP 3: DIFFICULTY -->
-      <div class="card mb">
-        <h2 class="card-title">3️⃣ Dificuldade</h2>
-        <div class="diff-grid">
-          <div class="diff-card easy selected" id="diff-easy" data-difficulty="easy">
-            <div class="diff-icon">🌱</div>
-            <div class="diff-name">Fácil</div>
-            <div class="diff-desc">Ótimo para crianças e iniciantes</div>
+        <!-- STEP 3: DIFFICULTY -->
+        <div class="card mb">
+          <h2 class="card-title" data-i18n="setup.difficultyTitle">3️⃣ Dificuldade</h2>
+          <div class="diff-grid">
+            <div class="diff-card easy selected" id="diff-easy" data-difficulty="easy">
+              <div class="diff-icon">🌱</div>
+              <div class="diff-name" data-i18n="difficulty.easy">Fácil</div>
+              <div class="diff-desc" data-i18n="setup.difficultyEasyDesc">Ótimo para crianças e iniciantes</div>
+            </div>
+            <div class="diff-card normal" id="diff-normal" data-difficulty="normal">
+              <div class="diff-icon">⚡</div>
+              <div class="diff-name" data-i18n="difficulty.normal">Normal</div>
+              <div class="diff-desc" data-i18n="setup.difficultyNormalDesc">Desafio equilibrado para a família</div>
+            </div>
+            <div class="diff-card hard" id="diff-hard" data-difficulty="hard">
+              <div class="diff-icon">🔥</div>
+              <div class="diff-name" data-i18n="difficulty.hard">Difícil</div>
+              <div class="diff-desc" data-i18n="setup.difficultyHardDesc">Palavras complexas, para os corajosos!</div>
+            </div>
           </div>
-          <div class="diff-card normal" id="diff-normal" data-difficulty="normal">
-            <div class="diff-icon">⚡</div>
-            <div class="diff-name">Normal</div>
-            <div class="diff-desc">Desafio equilibrado para a família</div>
-          </div>
-          <div class="diff-card hard" id="diff-hard" data-difficulty="hard">
-            <div class="diff-icon">🔥</div>
-            <div class="diff-name">Difícil</div>
-            <div class="diff-desc">Palavras complexas, para os corajosos!</div>
-          </div>
+          <div id="diff-word-count" class="text-meta center mt-sm"></div>
         </div>
-        <div id="diff-word-count" class="text-meta center mt-sm"></div>
-      </div>
 
-      <!-- STEP 4: CHALLENGE & CATEGORIES -->
-      <div class="card mb">
-        <h2 class="card-title">4️⃣ Opções de Jogo</h2>
-        <div class="toggle-wrap">
-          <div>
-            <div class="toggle-label">Desafio Aleatório</div>
-            <div class="toggle-sub">Adiciona modificadores à mímica</div>
+        <!-- STEP 4: CHALLENGE & CATEGORIES -->
+        <div class="card mb">
+          <h2 class="card-title" data-i18n="setup.optionsTitle">4️⃣ Opções de Jogo</h2>
+          <div class="toggle-wrap">
+            <div>
+              <div class="toggle-label" data-i18n="setup.randomChallengeLabel">Desafio Aleatório</div>
+              <div class="toggle-sub" data-i18n="setup.randomChallengeSub">Adiciona modificadores à mímica</div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="random-challenge-toggle">
+              <span class="toggle-slider"></span>
+            </label>
           </div>
-          <label class="toggle">
-            <input type="checkbox" id="random-challenge-toggle">
-            <span class="toggle-slider"></span>
-          </label>
-        </div>
-        <div class="mt">
-          <div class="toggle-label mb-xs">Categorias Disponíveis</div>
-          <div class="category-grid" id="category-selection">
-            <!-- Categories will be populated by JS -->
+          <div class="mt">
+            <div class="toggle-label mb-xs" data-i18n="setup.categoriesLabel">Categorias Disponíveis</div>
+            <div class="category-grid" id="category-selection">
+              <!-- Categories will be populated by JS -->
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- STEP 5: ROUNDS -->
-      <div class="card mb">
-        <h2 class="card-title">5️⃣ Configurar Partida</h2>
-        <div class="toggle-wrap toggle-wrap-last">
-          <div>
-            <div class="toggle-label">Número de Rodadas</div>
-            <div class="toggle-sub">Quantas rodadas por jogador</div>
-          </div>
-          <div class="range-wrap range-wrap-fixed">
-            <input type="range" class="range-inp" id="rounds-slider" min="1" max="5" value="3">
-            <div class="range-val" id="rounds-val">3</div>
+        <!-- STEP 5: ROUNDS -->
+        <div class="card mb">
+          <h2 class="card-title" data-i18n="setup.matchTitle">5️⃣ Configurar Partida</h2>
+          <div class="toggle-wrap toggle-wrap-last">
+            <div>
+              <div class="toggle-label" data-i18n="setup.roundsLabel">Número de Rodadas</div>
+              <div class="toggle-sub" data-i18n="setup.roundsSub">Quantas rodadas por jogador</div>
+            </div>
+            <div class="range-wrap range-wrap-fixed">
+              <input type="range" class="range-inp" id="rounds-slider" min="1" max="5" value="3">
+              <div class="range-val" id="rounds-val">3</div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <button class="btn btn-primary btn-lg btn-block mb-lg setup-cta" data-action="start-game">🎭 Começar o
-        Jogo!</button>
+        <button class="btn btn-primary btn-lg btn-block mb-lg setup-cta" data-action="start-game" data-i18n="setup.startGame">🎭 Começar o
+          Jogo!</button>
       </div>
     </div>
   </div>
@@ -217,11 +223,11 @@
     <div class="page-shell page-shell-game">
       <div class="action-row action-row-between mb-sm">
         <div class="round-info" id="round-display">Rodada 1 de 3</div>
-        <button class="btn btn-ghost btn-sm" data-action="confirm-restart">🔄 Reiniciar</button>
+        <button class="btn btn-ghost btn-sm" data-action="confirm-restart" data-i18n="common.restart">🔄 Reiniciar</button>
       </div>
       <div id="score-mini" class="score-mini-row"></div>
       <div class="current-player">
-        <div class="cp-label">Vez de fazer a mímica:</div>
+        <div class="cp-label" data-i18n="game.currentPlayerLabel">Vez de fazer a mímica:</div>
         <div class="cp-name" id="current-player-name">--</div>
         <div id="current-team-badge" class="mt-xs"></div>
       </div>
@@ -229,17 +235,18 @@
       <!-- PREPARING -->
       <div id="preparing-state" class="card center">
         <div class="emoji-hero mb-sm">🎭</div>
-        <h2 class="section-title section-title-light mb-xs">Prontos para ver a palavra?</h2>
-        <div class="text-sm mb-lg">Só o mimo deve ver! Os outros fechem os olhos! 👀</div>
-        <button class="btn btn-primary btn-lg btn-block" data-action="reveal-word">🎲 Revelar Palavra</button>
+        <h2 class="section-title section-title-light mb-xs" data-i18n="game.readyTitle">Prontos para ver a palavra?</h2>
+        <div class="text-sm mb-lg" data-i18n="game.readySub">Só o mimo deve ver! Os outros fechem os olhos! 👀</div>
+        <button class="btn btn-primary btn-lg btn-block" data-action="reveal-word" data-i18n="game.revealWord">🎲 Revelar Palavra</button>
       </div>
 
       <!-- MEMORIZE -->
       <div id="memorize-state" class="hidden">
         <div class="center mb-sm">
-          <div class="eyebrow eyebrow-accent mb-xs">
-            ⚡ Memorize a palavra!</div>
-          <div class="text-meta">O jogo começa em...</div>
+          <div class="eyebrow eyebrow-accent mb-xs" data-i18n="game.memorizeTitle">
+            ⚡ Memorize a palavra!
+          </div>
+          <div class="text-meta" data-i18n="game.startsIn">O jogo começa em...</div>
         </div>
         <div class="action-row action-row-center mb">
           <div class="countdown-wrap">
@@ -248,17 +255,17 @@
               <circle id="memCircle" cx="40" cy="40" r="34" fill="none" stroke="#c77dff" stroke-width="6"
                 stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="0" class="countdown-progress" />
             </svg>
-            <div id="mem-num" class="countdown-number">
-              5</div>
+            <div id="mem-num" class="countdown-number">5</div>
           </div>
         </div>
         <div class="word-card word-card-memorize">
           <div class="word-text word-text-memorize" id="mem-word-display">---</div>
           <div id="mem-challenge-display" class="challenge-text hidden">
-            🎯 Desafio: <span id="mem-challenge-text">---</span>
+            <span data-i18n="game.challengePrefix">🎯 Desafio:</span> <span id="mem-challenge-text">---</span>
           </div>
-          <div class="eyebrow eyebrow-muted mt-xs">
-            Só o mimo pode ver!</div>
+          <div class="eyebrow eyebrow-muted mt-xs" data-i18n="game.onlyMimeCanSee">
+            Só o mimo pode ver!
+          </div>
         </div>
       </div>
 
@@ -273,36 +280,37 @@
                   stroke-dashoffset="0" />
               </svg>
               <div class="timer-num" id="timer-num">60</div>
-              <div class="timer-label">SEGUNDOS</div>
+              <div class="timer-label" data-i18n="game.secondsLabel">SEGUNDOS</div>
             </div>
           </div>
           <div class="game-play-main">
             <div class="word-card">
               <div id="word-hidden-placeholder" class="word-placeholder">
                 <div class="emoji-xl emoji-tight">🙈</div>
-                <div class="eyebrow eyebrow-muted">
-                  Palavra oculta</div>
+                <div class="eyebrow eyebrow-muted" data-i18n="game.hiddenWord">
+                  Palavra oculta
+                </div>
               </div>
               <div id="word-visible-content" class="hidden">
                 <div class="word-text" id="word-display">---</div>
                 <div id="game-challenge-display" class="challenge-text hidden">
-                  🎯 Desafio: <span id="game-challenge-text">---</span>
+                  <span data-i18n="game.challengePrefix">🎯 Desafio:</span> <span id="game-challenge-text">---</span>
                 </div>
               </div>
               <div id="hint-banner" class="hint-banner hidden">
-                <div class="eyebrow eyebrow-hint mb-xxs">
-                  💡 Dica</div>
-                <div id="hint-text" class="hint-text">---
+                <div class="eyebrow eyebrow-hint mb-xxs" data-i18n="game.hintTitle">
+                  💡 Dica
                 </div>
+                <div id="hint-text" class="hint-text">---</div>
               </div>
             </div>
             <div class="action-row action-row-center action-row-compact">
-              <button id="btn-toggle-word" class="btn btn-ghost btn-sm" data-action="toggle-word">👁️ Mostrar
+              <button id="btn-toggle-word" class="btn btn-ghost btn-sm" data-action="toggle-word" data-i18n="game.showWord">👁️ Mostrar
                 palavra</button>
             </div>
             <div class="game-actions-grid">
-              <button class="btn btn-success btn-lg" data-action="mark-correct">✅ Acertou!</button>
-              <button class="btn btn-danger btn-lg" data-action="mark-wrong">❌ Errou / Skip</button>
+              <button class="btn btn-success btn-lg" data-action="mark-correct" data-i18n="game.correct">✅ Acertou!</button>
+              <button class="btn btn-danger btn-lg" data-action="mark-wrong" data-i18n="game.wrong">❌ Errou / Skip</button>
             </div>
           </div>
         </div>
@@ -313,15 +321,15 @@
   <!-- ========== SCOREBOARD ========== -->
   <div class="screen" id="screen-score">
     <div class="page-shell">
-      <h1 class="hero-title hero-title-score">🏆 Placar</h1>
+      <h1 class="hero-title hero-title-score" data-i18n="score.title">🏆 Placar</h1>
       <div class="text-sm center mb" id="score-subtitle"></div>
       <div id="scoreboard-list" class="mb"></div>
       <div class="card mb">
-        <h2 class="card-title card-title-sm">🎊 Próxima Rodada</h2>
+        <h2 class="card-title card-title-sm" data-i18n="score.nextRoundTitle">🎊 Próxima Rodada</h2>
         <div id="next-round-info" class="text-sm mb"></div>
         <div class="action-row">
-          <button class="btn btn-primary btn-block" data-action="continue-game">▶️ Continuar</button>
-          <button class="btn btn-ghost btn-block" data-action="confirm-restart">🔄 Reiniciar</button>
+          <button class="btn btn-primary btn-block" data-action="continue-game" data-i18n="common.continue">▶️ Continuar</button>
+          <button class="btn btn-ghost btn-block" data-action="confirm-restart" data-i18n="common.restart">🔄 Reiniciar</button>
         </div>
       </div>
     </div>
@@ -332,14 +340,14 @@
     <div class="page-shell center">
       <div class="emoji-trophy mb-sm" id="final-trophy">🏆</div>
       <h1 class="logo logo-final" id="final-winner">--</h1>
-      <p class="logo-sub">VENCEDOR!</p>
+      <p class="logo-sub" data-i18n="final.winnerLabel">VENCEDOR!</p>
       <div class="card my-lg text-left">
-        <h2 class="card-title">📊 Resultado Final</h2>
+        <h2 class="card-title" data-i18n="final.resultTitle">📊 Resultado Final</h2>
         <div id="final-scoreboard"></div>
       </div>
       <div class="action-row action-row-wrap">
-        <button class="btn btn-primary btn-lg btn-block" data-action="confirm-restart">🎮 Jogar de Novo</button>
-        <button class="btn btn-ghost btn-block" data-nav="home">🏠 Início</button>
+        <button class="btn btn-primary btn-lg btn-block" data-action="confirm-restart" data-i18n="final.playAgain">🎮 Jogar de Novo</button>
+        <button class="btn btn-ghost btn-block" data-nav="home" data-i18n="common.home">🏠 Início</button>
       </div>
     </div>
   </div>
@@ -348,65 +356,69 @@
   <div class="screen" id="screen-wordbank">
     <div class="page-shell">
       <header class="page-header page-header-tight">
-        <button class="btn btn-ghost btn-sm" data-nav="home">← Voltar</button>
-        <h1 class="page-title">Banco de Palavras</h1>
+        <button class="btn btn-ghost btn-sm" data-nav="home" data-i18n="common.back">← Voltar</button>
+        <h1 class="page-title" data-i18n="wordbank.title">Banco de Palavras</h1>
       </header>
       <div class="wordbank-layout">
         <div class="wordbank-sidebar">
           <div class="card wordbank-filter-card">
 
-      <!-- DIFFICULTY SELECTOR -->
+            <!-- DIFFICULTY SELECTOR -->
             <div class="diff-grid mb-sm">
               <div class="diff-card easy selected" id="wb-diff-easy" data-wb-difficulty="easy">
                 <div class="diff-icon">🌱</div>
-                <div class="diff-name">Fácil</div>
+                <div class="diff-name" data-i18n="difficulty.easy">Fácil</div>
               </div>
               <div class="diff-card normal" id="wb-diff-normal" data-wb-difficulty="normal">
                 <div class="diff-icon">⚡</div>
-                <div class="diff-name">Normal</div>
+                <div class="diff-name" data-i18n="difficulty.normal">Normal</div>
               </div>
               <div class="diff-card hard" id="wb-diff-hard" data-wb-difficulty="hard">
                 <div class="diff-icon">🔥</div>
-                <div class="diff-name">Difícil</div>
+                <div class="diff-name" data-i18n="difficulty.hard">Difícil</div>
               </div>
             </div>
 
-      <!-- CATEGORY TABS -->
+            <!-- CATEGORY TABS -->
             <div class="tab-bar wordbank-tabs">
-              <button class="tab-btn active" data-wb-tab="objects" id="tab-objects">🧸 Objetos</button>
-              <button class="tab-btn" data-wb-tab="actions" id="tab-actions">🏃 Ações</button>
-              <button class="tab-btn" data-wb-tab="animals" id="tab-animals">🐾 Animais</button>
-              <button class="tab-btn" data-wb-tab="movies" id="tab-movies">🎬 Filmes</button>
-              <button class="tab-btn" data-wb-tab="professions" id="tab-professions">👔 Profissões</button>
-              <button class="tab-btn" data-wb-tab="celebrities" id="tab-celebrities">⭐ Celebridades</button>
+              <button class="tab-btn active" data-wb-tab="objects" id="tab-objects" data-i18n="category.objects.tab">🧸 Objetos</button>
+              <button class="tab-btn" data-wb-tab="actions" id="tab-actions" data-i18n="category.actions.tab">🏃 Ações</button>
+              <button class="tab-btn" data-wb-tab="animals" id="tab-animals" data-i18n="category.animals.tab">🐾 Animais</button>
+              <button class="tab-btn" data-wb-tab="movies" id="tab-movies" data-i18n="category.movies.tab">🎬 Filmes</button>
+              <button class="tab-btn" data-wb-tab="professions" id="tab-professions" data-i18n="category.professions.tab">👔 Profissões</button>
+              <button class="tab-btn" data-wb-tab="celebrities" id="tab-celebrities" data-i18n="category.celebrities.tab">⭐ Celebridades</button>
             </div>
           </div>
 
-      <!-- ADD WORD -->
+          <!-- ADD WORD -->
           <div class="card mb wordbank-add-card">
-            <h2 class="card-title card-title-sm">➕ Adicionar Palavra</h2>
+            <h2 class="card-title card-title-sm" data-i18n="wordbank.addTitle">➕ Adicionar Palavra</h2>
             <div class="flex-col">
-              <input class="inp" id="inp-new-word" placeholder="Digite a palavra..." data-enter-submit="add-word">
+              <input class="inp" id="inp-new-word" placeholder="Digite a palavra..." data-enter-submit="add-word"
+                data-i18n-placeholder="wordbank.newWordPlaceholder">
               <select class="inp" id="inp-word-cat">
-                <option value="objects">🧸 Objetos</option>
-                <option value="actions">🏃 Ações</option>
-                <option value="animals">🐾 Animais</option>
-                <option value="movies">🎬 Filmes</option>
-                <option value="professions">👔 Profissões</option>
-                <option value="celebrities">⭐ Celebridades</option>
+                <option value="objects" data-i18n="category.objects.option">🧸 Objetos</option>
+                <option value="actions" data-i18n="category.actions.option">🏃 Ações</option>
+                <option value="animals" data-i18n="category.animals.option">🐾 Animais</option>
+                <option value="movies" data-i18n="category.movies.option">🎬 Filmes</option>
+                <option value="professions" data-i18n="category.professions.option">👔 Profissões</option>
+                <option value="celebrities" data-i18n="category.celebrities.option">⭐ Celebridades</option>
               </select>
-              <div class="text-meta px-xs">Será adicionada à dificuldade:
-                <span id="wb-diff-label" class="text-accent">🌱 Fácil</span></div>
-              <button class="btn btn-secondary btn-block" data-action="add-word">➕ Adicionar Palavra</button>
+              <div class="text-meta px-xs"><span data-i18n="wordbank.addToDifficulty">Será adicionada à dificuldade:</span>
+                <span id="wb-diff-label" class="text-accent">🌱 Fácil</span>
+              </div>
+              <button class="btn btn-secondary btn-block" data-action="add-word" data-i18n="wordbank.addButton">➕ Adicionar Palavra</button>
             </div>
           </div>
         </div>
 
-      <!-- LIST -->
+        <!-- LIST -->
         <div class="card wordbank-list-card">
           <div class="action-row action-row-between mb">
-            <h2 class="card-title card-title-sm card-title-inline">📋 Palavras (<span id="word-count">0</span>)</h2>
-            <button class="btn btn-ghost btn-sm" data-action="reset-words">↺ Restaurar</button>
+            <h2 class="card-title card-title-sm card-title-inline">
+              <span data-i18n="wordbank.listTitle">📋 Palavras</span> (<span id="word-count">0</span>)
+            </h2>
+            <button class="btn btn-ghost btn-sm" data-action="reset-words" data-i18n="wordbank.resetButton">↺ Restaurar</button>
           </div>
           <div class="words-container" id="words-list"></div>
         </div>
@@ -418,90 +430,101 @@
   <div class="screen" id="screen-settings">
     <div class="page-shell">
       <header class="page-header">
-        <button class="btn btn-ghost btn-sm" data-nav="home">← Voltar</button>
-        <h1 class="page-title">Configurações</h1>
+        <button class="btn btn-ghost btn-sm" data-nav="home" data-i18n="common.back">← Voltar</button>
+        <h1 class="page-title" data-i18n="settings.title">Configurações</h1>
       </header>
       <div class="settings-grid">
-      <div class="card">
-        <h2 class="card-title">⏱️ Timer</h2>
-        <div class="toggle-wrap">
-          <div>
-            <div class="toggle-label">Tempo por Rodada</div>
-            <div class="toggle-sub">Segundos para adivinhar</div>
+        <div class="card">
+          <h2 class="card-title" data-i18n="settings.timerTitle">⏱️ Timer</h2>
+          <div class="toggle-wrap">
+            <div>
+              <div class="toggle-label" data-i18n="settings.roundTimeLabel">Tempo por Rodada</div>
+              <div class="toggle-sub" data-i18n="settings.roundTimeSub">Segundos para adivinhar</div>
+            </div>
+            <div class="range-wrap range-wrap-fixed">
+              <input type="range" class="range-inp" id="timer-slider" min="20" max="120" step="10" value="60">
+              <div class="range-val" id="timer-val">60s</div>
+            </div>
           </div>
-          <div class="range-wrap range-wrap-fixed">
-            <input type="range" class="range-inp" id="timer-slider" min="20" max="120" step="10" value="60">
-            <div class="range-val" id="timer-val">60s</div>
+          <div class="toggle-wrap toggle-wrap-last">
+            <div>
+              <div class="toggle-label" data-i18n="settings.penaltyLabel">Penalidade por Skip</div>
+              <div class="toggle-sub" data-i18n="settings.penaltySub">−10 pontos ao pular</div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="toggle-penalty">
+              <span class="toggle-slider"></span>
+            </label>
           </div>
         </div>
-        <div class="toggle-wrap toggle-wrap-last">
-          <div>
-            <div class="toggle-label">Penalidade por Skip</div>
-            <div class="toggle-sub">−10 pontos ao pular</div>
+        <div class="card">
+          <h2 class="card-title" data-i18n="settings.generalTitle">⚙️ Configurações Gerais</h2>
+          <div class="flex-col mb">
+            <div>
+              <label class="toggle-label" for="language-select" data-i18n="settings.languageLabel">Idioma</label>
+              <div class="toggle-sub mt-xs" data-i18n="settings.languageSub">Altera a interface e o conteúdo disponível no jogo</div>
+            </div>
+            <select class="inp" id="language-select">
+              <option value="pt" data-i18n="language.pt">Português</option>
+              <option value="en" data-i18n="language.en">English</option>
+              <option value="es" data-i18n="language.es">Español</option>
+            </select>
           </div>
-          <label class="toggle">
-            <input type="checkbox" id="toggle-penalty">
-            <span class="toggle-slider"></span>
-          </label>
-        </div>
-      </div>
-      <div class="card">
-        <h2 class="card-title">⚙️ Configurações Gerais</h2>
-        <div class="toggle-wrap">
-          <div>
-            <div class="toggle-label">Som de Alerta</div>
-            <div class="toggle-sub">Beep nos últimos 10 segundos</div>
+          <div class="toggle-wrap">
+            <div>
+              <div class="toggle-label" data-i18n="settings.alertSoundLabel">Som de Alerta</div>
+              <div class="toggle-sub" data-i18n="settings.alertSoundSub">Beep nos últimos 10 segundos</div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="toggle-sound" checked>
+              <span class="toggle-slider"></span>
+            </label>
           </div>
-          <label class="toggle">
-            <input type="checkbox" id="toggle-sound" checked>
-            <span class="toggle-slider"></span>
-          </label>
-        </div>
-        <div class="toggle-wrap toggle-wrap-last">
-          <div>
-            <div class="toggle-label">Som de Navegação</div>
-            <div class="toggle-sub">Som ao clicar nos botões da interface</div>
+          <div class="toggle-wrap toggle-wrap-last">
+            <div>
+              <div class="toggle-label" data-i18n="settings.navigationSoundLabel">Som de Navegação</div>
+              <div class="toggle-sub" data-i18n="settings.navigationSoundSub">Som ao clicar nos botões da interface</div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="toggle-navigation-sound" checked>
+              <span class="toggle-slider"></span>
+            </label>
           </div>
-          <label class="toggle">
-            <input type="checkbox" id="toggle-navigation-sound" checked>
-            <span class="toggle-slider"></span>
-          </label>
         </div>
-      </div>
-      <div class="card">
-        <h2 class="card-title">🎲 Palavras</h2>
-        <div class="toggle-wrap toggle-wrap-last">
-          <div>
-            <div class="toggle-label">Embaralhar Palavras</div>
-            <div class="toggle-sub">Ordem aleatória a cada jogo</div>
+        <div class="card">
+          <h2 class="card-title" data-i18n="settings.wordsTitle">🎲 Palavras</h2>
+          <div class="toggle-wrap toggle-wrap-last">
+            <div>
+              <div class="toggle-label" data-i18n="settings.shuffleWordsLabel">Embaralhar Palavras</div>
+              <div class="toggle-sub" data-i18n="settings.shuffleWordsSub">Ordem aleatória a cada jogo</div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="toggle-shuffle" checked>
+              <span class="toggle-slider"></span>
+            </label>
           </div>
-          <label class="toggle">
-            <input type="checkbox" id="toggle-shuffle" checked>
-            <span class="toggle-slider"></span>
-          </label>
         </div>
-      </div>
-      <div class="card">
-        <h2 class="card-title">🎨 Aparência</h2>
-        <div class="flex-col">
-          <div>
-            <label class="toggle-label" for="theme-select">Tema visual</label>
-            <div class="toggle-sub mt-xs">Troque cores, transparências e tipografia da interface</div>
+        <div class="card">
+          <h2 class="card-title" data-i18n="settings.appearanceTitle">🎨 Aparência</h2>
+          <div class="flex-col">
+            <div>
+              <label class="toggle-label" for="theme-select" data-i18n="settings.themeLabel">Tema visual</label>
+              <div class="toggle-sub mt-xs" data-i18n="settings.themeSub">Troque cores, transparências e tipografia da interface</div>
+            </div>
+            <select class="inp" id="theme-select">
+              <option value="cosmic" data-i18n="theme.cosmic">Cósmico</option>
+              <option value="liquid-glass" data-i18n="theme.liquid-glass">Outono</option>
+              <option value="material3" data-i18n="theme.material3">Primavera</option>
+            </select>
           </div>
-          <select class="inp" id="theme-select">
-            <option value="cosmic">Cósmico</option>
-            <option value="liquid-glass">Outono</option>
-            <option value="material3">Primavera</option>
-          </select>
         </div>
-      </div>
       </div>
     </div>
   </div>
 
   <footer class="site-footer">
-    © 2025 MimiMania v3.0 · Flavio Matiello · Publicado no <a href="https://github.com/matiello" target="_blank"
-      class="site-footer-link">GitHub Pages</a>
+    <span data-i18n="footer.copyPrefix">© 2025 MimiMania v3.0 · Flavio Matiello · Publicado no </span><a href="https://github.com/matiello" target="_blank"
+      class="site-footer-link" data-i18n="footer.githubPages">GitHub Pages</a>
   </footer>
 
   <script src="script.js"></script>

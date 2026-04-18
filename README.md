@@ -23,7 +23,7 @@ This game was created for families who want to have fun with their children and 
 ## 🚀 How to Play
 
 1. **Access the game:**  
-   https://insightxlabgames.github.io/MimiMania
+   https://inisght-x-lab.github.io/MimiMania/
 
 2. **Choose the game mode:**
    * **Two Teams:** Register the names of both teams.

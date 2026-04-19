@@ -422,6 +422,7 @@
               <button class="btn btn-secondary btn-block" data-action="add-word" data-i18n="wordbank.addButton">➕ Adicionar Palavra</button>
             </div>
           </div>
+
         </div>
 
         <!-- LIST -->
@@ -433,6 +434,36 @@
             <button class="btn btn-ghost btn-sm" data-action="reset-words" data-i18n="wordbank.resetButton">↺ Restaurar</button>
           </div>
           <div class="words-container" id="words-list"></div>
+        </div>
+
+        <!-- INSTALL WORD PACK -->
+        <div class="card mb wordbank-install-card">
+          <h2 class="card-title card-title-sm" data-i18n="wordbank.installPackTitle">📦 Instalar pack</h2>
+          <p class="text-sm text-muted mb-sm" data-i18n="wordbank.installPackSub">Envie o arquivo .json comprado para liberar novas palavras neste dispositivo.</p>
+          <input type="file" id="pack-file-input" accept="application/json,.json" hidden>
+          <button class="btn btn-secondary btn-block" data-action="select-pack-file" data-i18n="wordbank.selectPackFile">📁 Escolher arquivo</button>
+          <div id="pack-install-status" class="pack-install-status" role="status"></div>
+          <div class="installed-packs">
+            <div class="installed-packs-title" data-i18n="wordbank.installedPacksTitle">Packs instalados</div>
+            <div id="installed-packs-list" class="installed-packs-list"></div>
+          </div>
+        </div>
+
+        <!-- PREMIUM PACK PREVIEW -->
+        <div class="card wordbank-pack-preview-card">
+          <div class="action-row action-row-between mb">
+            <h2 class="card-title card-title-sm card-title-inline" data-i18n="wordbank.packPreviewTitle">⭐ Conteúdo do pack</h2>
+            <span id="pack-preview-diff-label" class="text-accent">🌱 Fácil</span>
+          </div>
+          <div id="pack-preview-subtitle" class="text-sm mb-sm" data-i18n="wordbank.packPreviewPrompt">Clique em um pack instalado para ver palavras e desafios.</div>
+          <div class="pack-preview-section">
+            <div class="installed-packs-title" data-i18n="wordbank.packPreviewWordsTitle">Palavras do pack</div>
+            <div id="pack-preview-words" class="pack-preview-list"></div>
+          </div>
+          <div class="pack-preview-section">
+            <div class="installed-packs-title" data-i18n="wordbank.packPreviewChallengesTitle">Challenges do pack</div>
+            <div id="pack-preview-challenges" class="pack-preview-list"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -501,6 +532,19 @@
               <input type="checkbox" id="toggle-navigation-sound" checked>
               <span class="toggle-slider"></span>
             </label>
+          </div>
+        </div>
+        <div class="card">
+          <h2 class="card-title" data-i18n="settings.userIdTitle">🪪 ID de compra</h2>
+          <div class="flex-col">
+            <div>
+              <label class="toggle-label" for="user-id-display" data-i18n="settings.userIdLabel">Seu user_id</label>
+              <div class="toggle-sub mt-xs" data-i18n="settings.userIdSub">Use este código na compra de packs para que o arquivo seja emitido para este dispositivo.</div>
+            </div>
+            <div class="copy-row">
+              <input class="inp mono-input" id="user-id-display" readonly>
+              <button class="btn btn-ghost btn-sm" data-action="copy-user-id" data-i18n="settings.copyUserId">Copiar</button>
+            </div>
           </div>
         </div>
         <div class="card">

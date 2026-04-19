@@ -5,7 +5,7 @@
     const QUICK_GAME_KEY = 'mm_quick_game_v1';
     const USER_ID_KEY = 'mm_user_id_v1';
     const APP_STORAGE_PREFIX = 'mm_';
-    const AVAILABLE_THEMES = ['cosmic', 'liquid-glass', 'material3'];
+    const AVAILABLE_THEMES = ['cosmic', 'liquid-glass', 'material3', 'light-mode', 'dark-mode', 'high-contrast'];
     const SUPPORTED_LANGUAGES = ['pt', 'en', 'es'];
     const LANGUAGE_HTML_MAP = { pt: 'pt-BR', en: 'en', es: 'es' };
     const GAME_TYPES = ['mime', 'drawing'];
@@ -283,7 +283,10 @@
         theme: {
           cosmic: 'Cósmico',
           'liquid-glass': 'Outono',
-          material3: 'Primavera'
+          material3: 'Primavera',
+          'light-mode': 'Modo Claro',
+          'dark-mode': 'Modo Escuro',
+          'high-contrast': 'Alto Contraste'
         },
         footer: {
           copyPrefix: '© 2025 MimiMania v4.0 · Insight X Lab Technologies · Publicado no ',
@@ -576,7 +579,10 @@
         theme: {
           cosmic: 'Cosmic',
           'liquid-glass': 'Autumn',
-          material3: 'Spring'
+          material3: 'Spring',
+          'light-mode': 'Light Mode',
+          'dark-mode': 'Dark Mode',
+          'high-contrast': 'High Contrast'
         },
         footer: {
           copyPrefix: '© 2025 MimiMania v4.0 · Insight X Lab Technologies · Published on ',
@@ -869,7 +875,10 @@
         theme: {
           cosmic: 'Cósmico',
           'liquid-glass': 'Otoño',
-          material3: 'Primavera'
+          material3: 'Primavera',
+          'light-mode': 'Modo Claro',
+          'dark-mode': 'Modo Oscuro',
+          'high-contrast': 'Alto Contraste'
         },
         footer: {
           copyPrefix: '© 2025 MimiMania v4.0 · Insight X Lab Technologies · Publicado en ',

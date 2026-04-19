@@ -492,12 +492,12 @@
 
     .btn-team-a {
       background: var(--team1);
-      color: var(--text);
+      color: var(--team1-text, var(--text));
     }
 
     .btn-team-b {
       background: var(--team2);
-      color: var(--text);
+      color: var(--team2-text, var(--text));
     }
 
     .inp {

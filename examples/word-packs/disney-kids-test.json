@@ -3,48 +3,40 @@
   "user_id": "mmu_3c2a4afb-2ad0-45fc-9fbc-21cd668bbe0d",
   "pack_id": "disney-kids-movies-test",
   "signature_algorithm": "ECDSA_P256_SHA256",
-  "content_sha256": "22oFw-iDAZXgoGZ13g71GXWmPCnk8fhIPB8TSlIJVFs",
-  "signature": "qW63u0RTz2LSyHNjxUItks8OqN2xskYyYhWkzejF_SVRlxVhnMMTi6DM-Wi7cn-UpSkZfoT7WR2SwLG0SwQTmw",
+  "content_sha256": "HlJA47hgkXCaC0-dXRpvs6HviB_h_uVA3kTk-qla5Ng",
+  "signature": "KavhxGyHMPCxZsulyWgRu5yD0UXi0JC8r2uS6wPqmVp9ohtbLf0rHHPGpxASWo54f-qjynM1R77qnEYACvnZEw",
   "content": {
     "name": {
-      "pt": "Filmes Infantis da Disney",
-      "en": "Disney Kids Movies",
-      "es": "Películas Infantiles de Disney"
+      "pt": "Pack Interno de Teste",
+      "en": "Internal Test Pack",
+      "es": "Pack Interno de Prueba"
     },
-    "description": {
-      "pt": "Pack de teste com filmes infantis da Disney.",
-      "en": "Test pack with Disney kids movies.",
-      "es": "Pack de prueba con películas infantiles de Disney."
-    },
-    "version": "1.0.0-test",
+    "version": "1.0.0",
     "author": "Insight X Lab Technologies",
     "words": {
       "pt": {
         "easy": {
           "movies": [
-            "Frozen",
-            "Moana",
-            "Aladdin"
+            "Toy Story",
+            "Frozen"
           ]
         },
         "normal": {
           "movies": [
-            "O Rei Leão",
-            "A Pequena Sereia",
-            "Encanto"
+            "Procurando Nemo"
           ]
         },
         "hard": {
           "movies": [
-            "Atlantis",
-            "Raya e o Último Dragão",
-            "O Planeta do Tesouro"
+            "O Castelo Animado"
           ]
         }
       }
     },
     "challenges": {
-      "pt": []
+      "pt": [
+        "Faça em camera lenta"
+      ]
     }
   }
 }

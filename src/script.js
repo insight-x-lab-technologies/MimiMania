@@ -17,13 +17,13 @@
     const WORD_PACK_SCHEMA = 'mimimania.wordpack.v1';
     const PACK_SIGNATURE_ALGORITHM = 'ECDSA_P256_SHA256';
     const PACK_SIGNATURE_CONTEXT = 'mimimania-word-pack:v1';
-    // The app validates purchased packs with a public key only. Replace this
-    // development key with your production ECDSA P-256 public JWK before sales.
+    // The app validates purchased packs with a public key only. Keep the
+    // matching private key outside this repository and use it only internally.
     const PACK_SIGNING_PUBLIC_KEY = {
       kty: 'EC',
       crv: 'P-256',
-      x: 'HKO3JBbIQkmtHzIr_lpVgwrr3PuoVAjpZ_1ett_2MbQ',
-      y: '2B-F3Nim2D13Ym49dh-RRpDj_Z2rsUBqyyWty6LS2Vk',
+      x: 'FJe_7l8WYaFoxOoUr6pQcUkCJtq0yF10kDEqIyLHbqg',
+      y: 'u9aaOBq0dS-14a_64f5LDo_NNIL9CwNYzSH9xlKkTX0',
       ext: true
     };
     const KO_FI_WIDGET_SCRIPT_URL = 'https://storage.ko-fi.com/cdn/scripts/overlay-widget.js';

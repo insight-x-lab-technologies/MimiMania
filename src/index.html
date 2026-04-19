@@ -30,7 +30,7 @@
   <div class="screen active" id="screen-home">
     <div class="page-shell">
       <h1 class="logo">MimiMania</h1>
-      <p class="logo-sub" data-i18n="home.subtitle">🎭 O jogo da mímica</p>
+      <p class="logo-sub" data-i18n="home.subtitle">🎭 Mímica e desenho em família</p>
       <div class="dev-preview-panel mb">
         <div class="dev-preview-copy">
           <div class="eyebrow eyebrow-accent" data-i18n="dev.mode">Modo de desenvolvimento</div>
@@ -73,7 +73,7 @@
               <div class="emoji-lg emoji-fixed">🎭</div>
               <div>
                 <div class="text-strong text-sm-title" data-i18n="home.howTo.turnTitle">Veja e atue</div>
-                <div class="text-sm" data-i18n="home.howTo.turnDesc">Um jogador vê a palavra, memoriza e faz a mímica sem falar enquanto o resto tenta adivinhar.</div>
+                <div class="text-sm" data-i18n="home.howTo.turnDesc">Um jogador vê a palavra, memoriza e faz mímica ou desenha enquanto o resto tenta adivinhar.</div>
               </div>
             </div>
             <div class="media-row media-row-start">
@@ -105,9 +105,26 @@
       </header>
       <div class="setup-grid">
 
+        <!-- GAME TYPE -->
+        <div class="card mb setup-block-game-type">
+          <h2 class="card-title" data-i18n="setup.gameTypeTitle">Tipo do Jogo</h2>
+          <div class="mode-grid">
+            <div class="mode-card selected" id="game-type-mime" data-game-type="mime">
+              <div class="mode-icon">🎭</div>
+              <div class="mode-name" data-i18n="setup.gameTypeMimeName">Mímica</div>
+              <div class="mode-desc" data-i18n="setup.gameTypeMimeDesc">Atue sem falar</div>
+            </div>
+            <div class="mode-card" id="game-type-drawing" data-game-type="drawing">
+              <div class="mode-icon">✏️</div>
+              <div class="mode-name" data-i18n="setup.gameTypeDrawingName">Desenho</div>
+              <div class="mode-desc" data-i18n="setup.gameTypeDrawingDesc">Desenhe a palavra</div>
+            </div>
+          </div>
+        </div>
+
         <!-- STEP 1: MODE -->
-        <div class="card mb setup-block-full">
-          <h2 class="card-title" data-i18n="setup.modeTitle">1️⃣ Modo de Jogo</h2>
+        <div class="card mb setup-block-mode">
+          <h2 class="card-title" data-i18n="setup.modeTitle">Modo de Jogo</h2>
           <div class="mode-grid">
             <div class="mode-card selected" id="mode-teams" data-mode="teams">
               <div class="mode-icon">🤝</div>
@@ -191,10 +208,10 @@
         <!-- STEP 4: CHALLENGE & CATEGORIES -->
         <div class="card mb">
           <h2 class="card-title" data-i18n="setup.optionsTitle">4️⃣ Opções de Jogo</h2>
-          <div class="toggle-wrap">
+          <div class="toggle-wrap" id="random-challenge-wrap">
             <div>
               <div class="toggle-label" data-i18n="setup.randomChallengeLabel">Desafio Aleatório</div>
-              <div class="toggle-sub" data-i18n="setup.randomChallengeSub">Adiciona modificadores à mímica</div>
+              <div class="toggle-sub" id="random-challenge-sub" data-i18n="setup.randomChallengeSub">Adiciona modificadores à mímica</div>
             </div>
             <label class="toggle">
               <input type="checkbox" id="random-challenge-toggle">
@@ -238,17 +255,30 @@
         <button class="btn btn-ghost btn-sm" data-action="confirm-restart" data-i18n="common.restart">🔄 Reiniciar</button>
       </div>
       <div id="score-mini" class="score-mini-row"></div>
-      <div class="current-player">
-        <div class="cp-label" data-i18n="game.currentPlayerLabel">Vez de fazer a mímica:</div>
-        <div class="cp-name" id="current-player-name">--</div>
-        <div id="current-team-badge" class="mt-xs"></div>
+      <div class="game-status-row">
+        <div class="current-player">
+          <div class="cp-label" data-i18n="game.currentPlayerLabel">Vez de fazer a mímica:</div>
+          <div class="cp-name" id="current-player-name">--</div>
+          <div id="current-team-badge" class="mt-xs"></div>
+        </div>
+        <div class="drawing-timer-dock" aria-hidden="true">
+          <div class="timer-wrap timer-wrap-compact">
+            <svg class="timer-svg" viewBox="0 0 160 160">
+              <circle class="timer-track" cx="80" cy="80" r="68" />
+              <circle class="timer-prog" data-timer-circle cx="80" cy="80" r="68" stroke="#ffd93d" stroke-dasharray="427.3"
+                stroke-dashoffset="0" />
+            </svg>
+            <div class="timer-num" data-timer-num>60</div>
+            <div class="timer-label" data-i18n="game.secondsLabel">SEGUNDOS</div>
+          </div>
+        </div>
       </div>
 
       <!-- PREPARING -->
       <div id="preparing-state" class="card center">
-        <div class="emoji-hero mb-sm">🎭</div>
-        <h2 class="section-title section-title-light mb-xs" data-i18n="game.readyTitle">Prontos para ver a palavra?</h2>
-        <div class="text-sm mb-lg" data-i18n="game.readySub">Só o mimo deve ver! Os outros fechem os olhos! 👀</div>
+        <div class="emoji-hero mb-sm" id="game-ready-emoji">🎭</div>
+        <h2 class="section-title section-title-light mb-xs" id="game-ready-title" data-i18n="game.readyTitle">Prontos para ver a palavra?</h2>
+        <div class="text-sm mb-lg" id="game-ready-sub" data-i18n="game.readySub">Só o mimo deve ver! Os outros fechem os olhos! 👀</div>
         <button class="btn btn-primary btn-lg btn-block" data-action="reveal-word" data-i18n="game.revealWord">🎲 Revelar Palavra</button>
       </div>
 
@@ -275,7 +305,7 @@
           <div id="mem-challenge-display" class="challenge-text hidden">
             <span data-i18n="game.challengePrefix">🎯 Desafio:</span> <span id="mem-challenge-text">---</span>
           </div>
-          <div class="eyebrow eyebrow-muted mt-xs" data-i18n="game.onlyMimeCanSee">
+          <div class="eyebrow eyebrow-muted mt-xs" id="game-only-actor-can-see" data-i18n="game.onlyMimeCanSee">
             Só o mimo pode ver!
           </div>
         </div>
@@ -288,10 +318,10 @@
             <div class="timer-wrap">
               <svg class="timer-svg" viewBox="0 0 160 160">
                 <circle class="timer-track" cx="80" cy="80" r="68" />
-                <circle class="timer-prog" id="timerCircle" cx="80" cy="80" r="68" stroke="#ffd93d" stroke-dasharray="427.3"
+                <circle class="timer-prog" id="timerCircle" data-timer-circle cx="80" cy="80" r="68" stroke="#ffd93d" stroke-dasharray="427.3"
                   stroke-dashoffset="0" />
               </svg>
-              <div class="timer-num" id="timer-num">60</div>
+              <div class="timer-num" id="timer-num" data-timer-num>60</div>
               <div class="timer-label" data-i18n="game.secondsLabel">SEGUNDOS</div>
             </div>
           </div>
@@ -319,6 +349,33 @@
             <div class="action-row action-row-center action-row-compact">
               <button id="btn-toggle-word" class="btn btn-ghost btn-sm" data-action="toggle-word" data-i18n="game.showWord">👁️ Mostrar
                 palavra</button>
+            </div>
+            <div class="drawing-board hidden" id="drawing-board">
+              <div class="drawing-canvas-shell">
+                <canvas id="drawing-canvas" aria-label="Área de desenho" data-i18n-aria-label="drawing.canvasLabel"></canvas>
+              </div>
+              <div class="drawing-toolbar" role="toolbar" aria-label="Ferramentas de desenho" data-i18n-aria-label="drawing.toolbarLabel">
+                <button class="btn btn-ghost btn-sm drawing-tool-btn selected" data-action="set-draw-tool" data-tool="pen-thick"
+                  title="Linha grossa" aria-label="Linha grossa" data-i18n-title="drawing.penThick" data-i18n-aria-label="drawing.penThick">
+                  <span class="drawing-tool-icon">⬤</span><span class="drawing-tool-text" data-i18n="drawing.penThick">Linha grossa</span>
+                </button>
+                <button class="btn btn-ghost btn-sm drawing-tool-btn" data-action="set-draw-tool" data-tool="pen-thin"
+                  title="Linha fina" aria-label="Linha fina" data-i18n-title="drawing.penThin" data-i18n-aria-label="drawing.penThin">
+                  <span class="drawing-tool-icon">●</span><span class="drawing-tool-text" data-i18n="drawing.penThin">Linha fina</span>
+                </button>
+                <button class="btn btn-ghost btn-sm drawing-tool-btn" data-action="set-draw-tool" data-tool="eraser-thick"
+                  title="Borracha grossa" aria-label="Borracha grossa" data-i18n-title="drawing.eraserThick" data-i18n-aria-label="drawing.eraserThick">
+                  <span class="drawing-tool-icon">▰</span><span class="drawing-tool-text" data-i18n="drawing.eraserThick">Borracha grossa</span>
+                </button>
+                <button class="btn btn-ghost btn-sm drawing-tool-btn" data-action="set-draw-tool" data-tool="eraser-thin"
+                  title="Borracha fina" aria-label="Borracha fina" data-i18n-title="drawing.eraserThin" data-i18n-aria-label="drawing.eraserThin">
+                  <span class="drawing-tool-icon">▱</span><span class="drawing-tool-text" data-i18n="drawing.eraserThin">Borracha fina</span>
+                </button>
+                <button class="btn btn-ghost btn-sm drawing-tool-btn" data-action="clear-drawing-canvas"
+                  title="Limpar canvas" aria-label="Limpar canvas" data-i18n-title="drawing.clear" data-i18n-aria-label="drawing.clear">
+                  <span class="drawing-tool-icon">⌫</span><span class="drawing-tool-text" data-i18n="drawing.clear">Limpar</span>
+                </button>
+              </div>
             </div>
             <div class="game-actions-grid">
               <button class="btn btn-success btn-lg" data-action="mark-correct" data-i18n="game.correct">✅ Acertou!</button>

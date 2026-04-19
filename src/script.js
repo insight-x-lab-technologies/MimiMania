@@ -8,6 +8,7 @@
     const AVAILABLE_THEMES = ['cosmic', 'liquid-glass', 'material3'];
     const SUPPORTED_LANGUAGES = ['pt', 'en', 'es'];
     const LANGUAGE_HTML_MAP = { pt: 'pt-BR', en: 'en', es: 'es' };
+    const GAME_TYPES = ['mime', 'drawing'];
     const DIFFICULTY_KEYS = ['easy', 'normal', 'hard'];
     const CATEGORY_KEYS = ['objects', 'actions', 'animals', 'movies', 'professions', 'celebrities'];
     const CATEGORY_ICONS = { objects: '🧸', actions: '🏃', animals: '🐾', movies: '🎬', professions: '👔', celebrities: '⭐' };
@@ -95,7 +96,7 @@
           }
         },
         home: {
-          subtitle: '🎭 O jogo da mímica',
+          subtitle: '🎭 Mímica e desenho em família',
           newGame: '🎮 Nova Partida',
           quickGame: '⚡ Jogo Rápido',
           wordBank: '🧩 Conteúdo e Expansões',
@@ -106,7 +107,7 @@
             setupTitle: 'Monte a partida',
             setupDesc: 'Escolha entre times ou todos contra todos, defina rodadas, dificuldade e categorias.',
             turnTitle: 'Veja e atue',
-            turnDesc: 'Um jogador vê a palavra, memoriza e faz a mímica sem falar enquanto o resto tenta adivinhar.',
+            turnDesc: 'Um jogador vê a palavra, memoriza e faz mímica ou desenha enquanto o resto tenta adivinhar.',
             timerTitle: 'Corra contra o tempo',
             timerDesc: 'O cronômetro, as dicas e os sons de alerta ajudam a manter cada turno rápido e divertido.',
             winTitle: 'Marque pontos e vença',
@@ -115,7 +116,12 @@
         },
         setup: {
           title: 'Nova Partida',
-          modeTitle: '1️⃣ Modo de Jogo',
+          gameTypeTitle: 'Tipo do Jogo',
+          gameTypeMimeName: 'Mímica',
+          gameTypeMimeDesc: 'Atue sem falar',
+          gameTypeDrawingName: 'Desenho',
+          gameTypeDrawingDesc: 'Desenhe a palavra',
+          modeTitle: 'Modo de Jogo',
           modeTeamsName: 'Dois Times',
           modeTeamsDesc: 'Equipes competem',
           modeFfaName: 'Cada um por si',
@@ -134,6 +140,7 @@
           optionsTitle: '4️⃣ Opções de Jogo',
           randomChallengeLabel: 'Desafio Aleatório',
           randomChallengeSub: 'Adiciona modificadores à mímica',
+          randomChallengeDisabledSub: 'Indisponível no modo desenho',
           categoriesLabel: 'Categorias Disponíveis',
           coreCategoriesLabel: 'Categorias Core',
           premiumCategoriesLabel: 'Categorias Premium',
@@ -157,12 +164,16 @@
         },
         game: {
           currentPlayerLabel: 'Vez de fazer a mímica:',
+          currentPlayerDrawingLabel: 'Vez de desenhar:',
           readyTitle: 'Prontos para ver a palavra?',
+          readyDrawingTitle: 'Prontos para ver o que desenhar?',
           readySub: 'Só o mimo deve ver! Os outros fechem os olhos! 👀',
+          readyDrawingSub: 'Só quem vai desenhar deve ver! Os outros fechem os olhos! 👀',
           revealWord: '🎲 Revelar Palavra',
           memorizeTitle: '⚡ Memorize a palavra!',
           startsIn: 'O jogo começa em...',
           onlyMimeCanSee: 'Só o mimo pode ver!',
+          onlyDrawerCanSee: 'Só quem desenha pode ver!',
           secondsLabel: 'SEGUNDOS',
           hiddenWord: 'Palavra oculta',
           hintTitle: '💡 Dica',
@@ -171,6 +182,15 @@
           correct: '✅ Acertou!',
           wrong: '❌ Errou / Skip',
           challengePrefix: '🎯 Desafio:'
+        },
+        drawing: {
+          canvasLabel: 'Área de desenho',
+          toolbarLabel: 'Ferramentas de desenho',
+          penThick: 'Linha grossa',
+          penThin: 'Linha fina',
+          eraserThick: 'Borracha grossa',
+          eraserThin: 'Borracha fina',
+          clear: 'Limpar canvas'
         },
         result: {
           correctTitle: 'Acertou!',
@@ -369,7 +389,7 @@
           }
         },
         home: {
-          subtitle: '🎭 The charades game',
+          subtitle: '🎭 Mime and drawing party game',
           newGame: '🎮 New Game',
           quickGame: '⚡ Quick Game',
           wordBank: '🧩 Content & Expansions',
@@ -380,7 +400,7 @@
             setupTitle: 'Set up the match',
             setupDesc: 'Choose teams or free for all, then set rounds, difficulty, and categories.',
             turnTitle: 'See it and act it out',
-            turnDesc: 'One player sees the word, memorizes it, and acts it out without speaking while everyone else guesses.',
+            turnDesc: 'One player sees the word, memorizes it, then acts or draws while everyone else guesses.',
             timerTitle: 'Race against the clock',
             timerDesc: 'The timer, hints, and alert sounds keep every turn fast, clear, and fun.',
             winTitle: 'Score and win',
@@ -389,7 +409,12 @@
         },
         setup: {
           title: 'New Game',
-          modeTitle: '1️⃣ Game Mode',
+          gameTypeTitle: 'Game Type',
+          gameTypeMimeName: 'Mime',
+          gameTypeMimeDesc: 'Act without speaking',
+          gameTypeDrawingName: 'Drawing',
+          gameTypeDrawingDesc: 'Draw the word',
+          modeTitle: 'Game Mode',
           modeTeamsName: 'Two Teams',
           modeTeamsDesc: 'Teams compete',
           modeFfaName: 'Free for All',
@@ -408,6 +433,7 @@
           optionsTitle: '4️⃣ Game Options',
           randomChallengeLabel: 'Random Challenge',
           randomChallengeSub: 'Adds modifiers to the mime',
+          randomChallengeDisabledSub: 'Unavailable in drawing mode',
           categoriesLabel: 'Available Categories',
           coreCategoriesLabel: 'Core Categories',
           premiumCategoriesLabel: 'Premium Categories',
@@ -431,12 +457,16 @@
         },
         game: {
           currentPlayerLabel: 'Current mime player:',
+          currentPlayerDrawingLabel: 'Current drawing player:',
           readyTitle: 'Ready to see the word?',
+          readyDrawingTitle: 'Ready to see what to draw?',
           readySub: 'Only the mime should look! Everyone else close your eyes! 👀',
+          readyDrawingSub: 'Only the drawing player should look! Everyone else close your eyes! 👀',
           revealWord: '🎲 Reveal Word',
           memorizeTitle: '⚡ Memorize the word!',
           startsIn: 'The game starts in...',
           onlyMimeCanSee: 'Only the mime can see it!',
+          onlyDrawerCanSee: 'Only the drawing player can see it!',
           secondsLabel: 'SECONDS',
           hiddenWord: 'Hidden word',
           hintTitle: '💡 Hint',
@@ -445,6 +475,15 @@
           correct: '✅ Correct!',
           wrong: '❌ Wrong / Skip',
           challengePrefix: '🎯 Challenge:'
+        },
+        drawing: {
+          canvasLabel: 'Drawing area',
+          toolbarLabel: 'Drawing tools',
+          penThick: 'Thick line',
+          penThin: 'Thin line',
+          eraserThick: 'Thick eraser',
+          eraserThin: 'Thin eraser',
+          clear: 'Clear canvas'
         },
         result: {
           correctTitle: 'Correct!',
@@ -643,7 +682,7 @@
           }
         },
         home: {
-          subtitle: '🎭 El juego de la mímica',
+          subtitle: '🎭 Mímica y dibujo en familia',
           newGame: '🎮 Nueva Partida',
           quickGame: '⚡ Juego Rápido',
           wordBank: '🧩 Contenido y Expansiones',
@@ -654,7 +693,7 @@
             setupTitle: 'Prepara la partida',
             setupDesc: 'Elige entre equipos o todos contra todos y define rondas, dificultad y categorías.',
             turnTitle: 'Mira y representa',
-            turnDesc: 'Un jugador ve la palabra, la memoriza y hace la mímica sin hablar mientras los demás intentan adivinar.',
+            turnDesc: 'Un jugador ve la palabra, la memoriza y hace mímica o dibuja mientras los demás intentan adivinar.',
             timerTitle: 'Corre contra el tiempo',
             timerDesc: 'El temporizador, las pistas y los sonidos de alerta hacen que cada turno sea rápido y divertido.',
             winTitle: 'Suma puntos y gana',
@@ -663,7 +702,12 @@
         },
         setup: {
           title: 'Nueva Partida',
-          modeTitle: '1️⃣ Modo de Juego',
+          gameTypeTitle: 'Tipo de Juego',
+          gameTypeMimeName: 'Mímica',
+          gameTypeMimeDesc: 'Actúa sin hablar',
+          gameTypeDrawingName: 'Dibujo',
+          gameTypeDrawingDesc: 'Dibuja la palabra',
+          modeTitle: 'Modo de Juego',
           modeTeamsName: 'Dos Equipos',
           modeTeamsDesc: 'Compiten por equipos',
           modeFfaName: 'Todos contra todos',
@@ -682,6 +726,7 @@
           optionsTitle: '4️⃣ Opciones de Juego',
           randomChallengeLabel: 'Desafío Aleatorio',
           randomChallengeSub: 'Añade modificadores a la mímica',
+          randomChallengeDisabledSub: 'No disponible en modo dibujo',
           categoriesLabel: 'Categorías Disponibles',
           coreCategoriesLabel: 'Categorías Core',
           premiumCategoriesLabel: 'Categorías Premium',
@@ -705,12 +750,16 @@
         },
         game: {
           currentPlayerLabel: 'Turno de hacer la mímica:',
+          currentPlayerDrawingLabel: 'Turno de dibujar:',
           readyTitle: '¿Listos para ver la palabra?',
+          readyDrawingTitle: '¿Listos para ver qué dibujar?',
           readySub: '¡Solo el mimo debe mirar! ¡Los demás cierren los ojos! 👀',
+          readyDrawingSub: '¡Solo quien va a dibujar debe mirar! ¡Los demás cierren los ojos! 👀',
           revealWord: '🎲 Mostrar Palabra',
           memorizeTitle: '⚡ ¡Memoriza la palabra!',
           startsIn: 'El juego empieza en...',
           onlyMimeCanSee: '¡Solo el mimo puede verla!',
+          onlyDrawerCanSee: '¡Solo quien dibuja puede verla!',
           secondsLabel: 'SEGUNDOS',
           hiddenWord: 'Palabra oculta',
           hintTitle: '💡 Pista',
@@ -719,6 +768,15 @@
           correct: '✅ ¡Acertó!',
           wrong: '❌ Error / Skip',
           challengePrefix: '🎯 Desafío:'
+        },
+        drawing: {
+          canvasLabel: 'Área de dibujo',
+          toolbarLabel: 'Herramientas de dibujo',
+          penThick: 'Línea gruesa',
+          penThin: 'Línea fina',
+          eraserThick: 'Borrador grueso',
+          eraserThin: 'Borrador fino',
+          clear: 'Limpiar canvas'
         },
         result: {
           correctTitle: '¡Acertó!',
@@ -1859,11 +1917,12 @@
 
     function getQuickGameSummary(config) {
       const normalized = normalizeQuickGameConfig(config);
+      const gameTypeLabel = t(`setup.${normalized.gameType === 'drawing' ? 'gameTypeDrawingName' : 'gameTypeMimeName'}`);
       const modeLabel = normalized.mode === 'teams' ? t('setup.modeTeamsName') : t('setup.modeFfaName');
       const playerCountLabel = formatCount(getQuickGamePlayerCount(normalized), 'common.playerSingular', 'common.playerPlural');
       const categoriesLabel = normalized.selectedCategories.map(category => getCategoryLabel(category)).join(', ');
       const roundsLabel = formatCount(normalized.rounds, 'common.roundSingular', 'common.roundPlural');
-      return [modeLabel, playerCountLabel, categoriesLabel, roundsLabel].join(' | ');
+      return [gameTypeLabel, modeLabel, playerCountLabel, categoriesLabel, roundsLabel].join(' | ');
     }
 
     function renderQuickGameSummary() {
@@ -1883,6 +1942,7 @@
     }
 
     let gameState = {
+      gameType: 'mime',
       mode: 'teams',
       difficulty: 'easy',
       teams: { A: [], B: [] },
@@ -1906,6 +1966,22 @@
       turnsDone: 0,
       randomChallenge: false,
       selectedCategories: getDefaultSelectedCategories()
+    };
+
+    const DRAWING_TOOL_CONFIG = {
+      'pen-thick': { color: '#111827', width: 12 },
+      'pen-thin': { color: '#111827', width: 4 },
+      'eraser-thick': { color: '#ffffff', width: 32 },
+      'eraser-thin': { color: '#ffffff', width: 12 }
+    };
+
+    const drawingState = {
+      canvas: null,
+      ctx: null,
+      activeTool: 'pen-thick',
+      isDrawing: false,
+      lastX: 0,
+      lastY: 0
     };
 
     let wbDiff = 'easy';
@@ -1941,12 +2017,21 @@
         el.placeholder = t(el.dataset.i18nPlaceholder);
       });
 
+      document.querySelectorAll('[data-i18n-title]').forEach(el => {
+        el.title = t(el.dataset.i18nTitle);
+      });
+
+      document.querySelectorAll('[data-i18n-aria-label]').forEach(el => {
+        el.setAttribute('aria-label', t(el.dataset.i18nAriaLabel));
+      });
+
       const languageSelect = document.getElementById('language-select');
       if (languageSelect) languageSelect.value = currentLanguage;
     }
 
     function refreshLocalizedUI() {
       applyTranslations();
+      refreshGameTypeUI();
       renderQuickGameSummary();
       updateTeamLabels();
       renderCategorySelection();
@@ -1994,6 +2079,7 @@
         renderPackPreview();
       }
       if (screen === 'setup') {
+        refreshGameTypeUI();
         renderSetupPlayers();
         updateDiffWordCount();
         renderCategorySelection();
@@ -2541,6 +2627,52 @@
     // ============================================================
     // SETUP
     // ============================================================
+    function syncDrawingBoardVisibility(options = {}) {
+      const { reset = false } = options;
+      const board = document.getElementById('drawing-board');
+      if (!board) return;
+      const shouldShow = gameState.gameType === 'drawing' && gameState.phase === 'playing';
+      board.classList.toggle('hidden', !shouldShow);
+      if (shouldShow) requestAnimationFrame(() => resizeDrawingCanvas({ preserve: !reset }));
+    }
+
+    function refreshGameTypeUI() {
+      const isDrawing = gameState.gameType === 'drawing';
+      document.body.dataset.gameType = gameState.gameType;
+      GAME_TYPES.forEach(type => {
+        const card = document.getElementById(`game-type-${type}`);
+        if (card) card.classList.toggle('selected', gameState.gameType === type);
+      });
+
+      const challengeToggle = document.getElementById('random-challenge-toggle');
+      const challengeWrap = document.getElementById('random-challenge-wrap');
+      const challengeSub = document.getElementById('random-challenge-sub');
+      if (isDrawing) {
+        gameState.randomChallenge = false;
+        if (challengeToggle) challengeToggle.checked = false;
+      }
+      if (challengeToggle) challengeToggle.disabled = isDrawing;
+      if (challengeWrap) challengeWrap.classList.toggle('is-disabled', isDrawing);
+      if (challengeSub) challengeSub.textContent = t(isDrawing ? 'setup.randomChallengeDisabledSub' : 'setup.randomChallengeSub');
+
+      const currentLabel = document.querySelector('.current-player .cp-label');
+      if (currentLabel) currentLabel.textContent = t(isDrawing ? 'game.currentPlayerDrawingLabel' : 'game.currentPlayerLabel');
+      const readyEmoji = document.getElementById('game-ready-emoji');
+      if (readyEmoji) readyEmoji.textContent = isDrawing ? '✏️' : '🎭';
+      const readyTitle = document.getElementById('game-ready-title');
+      if (readyTitle) readyTitle.textContent = t(isDrawing ? 'game.readyDrawingTitle' : 'game.readyTitle');
+      const readySub = document.getElementById('game-ready-sub');
+      if (readySub) readySub.textContent = t(isDrawing ? 'game.readyDrawingSub' : 'game.readySub');
+      const actorOnly = document.getElementById('game-only-actor-can-see');
+      if (actorOnly) actorOnly.textContent = t(isDrawing ? 'game.onlyDrawerCanSee' : 'game.onlyMimeCanSee');
+      syncDrawingBoardVisibility();
+    }
+
+    function selectGameType(type) {
+      gameState.gameType = GAME_TYPES.includes(type) ? type : 'mime';
+      refreshGameTypeUI();
+    }
+
     function updateDiffWordCount() {
       const total = countWordsForSelectedCategories(gameState.selectedCategories, gameState.difficulty);
       document.getElementById('diff-word-count').textContent = t('dynamic.diffCount', {
@@ -2550,7 +2682,8 @@
     }
 
     function toggleRandomChallenge(enabled) {
-      gameState.randomChallenge = enabled;
+      gameState.randomChallenge = gameState.gameType === 'mime' && enabled;
+      refreshGameTypeUI();
     }
 
     function toggleCategory(category) {
@@ -2689,6 +2822,7 @@
     }
 
     function normalizeQuickGameConfig(config) {
+      const gameType = config?.gameType === 'drawing' ? 'drawing' : 'mime';
       const mode = config?.mode === 'teams' ? 'teams' : 'ffa';
       const difficulty = DIFFICULTY_KEYS.includes(config?.difficulty) ? config.difficulty : 'easy';
       const rounds = Math.min(5, Math.max(1, parseInt(config?.rounds, 10) || 3));
@@ -2703,10 +2837,11 @@
         ? config.players.map(name => String(name).trim()).filter(Boolean).slice(0, 6)
         : [];
       return {
+        gameType,
         mode,
         difficulty,
         rounds,
-        randomChallenge: Boolean(config?.randomChallenge),
+        randomChallenge: gameType === 'mime' && Boolean(config?.randomChallenge),
         selectedCategories,
         teams,
         players,
@@ -2719,6 +2854,7 @@
 
     function buildQuickGameConfig() {
       return normalizeQuickGameConfig({
+        gameType: gameState.gameType,
         mode: gameState.mode,
         difficulty: gameState.difficulty,
         rounds: parseInt(document.getElementById('rounds-slider').value, 10) || gameState.totalRounds || 3,
@@ -2737,6 +2873,7 @@
 
     function getFirstAccessQuickGameConfig() {
       return normalizeQuickGameConfig({
+        gameType: 'mime',
         mode: 'ffa',
         difficulty: 'easy',
         rounds: 3,
@@ -2761,6 +2898,7 @@
 
     function applyQuickGameConfig(config) {
       const normalized = normalizeQuickGameConfig(config);
+      selectGameType(normalized.gameType);
       selectMode(normalized.mode, { skipLoadPlayers: true });
       gameState.teams = clone(normalized.teams);
       gameState.players = normalized.mode === 'ffa' ? [...normalized.players] : [];
@@ -2774,6 +2912,7 @@
       updateTeamLabels();
       renderSetupPlayers();
       renderCategorySelection();
+      refreshGameTypeUI();
     }
 
     function startQuickGame() {
@@ -2788,6 +2927,12 @@
       const rounds = parseInt(document.getElementById('rounds-slider').value, 10);
       gameState.totalRounds = rounds;
       gameState.timerDur = parseInt(document.getElementById('timer-slider').value, 10) || 60;
+      if (gameState.gameType === 'drawing') {
+        gameState.randomChallenge = false;
+        const randomToggle = document.getElementById('random-challenge-toggle');
+        if (randomToggle) randomToggle.checked = false;
+      }
+      refreshGameTypeUI();
 
       if (gameState.mode === 'teams') {
         const teamA = gameState.teams.A || [];
@@ -2872,6 +3017,8 @@
       gameState.currentChallenge = null;
       gameState.hintShown = false;
       gameState.wordVisible = false;
+      gameState.timerLeft = gameState.timerDur;
+      updateTimerDisplay(gameState.timerDur, gameState.timerDur);
       document.getElementById('round-display').textContent = t('dynamic.roundDisplay', {
         current: gameState.currentRound,
         total: gameState.totalRounds
@@ -2884,6 +3031,8 @@
       document.getElementById('word-hidden-placeholder').classList.remove('hidden');
       document.getElementById('word-visible-content').classList.add('hidden');
       document.getElementById('btn-toggle-word').textContent = t('game.showWord');
+      refreshGameTypeUI();
+      syncDrawingBoardVisibility();
       renderScoreMini();
     }
 
@@ -2931,6 +3080,7 @@
           document.getElementById('memorize-state').classList.add('hidden');
           document.getElementById('playing-state').classList.remove('hidden');
           gameState.phase = 'playing';
+          syncDrawingBoardVisibility({ reset: true });
           playAlertBeep(880);
           startTimer();
         }
@@ -2997,7 +3147,7 @@
       gameState.usedWords.push(picked.word);
 
       gameState.currentChallenge = null;
-      if (gameState.randomChallenge) {
+      if (gameState.gameType === 'mime' && gameState.randomChallenge) {
         const challenges = getLocalizedChallenges();
         if (challenges.length) {
           gameState.currentChallenge = challenges[Math.floor(Math.random() * challenges.length)];
@@ -3038,19 +3188,135 @@
     }
 
     function updateTimerDisplay(left, total) {
-      document.getElementById('timer-num').textContent = left;
-      const circ = document.getElementById('timerCircle');
-      circ.style.strokeDashoffset = 427.3 - (left / total) * 427.3;
-      circ.style.stroke = left > total * 0.5
+      const strokeOffset = 427.3 - (left / total) * 427.3;
+      const strokeColor = left > total * 0.5
         ? getThemeVar('--timer-color-safe')
         : left > total * 0.25
           ? getThemeVar('--timer-color-warning')
           : getThemeVar('--timer-color-danger');
+      document.querySelectorAll('[data-timer-num]').forEach(el => {
+        el.textContent = left;
+      });
+      document.querySelectorAll('[data-timer-circle]').forEach(circ => {
+        circ.style.strokeDashoffset = strokeOffset;
+        circ.style.stroke = strokeColor;
+      });
     }
 
     function updateTimerLabel(val) {
       document.getElementById('timer-val').textContent = `${val}s`;
       gameState.timerDur = parseInt(val, 10);
+    }
+
+    // ============================================================
+    // DRAWING CANVAS
+    // ============================================================
+    function getDrawingPoint(event) {
+      const rect = drawingState.canvas.getBoundingClientRect();
+      return {
+        x: event.clientX - rect.left,
+        y: event.clientY - rect.top
+      };
+    }
+
+    function resizeDrawingCanvas(options = {}) {
+      const { preserve = true } = options;
+      const canvas = drawingState.canvas || document.getElementById('drawing-canvas');
+      if (!canvas) return;
+      drawingState.canvas = canvas;
+      const rect = canvas.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+
+      const previous = preserve && canvas.width && canvas.height ? document.createElement('canvas') : null;
+      if (previous) {
+        previous.width = canvas.width;
+        previous.height = canvas.height;
+        previous.getContext('2d').drawImage(canvas, 0, 0);
+      }
+
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = Math.max(1, Math.round(rect.width * dpr));
+      canvas.height = Math.max(1, Math.round(rect.height * dpr));
+      const ctx = canvas.getContext('2d');
+      drawingState.ctx = ctx;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, rect.width, rect.height);
+      if (previous) {
+        ctx.drawImage(previous, 0, 0, previous.width, previous.height, 0, 0, rect.width, rect.height);
+      }
+    }
+
+    function clearDrawingCanvas() {
+      resizeDrawingCanvas({ preserve: false });
+    }
+
+    function selectDrawingTool(tool) {
+      if (!DRAWING_TOOL_CONFIG[tool]) return;
+      drawingState.activeTool = tool;
+      document.querySelectorAll('[data-tool]').forEach(button => {
+        button.classList.toggle('selected', button.dataset.tool === tool);
+      });
+    }
+
+    function strokeDrawingLine(from, to) {
+      if (!drawingState.ctx) resizeDrawingCanvas();
+      const ctx = drawingState.ctx;
+      const tool = DRAWING_TOOL_CONFIG[drawingState.activeTool] || DRAWING_TOOL_CONFIG['pen-thick'];
+      ctx.save();
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.strokeStyle = tool.color;
+      ctx.lineWidth = tool.width;
+      ctx.beginPath();
+      ctx.moveTo(from.x, from.y);
+      ctx.lineTo(to.x, to.y);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function startDrawing(event) {
+      if (gameState.gameType !== 'drawing' || gameState.phase !== 'playing') return;
+      event.preventDefault();
+      resizeDrawingCanvas();
+      drawingState.isDrawing = true;
+      const point = getDrawingPoint(event);
+      drawingState.lastX = point.x;
+      drawingState.lastY = point.y;
+      strokeDrawingLine(point, { x: point.x + 0.01, y: point.y + 0.01 });
+      try {
+        drawingState.canvas.setPointerCapture?.(event.pointerId);
+      } catch (e) { }
+    }
+
+    function continueDrawing(event) {
+      if (!drawingState.isDrawing) return;
+      event.preventDefault();
+      const point = getDrawingPoint(event);
+      strokeDrawingLine({ x: drawingState.lastX, y: drawingState.lastY }, point);
+      drawingState.lastX = point.x;
+      drawingState.lastY = point.y;
+    }
+
+    function stopDrawing(event) {
+      if (!drawingState.isDrawing) return;
+      drawingState.isDrawing = false;
+      try {
+        drawingState.canvas.releasePointerCapture?.(event.pointerId);
+      } catch (e) { }
+    }
+
+    function initializeDrawingCanvas() {
+      const canvas = document.getElementById('drawing-canvas');
+      if (!canvas) return;
+      drawingState.canvas = canvas;
+      canvas.addEventListener('pointerdown', startDrawing);
+      canvas.addEventListener('pointermove', continueDrawing);
+      canvas.addEventListener('pointerup', stopDrawing);
+      canvas.addEventListener('pointercancel', stopDrawing);
+      canvas.addEventListener('pointerleave', stopDrawing);
+      window.addEventListener('resize', () => resizeDrawingCanvas());
+      selectDrawingTool('pen-thick');
     }
 
     function isAlertSoundEnabled() {
@@ -3625,7 +3891,9 @@
         clearInterval(gameState.memInterval);
         document.getElementById('resultOverlay').classList.remove('show');
         const prevDiff = gameState.difficulty;
+        const prevGameType = gameState.gameType;
         gameState = {
+          gameType: prevGameType,
           mode: 'teams',
           difficulty: prevDiff,
           teams: { A: [], B: [] },
@@ -3650,6 +3918,7 @@
           randomChallenge: false,
           selectedCategories: getDefaultSelectedCategories()
         };
+        selectGameType(prevGameType);
         selectMode('teams');
         selectDifficulty(prevDiff);
         goTo('setup');
@@ -3731,6 +4000,8 @@
         return markResult(false);
       }
       if (action === 'continue-game') return continueGame();
+      if (action === 'set-draw-tool') return selectDrawingTool(button.dataset.tool);
+      if (action === 'clear-drawing-canvas') return clearDrawingCanvas();
       if (action === 'add-word') return addWord();
       if (action === 'add-challenge') return addChallenge();
       if (action === 'reset-words') return resetWords();
@@ -3757,6 +4028,12 @@
         const modeCard = event.target.closest('[data-mode]');
         if (modeCard) {
           selectMode(modeCard.dataset.mode);
+          return;
+        }
+
+        const gameTypeCard = event.target.closest('.mode-card[data-game-type]');
+        if (gameTypeCard) {
+          selectGameType(gameTypeCard.dataset.gameType);
           return;
         }
 
@@ -3856,5 +4133,7 @@
     initializeLayoutPreview();
     initializeSettings();
     registerEventListeners();
+    initializeDrawingCanvas();
+    selectGameType('mime');
     selectMode('teams');
     selectDifficulty('easy');

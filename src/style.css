@@ -542,6 +542,12 @@
       background: var(--mode-selected-bg);
     }
 
+    .mode-card:focus-visible,
+    .drawing-tool-btn:focus-visible {
+      outline: 3px solid var(--accent2);
+      outline-offset: 3px;
+    }
+
     .mode-card .mode-icon {
       font-size: 2.5rem;
       margin-bottom: 10px;
@@ -718,6 +724,64 @@
       text-transform: uppercase;
     }
 
+    .drawing-board {
+      display: grid;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .drawing-canvas-shell {
+      width: 100%;
+      min-height: 260px;
+      aspect-ratio: 4 / 3;
+      background: #ffffff;
+      border: 2px solid var(--word-card-border);
+      border-radius: var(--radius-sm);
+      box-shadow: inset 0 0 0 1px rgba(15, 12, 41, 0.08);
+      overflow: hidden;
+    }
+
+    #drawing-canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      background: #ffffff;
+      cursor: crosshair;
+      touch-action: none;
+    }
+
+    .drawing-toolbar {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(44px, 1fr));
+      gap: 8px;
+    }
+
+    .drawing-tool-btn {
+      min-height: 44px;
+      padding-inline: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      white-space: normal;
+    }
+
+    .drawing-tool-btn.selected {
+      border-color: var(--accent2);
+      color: var(--text);
+      background: var(--mode-selected-bg);
+    }
+
+    .drawing-tool-icon {
+      line-height: 1;
+      font-size: 1rem;
+    }
+
+    .drawing-tool-text {
+      font-size: 0.72rem;
+      line-height: 1.1;
+    }
+
     .word-card {
       background: var(--word-card-bg);
       border: 1px solid var(--word-card-border);
@@ -844,6 +908,14 @@
       color: var(--text);
     }
 
+    .game-status-row {
+      margin-bottom: 16px;
+    }
+
+    .drawing-timer-dock {
+      display: none;
+    }
+
     .game-meta {
       min-width: 0;
     }
@@ -923,6 +995,47 @@
       visibility: visible;
       opacity: 1;
       pointer-events: auto;
+    }
+
+    body[data-game-type="drawing"] .game-play-layout {
+      align-items: stretch;
+    }
+
+    body[data-game-type="drawing"] .game-play-side {
+      align-content: start;
+      padding-top: 4px;
+    }
+
+    body[data-game-type="drawing"] .game-play-main {
+      gap: 10px;
+    }
+
+    body[data-game-type="drawing"] .game-play-main .word-card {
+      min-height: 92px;
+      padding: 14px 18px;
+    }
+
+    body[data-game-type="drawing"] .game-play-main .word-text {
+      font-size: clamp(1.35rem, 3vw, 2.2rem);
+    }
+
+    body[data-game-type="drawing"] .word-placeholder {
+      padding: 0;
+      gap: 4px;
+    }
+
+    body[data-game-type="drawing"] .word-placeholder .emoji-xl {
+      font-size: 1.7rem;
+    }
+
+    body[data-game-type="drawing"] .game-play-main #hint-banner {
+      min-height: 44px;
+      margin-top: 6px;
+      padding: 6px 12px;
+    }
+
+    body[data-game-type="drawing"] .drawing-board {
+      display: grid;
     }
 
     .page-shell {
@@ -1449,6 +1562,15 @@
       border: none;
     }
 
+    .toggle-wrap.is-disabled {
+      opacity: 0.55;
+    }
+
+    .toggle-wrap.is-disabled .toggle-label,
+    .toggle-wrap.is-disabled .toggle-sub {
+      color: var(--text3);
+    }
+
     .toggle-label {
       font-weight: 700;
       font-size: 0.95rem;
@@ -1768,6 +1890,18 @@
         align-items: flex-start;
       }
 
+      .drawing-canvas-shell {
+        min-height: 250px;
+      }
+
+      .drawing-toolbar {
+        gap: 6px;
+      }
+
+      .drawing-tool-text {
+        display: none;
+      }
+
     }
 
     @media (min-width: 768px) {
@@ -1808,6 +1942,14 @@
 
       .setup-grid {
         grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+      }
+
+      .setup-block-game-type {
+        grid-column: 1;
+      }
+
+      .setup-block-mode {
+        grid-column: 2;
       }
 
       .setup-block-full,
@@ -1853,6 +1995,16 @@
         align-items: stretch;
       }
 
+      body[data-game-type="drawing"] .game-play-layout {
+        grid-template-columns: minmax(180px, 240px) minmax(0, 1fr);
+        gap: 20px;
+      }
+
+      body[data-game-type="drawing"] .drawing-canvas-shell {
+        min-height: 360px;
+        aspect-ratio: 16 / 10;
+      }
+
       .score-mini-row {
         flex-wrap: wrap;
         overflow-x: visible;
@@ -1885,6 +2037,10 @@
 
       .wordbank-layout {
         grid-template-columns: minmax(360px, 390px) minmax(0, 1fr);
+      }
+
+      body[data-game-type="drawing"] .drawing-canvas-shell {
+        min-height: 420px;
       }
 
       .game-play-layout {
@@ -1945,6 +2101,15 @@
       align-items: flex-start;
     }
 
+    body[data-preview-mode="mobile"] .drawing-canvas-shell {
+      min-height: 250px;
+      aspect-ratio: 4 / 3;
+    }
+
+    body[data-preview-mode="mobile"] .drawing-tool-text {
+      display: none;
+    }
+
     body[data-preview-mode="mobile"] .card {
       padding: 20px;
     }
@@ -1955,6 +2120,8 @@
     }
 
     body[data-preview-mode="mobile"] .setup-block-full,
+    body[data-preview-mode="mobile"] .setup-block-game-type,
+    body[data-preview-mode="mobile"] .setup-block-mode,
     body[data-preview-mode="mobile"] .setup-block-players,
     body[data-preview-mode="mobile"] .setup-cta {
       grid-column: auto;
@@ -2020,6 +2187,16 @@
       grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
     }
 
+    body[data-preview-mode="tablet"] .setup-block-game-type,
+    body[data-preview-mode="desktop"] .setup-block-game-type {
+      grid-column: 1;
+    }
+
+    body[data-preview-mode="tablet"] .setup-block-mode,
+    body[data-preview-mode="desktop"] .setup-block-mode {
+      grid-column: 2;
+    }
+
     body[data-preview-mode="tablet"] .setup-block-full,
     body[data-preview-mode="tablet"] .setup-cta,
     body[data-preview-mode="desktop"] .setup-block-full,
@@ -2074,6 +2251,18 @@
       align-items: stretch;
     }
 
+    body[data-preview-mode="tablet"][data-game-type="drawing"] .game-play-layout,
+    body[data-preview-mode="desktop"][data-game-type="drawing"] .game-play-layout {
+      grid-template-columns: minmax(180px, 240px) minmax(0, 1fr);
+      gap: 20px;
+    }
+
+    body[data-preview-mode="tablet"][data-game-type="drawing"] .drawing-canvas-shell,
+    body[data-preview-mode="desktop"][data-game-type="drawing"] .drawing-canvas-shell {
+      min-height: 360px;
+      aspect-ratio: 16 / 10;
+    }
+
     body[data-preview-mode="tablet"] .score-mini-row,
     body[data-preview-mode="desktop"] .score-mini-row {
       flex-wrap: wrap;
@@ -2119,6 +2308,203 @@
       gap: 36px;
     }
 
+    body[data-preview-mode="desktop"][data-game-type="drawing"] .drawing-canvas-shell {
+      min-height: 420px;
+    }
+
     body[data-preview-mode="desktop"] .wordbank-list-card .words-container {
       max-height: min(66vh, 760px);
+    }
+
+    /* Drawing mode gets its own compact play layout. Mime keeps the standard timer/word-card layout. */
+    body[data-game-type="drawing"] .game-status-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: stretch;
+      margin-bottom: 12px;
+    }
+
+    body[data-game-type="drawing"] .current-player {
+      margin-bottom: 0;
+      display: grid;
+      align-content: center;
+      min-height: 82px;
+    }
+
+    body[data-game-type="drawing"] .drawing-timer-dock {
+      display: grid;
+      place-items: center;
+      min-width: 82px;
+      padding: 8px;
+      background: var(--current-player-bg);
+      border: 1px solid var(--current-player-border);
+      border-radius: var(--radius);
+    }
+
+    body[data-game-type="drawing"] .drawing-timer-dock .timer-wrap {
+      width: 64px;
+      height: 64px;
+      margin: 0;
+    }
+
+    body[data-game-type="drawing"] .drawing-timer-dock .timer-num {
+      font-size: 1.65rem;
+    }
+
+    body[data-game-type="drawing"] .drawing-timer-dock .timer-label {
+      display: none;
+    }
+
+    body[data-game-type="drawing"] .game-play-side,
+    body[data-game-type="drawing"] .game-play-main > .word-card,
+    body[data-game-type="drawing"] .game-play-main > .action-row-compact {
+      display: none;
+    }
+
+    body[data-game-type="drawing"] .game-play-layout,
+    body[data-preview-mode="tablet"][data-game-type="drawing"] .game-play-layout,
+    body[data-preview-mode="desktop"][data-game-type="drawing"] .game-play-layout {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    body[data-game-type="drawing"] .game-play-main {
+      gap: 12px;
+    }
+
+    body[data-game-type="drawing"] .drawing-board {
+      grid-template-columns: minmax(0, 1fr) 46px;
+      align-items: start;
+      gap: 10px;
+    }
+
+    body[data-game-type="drawing"] .drawing-canvas-shell,
+    body[data-preview-mode="tablet"][data-game-type="drawing"] .drawing-canvas-shell,
+    body[data-preview-mode="desktop"][data-game-type="drawing"] .drawing-canvas-shell {
+      min-height: min(52vh, 500px);
+      height: min(52vh, 500px);
+      aspect-ratio: auto;
+    }
+
+    body[data-game-type="drawing"] .drawing-toolbar {
+      grid-template-columns: 1fr;
+      gap: 8px;
+      justify-items: center;
+      align-content: start;
+    }
+
+    body[data-game-type="drawing"] .drawing-tool-btn {
+      width: 42px;
+      height: 42px;
+      min-height: 42px;
+      padding: 0;
+      border-radius: var(--radius-xs);
+    }
+
+    body[data-game-type="drawing"] .drawing-tool-text {
+      display: none;
+    }
+
+    body[data-game-type="drawing"] .drawing-tool-icon {
+      font-size: 1.05rem;
+    }
+
+    @media (min-width: 768px) {
+      body[data-game-type="drawing"] .drawing-timer-dock {
+        min-width: 96px;
+      }
+
+      body[data-game-type="drawing"] .drawing-timer-dock .timer-wrap {
+        width: 76px;
+        height: 76px;
+      }
+
+      body[data-game-type="drawing"] .drawing-timer-dock .timer-num {
+        font-size: 2rem;
+      }
+    }
+
+    @media (min-width: 1180px) {
+      body[data-game-type="drawing"] .drawing-canvas-shell,
+      body[data-preview-mode="desktop"][data-game-type="drawing"] .drawing-canvas-shell {
+        min-height: min(54vh, 540px);
+        height: min(54vh, 540px);
+      }
+    }
+
+    @media (max-width: 480px) {
+      body[data-game-type="drawing"] .game-status-row {
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 8px;
+      }
+
+      body[data-game-type="drawing"] .current-player {
+        min-height: 72px;
+        padding: 12px 14px;
+      }
+
+      body[data-game-type="drawing"] .current-player .cp-label {
+        font-size: 0.62rem;
+        letter-spacing: 1.2px;
+      }
+
+      body[data-game-type="drawing"] .current-player .cp-name {
+        font-size: 1.25rem;
+      }
+
+      body[data-game-type="drawing"] .drawing-timer-dock {
+        min-width: 72px;
+        padding: 7px;
+      }
+
+      body[data-game-type="drawing"] .drawing-timer-dock .timer-wrap {
+        width: 54px;
+        height: 54px;
+      }
+
+      body[data-game-type="drawing"] .drawing-timer-dock .timer-num {
+        font-size: 1.35rem;
+      }
+
+      body[data-game-type="drawing"] .drawing-board,
+      body[data-preview-mode="mobile"][data-game-type="drawing"] .drawing-board {
+        grid-template-columns: 1fr;
+      }
+
+      body[data-game-type="drawing"] .drawing-canvas-shell,
+      body[data-preview-mode="mobile"][data-game-type="drawing"] .drawing-canvas-shell {
+        min-height: min(54vh, 360px);
+        height: min(54vh, 360px);
+      }
+
+      body[data-game-type="drawing"] .drawing-toolbar,
+      body[data-preview-mode="mobile"][data-game-type="drawing"] .drawing-toolbar {
+        grid-template-columns: repeat(5, 42px);
+        justify-content: center;
+      }
+    }
+
+    body[data-preview-mode="mobile"][data-game-type="drawing"] .game-status-row {
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+    }
+
+    body[data-preview-mode="mobile"][data-game-type="drawing"] .current-player {
+      min-height: 72px;
+      padding: 12px 14px;
+    }
+
+    body[data-preview-mode="mobile"][data-game-type="drawing"] .drawing-timer-dock {
+      min-width: 72px;
+      padding: 7px;
+    }
+
+    body[data-preview-mode="mobile"][data-game-type="drawing"] .drawing-timer-dock .timer-wrap {
+      width: 54px;
+      height: 54px;
+    }
+
+    body[data-preview-mode="mobile"][data-game-type="drawing"] .drawing-timer-dock .timer-num {
+      font-size: 1.35rem;
     }

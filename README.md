@@ -1,6 +1,6 @@
 # 🎭 Mimi Mania - Family Fun for Everyone
 
-![Version](https://img.shields.io/badge/version-5.0.0-blueviolet)
+![Version](https://img.shields.io/badge/version-6.0.0-blueviolet)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
 This game was created for families who want to have fun with their children and make the most of every moment at home. **Mimi Mania** turns your tablet or laptop into a stage for creativity, laughter, and connection, encouraging body expression, teamwork, and unforgettable family moments.

@@ -6,6 +6,17 @@
     const USER_ID_KEY = 'mm_user_id_v1';
     const APP_STORAGE_PREFIX = 'mm_';
     const AVAILABLE_THEMES = ['cosmic', 'liquid-glass', 'material3', 'light-mode', 'dark-mode', 'high-contrast'];
+    const THEMES_WITH_MUSIC = ['cosmic'];
+    const THEME_MUSIC_PREFIX = {
+      cosmic: 'cosmic',
+      'liquid-glass': 'autumn',
+      material3: 'spring',
+      'light-mode': 'light',
+      'dark-mode': 'dark',
+      'high-contrast': 'contrast'
+    };
+    const GAMEPLAY_MUSIC_SCREENS = ['game', 'score', 'final', 'guest'];
+    const MUSIC_ASSET_BASE = './assets/songs';
     const SUPPORTED_LANGUAGES = ['pt', 'en', 'es'];
     const LANGUAGE_HTML_MAP = { pt: 'pt-BR', en: 'en', es: 'es' };
     const GAME_TYPES = ['mime', 'drawing'];
@@ -294,6 +305,10 @@
           alertSoundSub: 'Beep nos últimos 10 segundos',
           navigationSoundLabel: 'Som de Navegação',
           navigationSoundSub: 'Som ao clicar nos botões da interface',
+          gameroomMusicLabel: 'Música dos menus',
+          gameroomMusicSub: 'Toca na página inicial, setup e configurações',
+          gameplayMusicLabel: 'Música do gameplay',
+          gameplayMusicSub: 'Toca durante preparação, timer e placares',
           userIdTitle: '🪪 ID de compra',
           userIdLabel: 'Seu user_id',
           userIdSub: 'Use este código na compra de packs para que o arquivo seja emitido para este dispositivo.',
@@ -333,8 +348,7 @@
           'high-contrast': 'Alto Contraste'
         },
         footer: {
-          copyPrefix: '© 2025 MimiMania v5.0 · Insight X Lab Technologies · Publicado no ',
-          githubPages: 'GitHub Pages'
+          copyPrefix: '© 2025 MimiMania v6.0 · Insight X Lab Technologies'
         },
         teams: {
           defaultA: 'Time A',
@@ -635,6 +649,10 @@
           alertSoundSub: 'Beep during the last 10 seconds',
           navigationSoundLabel: 'Navigation Sound',
           navigationSoundSub: 'Sound when clicking interface buttons',
+          gameroomMusicLabel: 'Menu Music',
+          gameroomMusicSub: 'Plays on the home, setup, and settings screens',
+          gameplayMusicLabel: 'Gameplay Music',
+          gameplayMusicSub: 'Plays during preparation, timer, and score screens',
           userIdTitle: '🪪 Purchase ID',
           userIdLabel: 'Your user_id',
           userIdSub: 'Use this code when buying packs so the file is issued to this device.',
@@ -674,8 +692,7 @@
           'high-contrast': 'High Contrast'
         },
         footer: {
-          copyPrefix: '© 2025 MimiMania v5.0 · Insight X Lab Technologies · Published on ',
-          githubPages: 'GitHub Pages'
+          copyPrefix: '© 2025 MimiMania v6.0 · Insight X Lab Technologies'
         },
         teams: {
           defaultA: 'Team A',
@@ -976,6 +993,10 @@
           alertSoundSub: 'Beep en los últimos 10 segundos',
           navigationSoundLabel: 'Sonido de Navegación',
           navigationSoundSub: 'Sonido al hacer clic en los botones',
+          gameroomMusicLabel: 'Música de menús',
+          gameroomMusicSub: 'Suena en inicio, setup y configuración',
+          gameplayMusicLabel: 'Música de juego',
+          gameplayMusicSub: 'Suena durante preparación, temporizador y marcadores',
           userIdTitle: '🪪 ID de compra',
           userIdLabel: 'Tu user_id',
           userIdSub: 'Usa este código al comprar packs para que el archivo se emita para este dispositivo.',
@@ -1015,8 +1036,7 @@
           'high-contrast': 'Alto Contraste'
         },
         footer: {
-          copyPrefix: '© 2025 MimiMania v5.0 · Insight X Lab Technologies · Publicado en ',
-          githubPages: 'GitHub Pages'
+          copyPrefix: '© 2025 MimiMania v6.0 · Insight X Lab Technologies'
         },
         teams: {
           defaultA: 'Equipo A',
@@ -2164,6 +2184,12 @@
       sessionUrl: '',
       lastPayload: null
     };
+    const musicState = {
+      audio: null,
+      currentSrc: '',
+      currentKind: '',
+      unlocked: false
+    };
 
     let wbDiff = 'easy';
     let wbCat = 'objects';
@@ -2288,6 +2314,7 @@
       if (screen === 'multidevice') {
         resetMultiDeviceChoice();
       }
+      updateBackgroundMusic();
       resetViewportToTop(nextScreen);
     }
 
@@ -3206,7 +3233,103 @@
       document.body.classList.add(`theme-${nextTheme}`);
       const select = document.getElementById('theme-select');
       if (select && select.value !== nextTheme) select.value = nextTheme;
+      updateBackgroundMusic();
       return nextTheme;
+    }
+
+    function getCurrentTheme() {
+      return AVAILABLE_THEMES.find(theme => document.body.classList.contains(`theme-${theme}`)) || 'cosmic';
+    }
+
+    function getMusicKindForScreen(screen = document.body.dataset.activeScreen || 'home') {
+      return GAMEPLAY_MUSIC_SCREENS.includes(screen) ? 'gameplay' : 'gameroom';
+    }
+
+    function isGameroomMusicEnabled() {
+      const toggle = document.getElementById('toggle-gameroom-music');
+      return toggle ? toggle.checked : true;
+    }
+
+    function isGameplayMusicEnabled() {
+      const toggle = document.getElementById('toggle-gameplay-music');
+      return toggle ? toggle.checked : true;
+    }
+
+    function isMusicKindEnabled(kind) {
+      return kind === 'gameplay' ? isGameplayMusicEnabled() : isGameroomMusicEnabled();
+    }
+
+    function getMusicSourceForCurrentTheme(kind) {
+      const theme = getCurrentTheme();
+      if (!THEMES_WITH_MUSIC.includes(theme)) return '';
+      const prefix = THEME_MUSIC_PREFIX[theme];
+      return prefix ? `${MUSIC_ASSET_BASE}/${prefix}_${kind}.mp3` : '';
+    }
+
+    function ensureBackgroundMusicAudio() {
+      if (musicState.audio) return musicState.audio;
+      const audio = new Audio();
+      audio.loop = true;
+      audio.preload = 'auto';
+      audio.volume = 0.36;
+      audio.addEventListener('ended', () => {
+        if (!musicState.currentSrc || !musicState.unlocked || !isMusicKindEnabled(musicState.currentKind)) return;
+        audio.currentTime = 0;
+        audio.play().catch(() => { });
+      });
+      audio.addEventListener('error', () => {
+        musicState.currentSrc = '';
+        musicState.currentKind = '';
+      });
+      musicState.audio = audio;
+      return audio;
+    }
+
+    function pauseBackgroundMusic({ clearTrack = false } = {}) {
+      if (!musicState.audio) return;
+      musicState.audio.pause();
+      if (clearTrack) {
+        musicState.audio.removeAttribute('src');
+        musicState.audio.load();
+        musicState.currentSrc = '';
+        musicState.currentKind = '';
+      }
+    }
+
+    function updateBackgroundMusic(options = {}) {
+      const { unlock = false } = options;
+      if (unlock) musicState.unlocked = true;
+
+      const kind = getMusicKindForScreen();
+      const src = getMusicSourceForCurrentTheme(kind);
+      if (!src || !isMusicKindEnabled(kind)) {
+        pauseBackgroundMusic({ clearTrack: !src });
+        return;
+      }
+
+      const audio = ensureBackgroundMusicAudio();
+      if (musicState.currentSrc !== src) {
+        audio.pause();
+        audio.src = src;
+        audio.currentTime = 0;
+        musicState.currentSrc = src;
+        musicState.currentKind = kind;
+      } else {
+        musicState.currentKind = kind;
+      }
+
+      if (!musicState.unlocked || !audio.paused) return;
+      audio.play().catch(() => { });
+    }
+
+    function unlockBackgroundMusic() {
+      updateBackgroundMusic({ unlock: true });
+    }
+
+    function handleMusicSettingChange() {
+      musicState.unlocked = true;
+      saveSettings();
+      updateBackgroundMusic();
     }
 
     function collectSettings() {
@@ -3214,6 +3337,8 @@
         timerDur: parseInt(document.getElementById('timer-slider').value, 10) || 60,
         soundEnabled: document.getElementById('toggle-sound').checked,
         navigationSoundEnabled: document.getElementById('toggle-navigation-sound').checked,
+        gameroomMusicEnabled: document.getElementById('toggle-gameroom-music').checked,
+        gameplayMusicEnabled: document.getElementById('toggle-gameplay-music').checked,
         penaltyEnabled: document.getElementById('toggle-penalty').checked,
         shuffleEnabled: document.getElementById('toggle-shuffle').checked,
         theme: document.getElementById('theme-select').value || 'cosmic',
@@ -3241,6 +3366,8 @@
         timerDur: 60,
         soundEnabled: true,
         navigationSoundEnabled: true,
+        gameroomMusicEnabled: true,
+        gameplayMusicEnabled: true,
         penaltyEnabled: false,
         shuffleEnabled: true,
         theme: 'cosmic',
@@ -3258,6 +3385,8 @@
       document.getElementById('timer-slider').value = saved.timerDur;
       document.getElementById('toggle-sound').checked = Boolean(saved.soundEnabled);
       document.getElementById('toggle-navigation-sound').checked = Boolean(saved.navigationSoundEnabled);
+      document.getElementById('toggle-gameroom-music').checked = Boolean(saved.gameroomMusicEnabled);
+      document.getElementById('toggle-gameplay-music').checked = Boolean(saved.gameplayMusicEnabled);
       document.getElementById('toggle-penalty').checked = Boolean(saved.penaltyEnabled);
       document.getElementById('toggle-shuffle').checked = Boolean(saved.shuffleEnabled);
       document.getElementById('theme-select').value = applyTheme(saved.theme);
@@ -4753,6 +4882,8 @@
 
     function registerEventListeners() {
       document.addEventListener('click', event => {
+        unlockBackgroundMusic();
+
         const navButton = event.target.closest('[data-nav]');
         if (navButton) {
           handleNavigation(navButton);
@@ -4838,6 +4969,8 @@
 
       document.getElementById('toggle-sound').addEventListener('change', saveSettings);
       document.getElementById('toggle-navigation-sound').addEventListener('change', saveSettings);
+      document.getElementById('toggle-gameroom-music').addEventListener('change', handleMusicSettingChange);
+      document.getElementById('toggle-gameplay-music').addEventListener('change', handleMusicSettingChange);
       document.getElementById('toggle-penalty').addEventListener('change', saveSettings);
       document.getElementById('toggle-shuffle').addEventListener('change', saveSettings);
       document.getElementById('language-select').addEventListener('change', event => {

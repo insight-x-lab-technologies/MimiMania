@@ -53,7 +53,7 @@
       </div>
       -->
       <div class="home-grid">
-        <div class="card home-card">
+        <div class="card home-card home-actions-card">
           <div class="flex-col home-actions">
             <button class="btn btn-primary btn-lg btn-block" data-nav="setup" data-i18n="home.newGame">🎮 Nova Partida</button>
             <button class="btn btn-secondary btn-lg btn-block" data-nav="multidevice" data-i18n="home.multiDeviceGame">📡 Nova Partida Multi Device</button>
@@ -64,39 +64,6 @@
             <button class="btn btn-ghost btn-lg btn-block" data-nav="wordbank" data-i18n="home.wordBank">🧩 Conteúdo e Expansões</button>
             <button class="btn btn-ghost btn-lg btn-block" data-nav="donate" data-i18n="home.donate">❤️ Donate</button>
             <button class="btn btn-ghost btn-lg btn-block" data-nav="settings" data-i18n="home.settings">⚙️ Configurações</button>
-          </div>
-        </div>
-        <div class="card home-card">
-          <h2 class="card-title" data-i18n="home.howToTitle">🏆 Como jogar</h2>
-          <div class="how-to-list">
-            <div class="media-row media-row-start">
-              <div class="emoji-lg emoji-fixed">🎮</div>
-              <div>
-                <div class="text-strong text-sm-title" data-i18n="home.howTo.setupTitle">Monte a partida</div>
-                <div class="text-sm" data-i18n="home.howTo.setupDesc">Escolha entre times ou todos contra todos, defina rodadas, dificuldade e categorias.</div>
-              </div>
-            </div>
-            <div class="media-row media-row-start">
-              <div class="emoji-lg emoji-fixed">🎭</div>
-              <div>
-                <div class="text-strong text-sm-title" data-i18n="home.howTo.turnTitle">Veja e atue</div>
-                <div class="text-sm" data-i18n="home.howTo.turnDesc">Um jogador vê a palavra, memoriza e faz mímica ou desenha enquanto o resto tenta adivinhar.</div>
-              </div>
-            </div>
-            <div class="media-row media-row-start">
-              <div class="emoji-lg emoji-fixed">⏱️</div>
-              <div>
-                <div class="text-strong text-sm-title" data-i18n="home.howTo.timerTitle">Corra contra o tempo</div>
-                <div class="text-sm" data-i18n="home.howTo.timerDesc">O cronômetro, as dicas e os sons de alerta ajudam a manter cada turno rápido e divertido.</div>
-              </div>
-            </div>
-            <div class="media-row media-row-start">
-              <div class="emoji-lg emoji-fixed">🏆</div>
-              <div>
-                <div class="text-strong text-sm-title" data-i18n="home.howTo.winTitle">Marque pontos e vença</div>
-                <div class="text-sm" data-i18n="home.howTo.winDesc">Cada acerto vale 10 pontos. No fim das rodadas, o placar decide o vencedor.</div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -705,13 +672,33 @@
               <span class="toggle-slider"></span>
             </label>
           </div>
-          <div class="toggle-wrap toggle-wrap-last">
+          <div class="toggle-wrap">
             <div>
               <div class="toggle-label" data-i18n="settings.navigationSoundLabel">Som de Navegação</div>
               <div class="toggle-sub" data-i18n="settings.navigationSoundSub">Som ao clicar nos botões da interface</div>
             </div>
             <label class="toggle">
               <input type="checkbox" id="toggle-navigation-sound" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="toggle-wrap">
+            <div>
+              <div class="toggle-label" data-i18n="settings.gameroomMusicLabel">Música dos menus</div>
+              <div class="toggle-sub" data-i18n="settings.gameroomMusicSub">Toca na página inicial, setup e configurações</div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="toggle-gameroom-music" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="toggle-wrap toggle-wrap-last">
+            <div>
+              <div class="toggle-label" data-i18n="settings.gameplayMusicLabel">Música do gameplay</div>
+              <div class="toggle-sub" data-i18n="settings.gameplayMusicSub">Toca durante preparação, timer e placares</div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="toggle-gameplay-music" checked>
               <span class="toggle-slider"></span>
             </label>
           </div>
@@ -817,45 +804,46 @@
     </div>
   </div>
 
-  <div class="footer-share" aria-label="Compartilhar MimiMania">
-    <div class="share-grid">
-      <button class="share-platform share-whatsapp" type="button" data-action="share-platform" data-platform="whatsapp" aria-label="WhatsApp" title="WhatsApp">
-        <svg class="share-platform-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12.1 2a9.8 9.8 0 0 0-8.5 14.7L2.2 22l5.5-1.4A9.9 9.9 0 1 0 12.1 2zm0 17.8c-1.5 0-2.9-.4-4.1-1.1l-.3-.2-3.2.8.9-3.1-.2-.3a7.8 7.8 0 1 1 6.9 3.9zm4.4-5.8c-.2-.1-1.4-.7-1.6-.8s-.4-.1-.5.1-.6.8-.7 1-.3.2-.5.1a6.4 6.4 0 0 1-3.2-2.8c-.2-.3 0-.4.1-.5l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5s-.5-1.2-.7-1.7c-.2-.5-.4-.4-.5-.4h-.5c-.2 0-.5.1-.8.4s-1 1-1 2.3 1 2.7 1.1 2.8c.1.2 1.9 2.9 4.6 4.1.6.3 1.1.4 1.5.5.6.2 1.2.2 1.7.1.5-.1 1.4-.6 1.6-1.1.2-.5.2-1 .1-1.1-.1-.2-.2-.2-.4-.3z" />
-        </svg>
-      </button>
-      <button class="share-platform share-instagram" type="button" data-action="share-platform" data-platform="instagram" aria-label="Instagram" title="Instagram">
-        <svg class="share-platform-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.2-2.7a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4z" />
-        </svg>
-      </button>
-      <button class="share-platform share-tiktok" type="button" data-action="share-platform" data-platform="tiktok" aria-label="TikTok" title="TikTok">
-        <svg class="share-platform-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M15.2 2c.4 3 2.1 4.8 4.8 5v3.2a7.5 7.5 0 0 1-4.7-1.7v6.8A6.7 6.7 0 1 1 9.1 8.6c.4 0 .8 0 1.2.1v3.4a3.3 3.3 0 1 0 1.7 2.9V2h3.2z" />
-        </svg>
-      </button>
-      <button class="share-platform share-facebook" type="button" data-action="share-platform" data-platform="facebook" aria-label="Facebook" title="Facebook">
-        <svg class="share-platform-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M14 8.4V6.8c0-.8.2-1.3 1.3-1.3H17V2.2c-.3 0-1.4-.2-2.7-.2-2.7 0-4.5 1.6-4.5 4.6v1.8h-3v3.7h3V22H14v-9.9h3.1l.5-3.7H14z" />
-        </svg>
-      </button>
-      <button class="share-platform share-x" type="button" data-action="share-platform" data-platform="x" aria-label="X" title="X">
-        <svg class="share-platform-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M14.2 10.4 22 2h-2.4l-6.5 7-5-7H2l8 11.2L2 22h2.4l6.8-7.3 5.2 7.3H22l-7.8-11.6zm-2 2.1-1.1-1.6L6.5 4h1.2l4 5.7 1.1 1.6L17.6 20h-1.2l-4.2-7.5z" />
-        </svg>
-      </button>
-      <button class="share-platform share-copy" type="button" data-action="share-platform" data-platform="copy" aria-label="Copiar link" title="Copiar link">
-        <svg class="share-platform-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M8 7a5 5 0 0 1 5-5h4a5 5 0 0 1 0 10h-2V9h2a2 2 0 0 0 0-4h-4a2 2 0 0 0-2 2v2H8V7zm1 5H7a2 2 0 0 0 0 4h4a2 2 0 0 0 2-2v-2h3v2a5 5 0 0 1-5 5H7A5 5 0 0 1 7 9h2v3zm-1.5-1.5h9v3h-9v-3z" />
-        </svg>
-      </button>
+  <div class="home-footer-panel">
+    <div class="footer-share" aria-label="Compartilhar MimiMania">
+      <div class="share-grid">
+        <button class="share-platform share-whatsapp" type="button" data-action="share-platform" data-platform="whatsapp" aria-label="WhatsApp" title="WhatsApp">
+          <svg class="share-platform-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12.1 2a9.8 9.8 0 0 0-8.5 14.7L2.2 22l5.5-1.4A9.9 9.9 0 1 0 12.1 2zm0 17.8c-1.5 0-2.9-.4-4.1-1.1l-.3-.2-3.2.8.9-3.1-.2-.3a7.8 7.8 0 1 1 6.9 3.9zm4.4-5.8c-.2-.1-1.4-.7-1.6-.8s-.4-.1-.5.1-.6.8-.7 1-.3.2-.5.1a6.4 6.4 0 0 1-3.2-2.8c-.2-.3 0-.4.1-.5l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5s-.5-1.2-.7-1.7c-.2-.5-.4-.4-.5-.4h-.5c-.2 0-.5.1-.8.4s-1 1-1 2.3 1 2.7 1.1 2.8c.1.2 1.9 2.9 4.6 4.1.6.3 1.1.4 1.5.5.6.2 1.2.2 1.7.1.5-.1 1.4-.6 1.6-1.1.2-.5.2-1 .1-1.1-.1-.2-.2-.2-.4-.3z" />
+          </svg>
+        </button>
+        <button class="share-platform share-instagram" type="button" data-action="share-platform" data-platform="instagram" aria-label="Instagram" title="Instagram">
+          <svg class="share-platform-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.2-2.7a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4z" />
+          </svg>
+        </button>
+        <button class="share-platform share-tiktok" type="button" data-action="share-platform" data-platform="tiktok" aria-label="TikTok" title="TikTok">
+          <svg class="share-platform-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M15.2 2c.4 3 2.1 4.8 4.8 5v3.2a7.5 7.5 0 0 1-4.7-1.7v6.8A6.7 6.7 0 1 1 9.1 8.6c.4 0 .8 0 1.2.1v3.4a3.3 3.3 0 1 0 1.7 2.9V2h3.2z" />
+          </svg>
+        </button>
+        <button class="share-platform share-facebook" type="button" data-action="share-platform" data-platform="facebook" aria-label="Facebook" title="Facebook">
+          <svg class="share-platform-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M14 8.4V6.8c0-.8.2-1.3 1.3-1.3H17V2.2c-.3 0-1.4-.2-2.7-.2-2.7 0-4.5 1.6-4.5 4.6v1.8h-3v3.7h3V22H14v-9.9h3.1l.5-3.7H14z" />
+          </svg>
+        </button>
+        <button class="share-platform share-x" type="button" data-action="share-platform" data-platform="x" aria-label="X" title="X">
+          <svg class="share-platform-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M14.2 10.4 22 2h-2.4l-6.5 7-5-7H2l8 11.2L2 22h2.4l6.8-7.3 5.2 7.3H22l-7.8-11.6zm-2 2.1-1.1-1.6L6.5 4h1.2l4 5.7 1.1 1.6L17.6 20h-1.2l-4.2-7.5z" />
+          </svg>
+        </button>
+        <button class="share-platform share-copy" type="button" data-action="share-platform" data-platform="copy" aria-label="Copiar link" title="Copiar link">
+          <svg class="share-platform-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M8 7a5 5 0 0 1 5-5h4a5 5 0 0 1 0 10h-2V9h2a2 2 0 0 0 0-4h-4a2 2 0 0 0-2 2v2H8V7zm1 5H7a2 2 0 0 0 0 4h4a2 2 0 0 0 2-2v-2h3v2a5 5 0 0 1-5 5H7A5 5 0 0 1 7 9h2v3zm-1.5-1.5h9v3h-9v-3z" />
+          </svg>
+        </button>
+      </div>
     </div>
-  </div>
 
-  <footer class="site-footer">
-    <span data-i18n="footer.copyPrefix">© 2025 MimiMania v5.0 · Insight X Lab Technologies · Publicado no </span><a href="https://github.com/insight-x-lab-technologies" target="_blank"
-      class="site-footer-link" data-i18n="footer.githubPages">GitHub Pages</a>
-  </footer>
+    <footer class="site-footer">
+      <span data-i18n="footer.copyPrefix">© 2025 MimiMania v6.0 · Insight X Lab Technologies</span>
+    </footer>
+  </div>
 
   <div id="bmc-embed-host" class="donation-embed-host" aria-hidden="true">
     <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button"

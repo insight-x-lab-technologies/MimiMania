@@ -11,6 +11,8 @@
       --timer-label-size: 0.62rem;
       --timer-label-bottom: 24px;
       --game-word-card-min-height: 158px;
+      --home-actions-width: 560px;
+      --home-actions-inline-inset: 58px;
     }
 
     * {
@@ -27,6 +29,24 @@
       overflow-x: hidden;
     }
 
+    body[data-active-screen="home"] {
+      background-color: var(--bg);
+      background-image: var(--home-bg-image);
+      background-position: var(--home-bg-position);
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
+    }
+
+    body:not([data-active-screen="home"]) {
+      background-color: var(--bg);
+      background-image: var(--app-bg-image);
+      background-position: var(--app-bg-position);
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
+    }
+
     a {
       color: inherit;
     }
@@ -38,6 +58,26 @@
       background: var(--body-overlay);
       pointer-events: none;
       z-index: 0;
+    }
+
+    body[data-active-screen="home"]::before {
+      background: var(--home-bg-overlay);
+    }
+
+    body:not([data-active-screen="home"])::before {
+      background: var(--app-bg-overlay);
+    }
+
+    @media (min-width: 768px) {
+      body[data-active-screen="home"] {
+        display: grid;
+        grid-template-rows: minmax(0, 1fr) auto auto;
+        height: 100vh;
+        height: 100svh;
+        min-height: 100vh;
+        min-height: 100svh;
+        overflow: hidden;
+      }
     }
 
     .stars {
@@ -86,7 +126,8 @@
     }
 
     #screen-home {
-      min-height: auto;
+      min-height: 100vh;
+      min-height: 100svh;
       justify-content: flex-start;
       padding-bottom: 8px;
     }
@@ -191,6 +232,10 @@
 
     .home-grid {
       align-items: stretch;
+      grid-template-columns: minmax(0, 620px);
+      justify-content: center;
+      justify-items: center;
+      width: 100%;
     }
 
     .home-card,
@@ -204,6 +249,18 @@
 
     .home-card {
       height: 100%;
+    }
+
+    .card.home-actions-card {
+      width: min(100%, var(--home-actions-width));
+      max-width: var(--home-actions-width);
+      background: transparent;
+      border-color: transparent;
+      box-shadow: none;
+    }
+
+    .home-actions {
+      width: 100%;
     }
 
     .wordbank-sidebar {
@@ -349,6 +406,7 @@
 
     .home-actions > .btn {
       min-height: 64px;
+      height: 64px;
       padding-top: 12px;
       padding-bottom: 12px;
     }
@@ -2034,9 +2092,21 @@
       }
     }
 
-    .footer-share {
+    .home-footer-panel {
       position: relative;
       z-index: 1;
+      width: min(calc(var(--home-actions-width) - var(--home-actions-inline-inset)), calc(100% - 32px));
+      margin: 0 auto 12px;
+    }
+
+    body[data-active-screen="home"] .home-footer-panel {
+      background: var(--ghost-bg);
+      border: 1px solid var(--ghost-border);
+      border-radius: var(--radius-sm);
+      backdrop-filter: blur(12px);
+    }
+
+    .footer-share {
       display: none;
       justify-content: center;
       padding: 8px 16px 0;
@@ -2054,6 +2124,12 @@
 
       body[data-active-screen="home"] .footer-share {
         margin-top: 0;
+        padding-top: 6px;
+      }
+
+      body[data-active-screen="home"] .site-footer {
+        padding-top: 6px;
+        padding-bottom: 14px;
       }
     }
 
@@ -2061,16 +2137,19 @@
       position: relative;
       z-index: 1;
       text-align: center;
-      padding: 10px 16px 28px;
+      padding: 10px 16px 16px;
       font-size: 0.75rem;
       color: var(--footer-text);
       font-weight: 700;
       letter-spacing: 0.5px;
     }
 
-    .site-footer-link {
-      color: var(--footer-link);
-      text-decoration: none;
+    body[data-active-screen="home"] .site-footer {
+      color: var(--text2);
+    }
+
+    body[data-active-screen="home"] .share-platform {
+      opacity: 0.82;
     }
 
     #screen-game {
@@ -2187,11 +2266,29 @@
         --timer-label-size: 0.78rem;
         --timer-label-bottom: 34px;
         --game-word-card-min-height: 208px;
+        --home-actions-inline-inset: 62px;
       }
 
       .screen {
         padding: 28px;
         justify-content: flex-start;
+      }
+
+      #screen-home {
+        min-height: 0;
+        height: 100%;
+        justify-content: center;
+        padding-top: 28px;
+        padding-bottom: 10px;
+      }
+
+      #screen-home .logo {
+        font-size: clamp(3rem, 6vw, 4.5rem);
+      }
+
+      #screen-home .logo-sub {
+        margin-bottom: 16px;
+        font-size: 0.82rem;
       }
 
       .home-fullscreen-btn:not([hidden]) {
@@ -2211,8 +2308,36 @@
         align-items: end;
       }
 
+      #screen-home .dev-preview-panel {
+        gap: 10px;
+        padding: 12px 16px;
+        margin-bottom: 10px;
+      }
+
       .home-grid {
-        grid-template-columns: minmax(0, 1.05fr) minmax(340px, 0.95fr);
+        grid-template-columns: minmax(360px, 620px);
+      }
+
+      #screen-home .home-actions-card {
+        padding-top: 12px;
+        padding-bottom: 10px;
+      }
+
+      #screen-home .home-actions {
+        gap: 8px;
+      }
+
+      #screen-home .home-actions > .btn {
+        min-height: 64px;
+        height: 64px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+      }
+
+      #screen-home .btn-lg {
+        padding-left: 28px;
+        padding-right: 28px;
+        font-size: 1rem;
       }
 
       .multidevice-grid {
@@ -2341,7 +2466,7 @@
       }
 
       .home-grid {
-        grid-template-columns: minmax(0, 1fr) minmax(380px, 0.95fr);
+        grid-template-columns: minmax(380px, 620px);
         gap: 24px;
       }
 
@@ -2526,6 +2651,7 @@
       --timer-label-size: 0.78rem;
       --timer-label-bottom: 34px;
       --game-word-card-min-height: 208px;
+      --home-actions-inline-inset: 62px;
     }
 
     body[data-preview-mode="tablet"] .screen,
@@ -2557,7 +2683,7 @@
 
     body[data-preview-mode="tablet"] .home-grid,
     body[data-preview-mode="desktop"] .home-grid {
-      grid-template-columns: minmax(0, 1.05fr) minmax(340px, 0.95fr);
+      grid-template-columns: minmax(360px, 620px);
     }
 
     body[data-preview-mode="tablet"] .multidevice-grid,
@@ -2719,7 +2845,7 @@
     }
 
     body[data-preview-mode="desktop"] .home-grid {
-      grid-template-columns: minmax(0, 1fr) minmax(380px, 0.95fr);
+      grid-template-columns: minmax(380px, 620px);
       gap: 24px;
     }
 

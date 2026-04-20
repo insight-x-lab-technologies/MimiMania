@@ -1,4 +1,84 @@
 /* Theme tokens only. Create new looks by overriding these variables on body.theme-<name>. */
+:root {
+  --home-bg-image: none;
+  --home-bg-position: center;
+  --home-bg-overlay: none;
+  --app-bg-image: none;
+  --app-bg-position: center;
+  --app-bg-overlay: none;
+}
+
+body.theme-cosmic {
+  --home-bg-image: url("./assets/background/cosmic_desktop_bg_home.png");
+  --home-bg-position: center;
+  --home-bg-overlay: var(--body-overlay);
+  --app-bg-image: url("./assets/background/cosmic_desktop_bg_app.png");
+  --app-bg-position: center;
+  --app-bg-overlay: var(--body-overlay);
+}
+
+@media (max-width: 767px) {
+  body.theme-cosmic {
+    --home-bg-image: url("./assets/background/cosmic_mobile_bg_home.png");
+    --home-bg-position: center top;
+  }
+
+  body.theme-liquid-glass {
+    --home-bg-image: url("./assets/background/autumn_mobile_bg_home.png");
+    --home-bg-position: center top;
+  }
+
+  body.theme-material3 {
+    --home-bg-image: url("./assets/background/spring_mobile_bg_home.png");
+    --home-bg-position: center top;
+  }
+
+  body.theme-light-mode {
+    --home-bg-image: url("./assets/background/light_mobile_bg_home.png");
+    --home-bg-position: center top;
+  }
+
+  body.theme-dark-mode {
+    --home-bg-image: url("./assets/background/dark_mobile_bg_home.png");
+    --home-bg-position: center top;
+  }
+
+  body.theme-high-contrast {
+    --home-bg-image: url("./assets/background/contrast_mobile_bg_home.png");
+    --home-bg-position: center top;
+  }
+}
+
+body[data-preview-mode="mobile"].theme-cosmic {
+  --home-bg-image: url("./assets/background/cosmic_mobile_bg_home.png");
+  --home-bg-position: center top;
+}
+
+body[data-preview-mode="mobile"].theme-liquid-glass {
+  --home-bg-image: url("./assets/background/autumn_mobile_bg_home.png");
+  --home-bg-position: center top;
+}
+
+body[data-preview-mode="mobile"].theme-material3 {
+  --home-bg-image: url("./assets/background/spring_mobile_bg_home.png");
+  --home-bg-position: center top;
+}
+
+body[data-preview-mode="mobile"].theme-light-mode {
+  --home-bg-image: url("./assets/background/light_mobile_bg_home.png");
+  --home-bg-position: center top;
+}
+
+body[data-preview-mode="mobile"].theme-dark-mode {
+  --home-bg-image: url("./assets/background/dark_mobile_bg_home.png");
+  --home-bg-position: center top;
+}
+
+body[data-preview-mode="mobile"].theme-high-contrast {
+  --home-bg-image: url("./assets/background/contrast_mobile_bg_home.png");
+  --home-bg-position: center top;
+}
+
 :root,
 body.theme-cosmic {
   --font-body: 'Nunito', sans-serif;
@@ -131,6 +211,11 @@ body.theme-cosmic {
 }
 
 body.theme-liquid-glass {
+  --home-bg-image: url("./assets/background/autumn_desktop_bg_home.png");
+  --home-bg-position: center;
+  --app-bg-image: url("./assets/background/autumn_desktop_bg_app.png");
+  --app-bg-position: center;
+
   --font-body: 'Manrope', sans-serif;
   --font-display: 'Outfit', sans-serif;
 
@@ -261,6 +346,11 @@ body.theme-liquid-glass {
 }
 
 body.theme-material3 {
+  --home-bg-image: url("./assets/background/spring_desktop_bg_home.png");
+  --home-bg-position: center;
+  --app-bg-image: url("./assets/background/spring_desktop_bg_app.png");
+  --app-bg-position: center;
+
   --font-body: 'Manrope', sans-serif;
   --font-display: 'Outfit', sans-serif;
 
@@ -391,6 +481,11 @@ body.theme-material3 {
 }
 
 body.theme-light-mode {
+  --home-bg-image: url("./assets/background/light_desktop_bg_home.png");
+  --home-bg-position: center;
+  --app-bg-image: url("./assets/background/light_desktop_bg_app.png");
+  --app-bg-position: center;
+
   --font-body: 'Manrope', sans-serif;
   --font-display: 'Outfit', sans-serif;
 
@@ -521,6 +616,11 @@ body.theme-light-mode {
 }
 
 body.theme-dark-mode {
+  --home-bg-image: url("./assets/background/dark_desktop_bg_home.png");
+  --home-bg-position: center;
+  --app-bg-image: url("./assets/background/dark_desktop_bg_app.png");
+  --app-bg-position: center;
+
   --font-body: 'Manrope', sans-serif;
   --font-display: 'Outfit', sans-serif;
 
@@ -654,6 +754,11 @@ body.theme-dark-mode {
 }
 
 body.theme-high-contrast {
+  --home-bg-image: url("./assets/background/contrast_desktop_bg_home.png");
+  --home-bg-position: center;
+  --app-bg-image: url("./assets/background/contrast_desktop_bg_app.png");
+  --app-bg-position: center;
+
   --font-body: 'Manrope', sans-serif;
   --font-display: 'Outfit', sans-serif;
 

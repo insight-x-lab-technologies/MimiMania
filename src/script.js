@@ -4161,6 +4161,9 @@
       renderScoreMini();
       if (document.getElementById('screen-leaderboard')?.classList.contains('active')) renderLeaderboard();
       if (document.getElementById('screen-score-manager')?.classList.contains('active')) renderScoreManager();
+      if (document.getElementById('screen-guest')?.classList.contains('active') && multiDeviceState.lastPayload) {
+        renderGuestSessionState(multiDeviceState.lastPayload);
+      }
       updateScoreManagerButton();
       updateTimerLabel(document.getElementById('timer-slider').value);
       updateFullscreenButton();
@@ -4412,6 +4415,15 @@
       }
     }
 
+    function getGuestStatusKey(phase = 'waiting') {
+      if (phase === 'preparing') return 'guestPreparing';
+      if (phase === 'memorizing') return 'guestMemorizing';
+      if (phase === 'playing') return 'guestPlaying';
+      if (phase === 'score') return 'guestScore';
+      if (phase === 'final') return 'guestFinal';
+      return 'guestWaiting';
+    }
+
     function buildHostGamePayload(options = {}) {
       const { includeDrawingSnapshot = false } = options;
       const hasStarted = Boolean(gameState.players.length && gameState.totalTurns);
@@ -4427,25 +4439,14 @@
         gameType: gameState.gameType,
         timerLeft: isPlaying ? gameState.timerLeft : gameState.timerDur,
         timerDur: gameState.timerDur,
-        roundText: hasStarted
-          ? t('dynamic.roundDisplay', { current: gameState.currentRound, total: gameState.totalRounds })
-          : t('multiDevice.waitingTitle'),
-        currentPlayerLabel: t(gameState.gameType === 'drawing' ? 'game.currentPlayerDrawingLabel' : 'game.currentPlayerLabel'),
+        currentRound: hasStarted ? gameState.currentRound : 0,
+        totalRounds: hasStarted ? gameState.totalRounds : 0,
+        statusKey: getGuestStatusKey(phase),
         currentPlayerName: currentPlayer.name,
         teamLabel: currentPlayer.teamLabel,
         hintVisible: Boolean(isMime && isPlaying && gameState.hintShown && hintText),
-        hintText,
-        statusText: t(`multiDevice.${phase === 'preparing'
-          ? 'guestPreparing'
-          : phase === 'memorizing'
-            ? 'guestMemorizing'
-            : phase === 'playing'
-              ? 'guestPlaying'
-              : phase === 'score'
-                ? 'guestScore'
-                : phase === 'final'
-                  ? 'guestFinal'
-                  : 'guestWaiting'}`)
+        hintCategory: gameState.currentWord?.cat || '',
+        hintText
       };
       if (includeDrawingSnapshot && gameState.gameType === 'drawing' && phase === 'playing') {
         payload.drawingSnapshot = getDrawingSnapshot();
@@ -4578,18 +4579,40 @@
           : getThemeVar('--timer-color-danger');
     }
 
+    function getGuestRoundText(payload = {}) {
+      const current = Number.parseInt(payload.currentRound, 10);
+      const total = Number.parseInt(payload.totalRounds, 10);
+      if (payload.phase !== 'waiting' && current > 0 && total > 0) {
+        return t('dynamic.roundDisplay', { current, total });
+      }
+      return t('multiDevice.waitingTitle');
+    }
+
+    function getGuestStatusText(payload = {}) {
+      const statusKey = payload.statusKey || getGuestStatusKey(payload.phase);
+      return t(`multiDevice.${statusKey}`);
+    }
+
+    function getGuestHintText(payload = {}) {
+      if (CATEGORY_KEYS.includes(payload.hintCategory)) {
+        return getCategoryLabel(payload.hintCategory, { singular: true, withIcon: true });
+      }
+      return payload.hintText || '';
+    }
+
     function renderGuestSessionState(payload) {
       multiDeviceState.lastPayload = payload;
       if (!document.getElementById('screen-guest').classList.contains('active')) goTo('guest');
-      document.getElementById('guest-round-title').textContent = payload.roundText || t('multiDevice.waitingTitle');
-      document.getElementById('guest-current-player-label').textContent = payload.statusText || t('multiDevice.guestWaiting');
+      document.getElementById('guest-round-title').textContent = getGuestRoundText(payload);
+      document.getElementById('guest-current-player-label').textContent = getGuestStatusText(payload);
       document.getElementById('guest-current-player-name').textContent = payload.phase === 'waiting' ? '--' : (payload.currentPlayerName || '--');
       updateGuestTimerDisplay(payload.timerLeft, payload.timerDur);
 
       const hint = document.getElementById('guest-hint-banner');
       const hintText = document.getElementById('guest-hint-text');
-      if (payload.hintVisible && payload.hintText) {
-        hintText.textContent = payload.hintText;
+      const localizedHintText = getGuestHintText(payload);
+      if (payload.hintVisible && localizedHintText) {
+        hintText.textContent = localizedHintText;
         hint.classList.remove('hidden');
       } else {
         hint.classList.add('hidden');

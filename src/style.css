@@ -428,6 +428,14 @@
       width: 100%;
     }
 
+    .btn:disabled,
+    .btn:disabled:hover {
+      cursor: not-allowed;
+      opacity: 0.55;
+      transform: none;
+      box-shadow: none;
+    }
+
     .home-actions > .btn {
       min-height: 64px;
       height: 64px;
@@ -995,6 +1003,135 @@
       border-radius: var(--radius-sm);
       margin-bottom: 8px;
       border: 1px solid var(--score-row-border);
+    }
+
+    .score-row-edit {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+    }
+
+    .score-manager-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .score-manager-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .score-manager-controls {
+      display: grid;
+      grid-template-columns: 40px 88px 40px;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .score-manager-controls .btn {
+      min-width: 40px;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .score-manager-input,
+    .points-input {
+      width: 88px;
+      text-align: center;
+      font-weight: 800;
+    }
+
+    .leaderboard-layout {
+      display: grid;
+      gap: 16px;
+    }
+
+    .leaderboard-controls-card,
+    .leaderboard-list-card {
+      min-width: 0;
+    }
+
+    .leaderboard-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .leaderboard-empty {
+      padding: 18px;
+      color: var(--text2);
+      text-align: center;
+      border: 1px dashed var(--surface-border);
+      border-radius: var(--radius-sm);
+      background: var(--surface-bg);
+    }
+
+    .leaderboard-row {
+      display: grid;
+      gap: 12px;
+      padding: 14px;
+      background: var(--score-row-bg);
+      border: 1px solid var(--score-row-border);
+      border-radius: var(--radius-sm);
+    }
+
+    .leaderboard-row-head {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .leaderboard-identity {
+      min-width: 0;
+    }
+
+    .leaderboard-player-name {
+      overflow-wrap: anywhere;
+      font-weight: 900;
+      color: var(--text);
+    }
+
+    .leaderboard-total {
+      min-width: 72px;
+      text-align: right;
+    }
+
+    .leaderboard-total-points {
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      color: var(--accent2);
+      line-height: 1;
+    }
+
+    .leaderboard-breakdown {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .leaderboard-mode-chip {
+      display: grid;
+      gap: 2px;
+      min-width: 0;
+      padding: 8px 10px;
+      background: var(--surface-bg);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-xs);
+    }
+
+    .leaderboard-mode-label {
+      overflow-wrap: anywhere;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .leaderboard-mode-stats {
+      font-size: 0.72rem;
+      color: var(--text2);
     }
 
     .score-row.first {
@@ -1828,6 +1965,17 @@
       text-align: center;
     }
 
+    .result-guesser-picker {
+      width: min(360px, 100%);
+      background: var(--surface-bg);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      margin: 0 0 22px;
+      display: grid;
+      gap: 8px;
+    }
+
     .section-head {
       display: flex;
       align-items: center;
@@ -2350,6 +2498,30 @@
         align-items: flex-start;
       }
 
+      .score-manager-head,
+      .score-row-edit {
+        grid-template-columns: 1fr;
+      }
+
+      .score-manager-head {
+        display: grid;
+      }
+
+      .score-manager-controls {
+        width: 100%;
+        grid-template-columns: 40px minmax(72px, 1fr) 40px;
+      }
+
+      .score-manager-input,
+      .points-input {
+        width: 100%;
+        max-width: 96px;
+      }
+
+      .leaderboard-breakdown {
+        grid-template-columns: 1fr;
+      }
+
       .drawing-canvas-shell {
         min-height: 250px;
       }
@@ -2383,6 +2555,16 @@
       .screen {
         padding: 28px;
         justify-content: flex-start;
+      }
+
+      .leaderboard-layout {
+        grid-template-columns: 280px minmax(0, 1fr);
+        align-items: start;
+      }
+
+      .leaderboard-controls-card {
+        position: sticky;
+        top: 16px;
       }
 
       #screen-home {

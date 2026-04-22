@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MimiMania 🎭</title>
+  <title>Desafio da Mímica</title>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Manrope:wght@500;700;800&family=Nunito:wght@400;600;700;800;900&family=Outfit:wght@600;700;800&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="themes.css">
@@ -21,8 +21,13 @@
     <div class="result-emoji" id="resultEmoji">🎉</div>
     <div class="result-title" id="resultTitle" data-i18n="result.correctTitle">Acertou!</div>
     <div class="result-sub" id="resultSub">+10 pontos</div>
+    <div class="result-guesser-picker hidden" id="resultGuesserPicker">
+      <label class="toggle-label" for="result-guesser-select" data-i18n="result.guesserLabel">Quem acertou?</label>
+      <select class="inp" id="result-guesser-select"></select>
+      <div class="text-meta" id="resultGuesserHelp"></div>
+    </div>
     <div class="action-row action-row-center action-row-wrap">
-      <button class="btn btn-success btn-lg" data-action="next-turn" data-i18n="result.nextTurn">➡️ Próximo turno</button>
+      <button class="btn btn-success btn-lg" id="result-next-turn-btn" data-action="next-turn" data-i18n="result.nextTurn">➡️ Próximo turno</button>
     </div>
   </div>
 
@@ -33,9 +38,8 @@
         aria-label="Tela cheia" title="Tela cheia" hidden>
         <span aria-hidden="true">⛶</span>
       </button>
-      <h1 class="logo">MimiMania</h1>
-      <p class="logo-sub" data-i18n="home.subtitle">🎭 Mímica e desenho em família</p>
-      <!--
+      <h1 class="logo" data-i18n="home.title">Desafio da Mímica</h1>
+      <p class="logo-sub" data-i18n="home.subtitle">Desenhe, Adivinhe e Divirta-se em Família</p>
       <div class="dev-preview-panel mb">
         <div class="dev-preview-copy">
           <div class="eyebrow eyebrow-accent" data-i18n="dev.mode">Modo de desenvolvimento</div>
@@ -51,6 +55,7 @@
           </select>
         </div>
       </div>
+      <!--
       -->
       <div class="home-grid">
         <div class="card home-card home-actions-card">
@@ -64,7 +69,45 @@
             <button class="btn btn-ghost btn-lg btn-block" data-nav="wordbank" data-i18n="home.wordBank">🧩 Conteúdo e Expansões</button>
             <button class="btn btn-ghost btn-lg btn-block" data-nav="donate" data-i18n="home.donate">❤️ Donate</button>
             <button class="btn btn-ghost btn-lg btn-block" data-nav="settings" data-i18n="home.settings">⚙️ Configurações</button>
+            <button class="btn btn-ghost btn-lg btn-block" data-nav="leaderboard" data-i18n="home.leaderboard">🏅 Leaderboard</button>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== ALL TIME LEADERBOARD ========== -->
+  <div class="screen" id="screen-leaderboard">
+    <div class="page-shell">
+      <header class="page-header page-header-tight">
+        <button class="btn btn-ghost btn-sm" data-nav="home" data-i18n="common.back">← Voltar</button>
+        <h1 class="page-title" data-i18n="leaderboard.title">All Time Leaderboard</h1>
+      </header>
+      <div class="leaderboard-layout">
+        <div class="card leaderboard-controls-card">
+          <div class="flex-col">
+            <div>
+              <label class="toggle-label" for="leaderboard-sort-select" data-i18n="leaderboard.sortLabel">Ordenar por</label>
+              <div class="toggle-sub mt-xs" data-i18n="leaderboard.sortSub">Compare pontuação total, partidas ou modos específicos.</div>
+            </div>
+            <select class="inp" id="leaderboard-sort-select">
+              <option value="total" data-i18n="leaderboard.sort.total">Total de pontos</option>
+              <option value="matches" data-i18n="leaderboard.sort.matches">Partidas</option>
+              <option value="mimeTeams" data-i18n="leaderboard.sort.mimeTeams">Mímica · Times</option>
+              <option value="mimeFfa" data-i18n="leaderboard.sort.mimeFfa">Mímica · Free For All</option>
+              <option value="drawingTeams" data-i18n="leaderboard.sort.drawingTeams">Desenho · Times</option>
+              <option value="drawingFfa" data-i18n="leaderboard.sort.drawingFfa">Desenho · Free For All</option>
+              <option value="name" data-i18n="leaderboard.sort.name">Nome</option>
+            </select>
+            <button class="btn btn-danger btn-block" data-action="reset-leaderboard" data-i18n="leaderboard.resetButton">Apagar resultados</button>
+          </div>
+        </div>
+        <div class="card leaderboard-list-card">
+          <div class="action-row action-row-between mb">
+            <h2 class="card-title card-title-sm card-title-inline" data-i18n="leaderboard.listTitle">Jogadores</h2>
+            <div class="text-meta" id="leaderboard-summary"></div>
+          </div>
+          <div class="leaderboard-list" id="leaderboard-list"></div>
         </div>
       </div>
     </div>
@@ -323,7 +366,10 @@
     <div class="page-shell page-shell-game">
       <div class="action-row action-row-between mb-sm">
         <div class="round-info" id="round-display">Rodada 1 de 3</div>
-        <button class="btn btn-ghost btn-sm" data-action="confirm-restart" data-i18n="common.restart">🔄 Reiniciar</button>
+        <div class="action-row action-row-compact">
+          <button class="btn btn-secondary btn-sm hidden" id="score-manager-open-btn" data-action="open-score-manager" data-i18n="scoreManager.manageButton">⚖️ Gerenciar</button>
+          <button class="btn btn-ghost btn-sm" data-action="confirm-restart" data-i18n="common.restart">🔄 Reiniciar</button>
+        </div>
       </div>
       <div id="score-mini" class="score-mini-row"></div>
       <div class="game-status-row">
@@ -453,6 +499,29 @@
               <button class="btn btn-danger btn-lg" data-action="mark-wrong" data-i18n="game.wrong">❌ Errou / Skip</button>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== SCORE MANAGER ========== -->
+  <div class="screen" id="screen-score-manager">
+    <div class="page-shell">
+      <header class="page-header">
+        <button class="btn btn-ghost btn-sm" data-action="close-score-manager" data-i18n="scoreManager.backToGame">← Voltar ao jogo</button>
+        <h1 class="page-title" data-i18n="scoreManager.title">Gerenciar placar</h1>
+      </header>
+      <div class="card score-manager-card">
+        <div class="score-manager-head">
+          <div>
+            <h2 class="card-title card-title-sm" data-i18n="scoreManager.currentScoreTitle">Placar atual</h2>
+            <div class="text-sm text-muted" id="score-manager-context"></div>
+          </div>
+          <button class="btn btn-ghost btn-sm" data-action="reset-score-manager-inputs" data-i18n="scoreManager.resetInputs">↺ Recarregar</button>
+        </div>
+        <div class="score-manager-list" id="score-manager-list"></div>
+        <div class="action-row action-row-center action-row-wrap mt">
+          <button class="btn btn-primary btn-lg" data-action="save-score-manager" data-i18n="scoreManager.saveAndReturn">Salvar e voltar</button>
         </div>
       </div>
     </div>
@@ -638,15 +707,36 @@
               <div class="range-val" id="timer-val">60s</div>
             </div>
           </div>
-          <div class="toggle-wrap toggle-wrap-last">
+          <div class="toggle-wrap">
             <div>
-              <div class="toggle-label" data-i18n="settings.penaltyLabel">Penalidade por Skip</div>
-              <div class="toggle-sub" data-i18n="settings.penaltySub">−10 pontos ao pular</div>
+              <label class="toggle-label" for="correct-points-input" data-i18n="settings.correctPointsLabel">Pontos por acerto</label>
+              <div class="toggle-sub" data-i18n="settings.correctPointsSub">Pontos para quem faz a mímica ou desenho</div>
+            </div>
+            <input class="inp points-input" id="correct-points-input" type="number" min="0" max="999" step="1" value="10">
+          </div>
+          <div class="toggle-wrap">
+            <div>
+              <label class="toggle-label" for="wrong-points-input" data-i18n="settings.wrongPenaltyPointsLabel">Pontos perdidos por erro</label>
+              <div class="toggle-sub" data-i18n="settings.wrongPenaltyPointsSub">Desconta pontos quando o jogador erra ou o tempo acaba</div>
+            </div>
+            <input class="inp points-input" id="wrong-points-input" type="number" min="0" max="999" step="1" value="0">
+          </div>
+          <div class="toggle-wrap">
+            <div>
+              <div class="toggle-label" data-i18n="settings.ffaGuesserPointsLabel">Pontos para quem adivinha (FFA)</div>
+              <div class="toggle-sub" data-i18n="settings.ffaGuesserPointsSub">No Free For All, escolha quem acertou após cada acerto</div>
             </div>
             <label class="toggle">
-              <input type="checkbox" id="toggle-penalty">
+              <input type="checkbox" id="toggle-ffa-guesser-points" checked>
               <span class="toggle-slider"></span>
             </label>
+          </div>
+          <div class="toggle-wrap toggle-wrap-last">
+            <div>
+              <label class="toggle-label" for="ffa-guesser-points-input" data-i18n="settings.ffaGuesserPointsValueLabel">Pontos de quem acertou</label>
+              <div class="toggle-sub" data-i18n="settings.ffaGuesserPointsValueSub">Valor padrão inicial: 5 pontos</div>
+            </div>
+            <input class="inp points-input" id="ffa-guesser-points-input" type="number" min="0" max="999" step="1" value="5">
           </div>
         </div>
         <div class="card">
@@ -660,6 +750,9 @@
               <option value="pt" data-i18n="language.pt">Português</option>
               <option value="en" data-i18n="language.en">English</option>
               <option value="es" data-i18n="language.es">Español</option>
+              <option value="fr" data-i18n="language.fr">Français</option>
+              <option value="de" data-i18n="language.de">Deutsch</option>
+              <option value="it" data-i18n="language.it">Italiano</option>
             </select>
           </div>
           <div class="toggle-wrap">
@@ -762,7 +855,7 @@
     <div class="page-shell">
       <header class="page-header page-header-tight">
         <button class="btn btn-ghost btn-sm" data-nav="home" data-i18n="common.back">← Voltar</button>
-        <h1 class="page-title" data-i18n="donate.title">Support MimiMania</h1>
+        <h1 class="page-title" data-i18n="donate.title">Apoie o Desafio da Mímica</h1>
       </header>
       <div class="donate-layout">
         <div class="card">
@@ -796,7 +889,7 @@
             </div>
             <div class="media-row media-row-start">
               <div class="emoji-lg emoji-fixed">🛠️</div>
-              <div class="text-sm" data-i18n="donate.whyUpdates">It also helps keep MimiMania maintained with polish, balance tweaks, and new features.</div>
+              <div class="text-sm" data-i18n="donate.whyUpdates">Também ajuda a manter o Desafio da Mímica atualizado com polimento, ajustes de balanceamento e novos recursos.</div>
             </div>
           </div>
         </div>
@@ -805,7 +898,7 @@
   </div>
 
   <div class="home-footer-panel">
-    <div class="footer-share" aria-label="Compartilhar MimiMania">
+    <div class="footer-share" aria-label="Compartilhar Desafio da Mímica" data-i18n-aria-label="share.footerAriaLabel">
       <div class="share-grid">
         <button class="share-platform share-whatsapp" type="button" data-action="share-platform" data-platform="whatsapp" aria-label="WhatsApp" title="WhatsApp">
           <svg class="share-platform-icon" viewBox="0 0 24 24" aria-hidden="true">
@@ -841,7 +934,7 @@
     </div>
 
     <footer class="site-footer">
-      <span data-i18n="footer.copyPrefix">© 2025 MimiMania v6.0 · Insight X Lab Technologies</span>
+      <span data-i18n="footer.copyPrefix">© 2025 Desafio da Mímica v6.0 · Insight X Lab Technologies</span>
     </footer>
   </div>
 

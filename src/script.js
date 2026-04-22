@@ -77,7 +77,7 @@
 
     const TRANSLATIONS = {
       pt: {
-        meta: { documentTitle: 'MimiMania 🎭' },
+        meta: { documentTitle: 'Desafio da Mímica' },
         common: {
           back: '← Voltar',
           add: '+ Adicionar',
@@ -111,7 +111,8 @@
           }
         },
         home: {
-          subtitle: '🎭 Mímica e desenho em família',
+          title: 'Desafio da Mímica',
+          subtitle: 'Desenhe, Adivinhe e Divirta-se em Família',
           enterFullscreen: 'Tela cheia',
           exitFullscreen: 'Sair da tela cheia',
           newGame: '🎮 Nova Partida',
@@ -327,7 +328,7 @@
           resetAllButton: 'Restaurar tudo'
         },
         donate: {
-          title: 'Apoie o MimiMania',
+          title: 'Apoie o Desafio da Mímica',
           chooseTitle: '❤️ Escolha como doar',
           subtitle: 'Selecione sua plataforma preferida para apoiar o jogo e ajudar a financiar novos packs de palavras, idiomas e melhorias.',
           buyMeCoffee: 'Buy Me a Coffee',
@@ -336,11 +337,12 @@
           koFiSub: 'Doe via Ko-fi e ajude o projeto a continuar crescendo.',
           whyTitle: '🎭 Por que doar?',
           whyLanguages: 'Seu apoio ajuda a financiar novos idiomas, packs de conteúdo e futuras expansões do banco de palavras.',
-          whyUpdates: 'Também ajuda a manter o MimiMania atualizado com polimento, ajustes de balanceamento e novos recursos.'
+          whyUpdates: 'Também ajuda a manter o Desafio da Mímica atualizado com polimento, ajustes de balanceamento e novos recursos.'
         },
         share: {
-          title: 'MimiMania',
-          text: 'Venha jogar MimiMania comigo!'
+          title: 'Desafio da Mímica',
+          text: 'Venha jogar Desafio da Mímica comigo!',
+          footerAriaLabel: 'Compartilhar Desafio da Mímica'
         },
         theme: {
           cosmic: 'Cósmico',
@@ -351,7 +353,7 @@
           'high-contrast': 'Alto Contraste'
         },
         footer: {
-          copyPrefix: '© 2025 MimiMania v6.0 · Insight X Lab Technologies'
+          copyPrefix: '© 2025 Desafio da Mímica v6.0 · Insight X Lab Technologies'
         },
         teams: {
           defaultA: 'Time A',
@@ -424,7 +426,7 @@
         }
       },
       en: {
-        meta: { documentTitle: 'MimiMania 🎭' },
+        meta: { documentTitle: 'Charades Challenge' },
         common: {
           back: '← Back',
           add: '+ Add',
@@ -458,7 +460,8 @@
           }
         },
         home: {
-          subtitle: '🎭 Mime and drawing party game',
+          title: 'Charades Challenge',
+          subtitle: 'Draw, Guess and Have Fun Together',
           enterFullscreen: 'Full screen',
           exitFullscreen: 'Exit full screen',
           newGame: '🎮 New Game',
@@ -674,7 +677,7 @@
           resetAllButton: 'Reset everything'
         },
         donate: {
-          title: 'Support MimiMania',
+          title: 'Support Charades Challenge',
           chooseTitle: '❤️ Choose how to donate',
           subtitle: 'Pick your preferred platform to support the game and help fund new word packs, languages, and updates.',
           buyMeCoffee: 'Buy Me a Coffee',
@@ -683,11 +686,12 @@
           koFiSub: 'Donate with Ko-fi and keep the project growing.',
           whyTitle: '🎭 Why donate?',
           whyLanguages: 'Your support helps fund new languages, content packs, and future word bank expansions.',
-          whyUpdates: 'It also helps keep MimiMania maintained with polish, balance tweaks, and new features.'
+          whyUpdates: 'It also helps keep Charades Challenge maintained with polish, balance tweaks, and new features.'
         },
         share: {
-          title: 'MimiMania',
-          text: 'Come play MimiMania with me!'
+          title: 'Charades Challenge',
+          text: 'Come play Charades Challenge with me!',
+          footerAriaLabel: 'Share Charades Challenge'
         },
         theme: {
           cosmic: 'Cosmic',
@@ -698,7 +702,7 @@
           'high-contrast': 'High Contrast'
         },
         footer: {
-          copyPrefix: '© 2025 MimiMania v6.0 · Insight X Lab Technologies'
+          copyPrefix: '© 2025 Charades Challenge v6.0 · Insight X Lab Technologies'
         },
         teams: {
           defaultA: 'Team A',
@@ -771,7 +775,7 @@
         }
       },
       es: {
-        meta: { documentTitle: 'MimiMania 🎭' },
+        meta: { documentTitle: 'Desafío de Mímica' },
         common: {
           back: '← Volver',
           add: '+ Añadir',
@@ -805,7 +809,8 @@
           }
         },
         home: {
-          subtitle: '🎭 Mímica y dibujo en familia',
+          title: 'Desafío de Mímica',
+          subtitle: 'Dibuja, Adivina y Diviértete en Familia',
           enterFullscreen: 'Pantalla completa',
           exitFullscreen: 'Salir de pantalla completa',
           newGame: '🎮 Nueva Partida',
@@ -1021,7 +1026,7 @@
           resetAllButton: 'Restaurar todo'
         },
         donate: {
-          title: 'Apoya a MimiMania',
+          title: 'Apoya a Desafío de Mímica',
           chooseTitle: '❤️ Elige cómo donar',
           subtitle: 'Selecciona tu plataforma preferida para apoyar el juego y ayudar a financiar nuevos packs de palabras, idiomas y mejoras.',
           buyMeCoffee: 'Buy Me a Coffee',
@@ -1030,11 +1035,12 @@
           koFiSub: 'Dona con Ko-fi y ayuda a que el proyecto siga creciendo.',
           whyTitle: '🎭 ¿Por qué donar?',
           whyLanguages: 'Tu apoyo ayuda a financiar nuevos idiomas, packs de contenido y futuras expansiones del banco de palabras.',
-          whyUpdates: 'También ayuda a mantener MimiMania con más pulido, ajustes de balance y nuevas funciones.'
+          whyUpdates: 'También ayuda a mantener Desafío de Mímica con más pulido, ajustes de balance y nuevas funciones.'
         },
         share: {
-          title: 'MimiMania',
-          text: '¡Ven a jugar MimiMania conmigo!'
+          title: 'Desafío de Mímica',
+          text: '¡Ven a jugar Desafío de Mímica conmigo!',
+          footerAriaLabel: 'Compartir Desafío de Mímica'
         },
         theme: {
           cosmic: 'Cósmico',
@@ -1045,7 +1051,7 @@
           'high-contrast': 'Alto Contraste'
         },
         footer: {
-          copyPrefix: '© 2025 MimiMania v6.0 · Insight X Lab Technologies'
+          copyPrefix: '© 2025 Desafío de Mímica v6.0 · Insight X Lab Technologies'
         },
         teams: {
           defaultA: 'Equipo A',
@@ -1129,6 +1135,7 @@
     }
 
     TRANSLATIONS.fr = mergeTranslations(TRANSLATIONS.en, {
+      meta: { documentTitle: 'Défi du Mime' },
       common: {
         back: '← Retour',
         add: '+ Ajouter',
@@ -1156,7 +1163,8 @@
         preview: { auto: 'Auto', mobile: 'Mobile', tablet: 'Tablette', desktop: 'Ordinateur' }
       },
       home: {
-        subtitle: '🎭 Mime et dessin en famille',
+        title: 'Défi du Mime',
+        subtitle: 'Dessinez, Devinez et Amusez-vous Ensemble',
         enterFullscreen: 'Plein écran',
         exitFullscreen: 'Quitter le plein écran',
         newGame: '🎮 Nouvelle partie',
@@ -1355,17 +1363,22 @@
         resetAllButton: 'Tout restaurer'
       },
       donate: {
-        title: 'Soutenez MimiMania',
+        title: 'Soutenez Défi du Mime',
         chooseTitle: '❤️ Choisissez comment donner',
         subtitle: 'Choisissez votre plateforme préférée pour soutenir le jeu et financer de nouveaux packs de mots, langues et améliorations.',
         buyMeCoffeeSub: 'Soutien rapide et direct avec un don ponctuel.',
         koFiSub: 'Faites un don via Ko-fi et aidez le projet à grandir.',
         whyTitle: '🎭 Pourquoi donner ?',
         whyLanguages: 'Votre soutien aide à financer de nouvelles langues, packs de contenu et extensions de la banque de mots.',
-        whyUpdates: 'Il aide aussi à maintenir MimiMania avec du polish, de l’équilibrage et de nouvelles fonctionnalités.'
+        whyUpdates: 'Il aide aussi à maintenir Défi du Mime avec du polish, de l’équilibrage et de nouvelles fonctionnalités.'
       },
-      share: { title: 'MimiMania', text: 'Viens jouer à MimiMania avec moi !' },
+      share: {
+        title: 'Défi du Mime',
+        text: 'Viens jouer à Défi du Mime avec moi !',
+        footerAriaLabel: 'Partager Défi du Mime'
+      },
       theme: { cosmic: 'Cosmique', 'liquid-glass': 'Automne', material3: 'Printemps', 'light-mode': 'Mode clair', 'dark-mode': 'Mode sombre', 'high-contrast': 'Contraste élevé' },
+      footer: { copyPrefix: '© 2025 Défi du Mime v6.0 · Insight X Lab Technologies' },
       teams: { defaultA: 'Équipe A', defaultB: 'Équipe B' },
       players: { defaultName: 'Joueur {number}' },
       dynamic: {
@@ -1433,6 +1446,7 @@
     });
 
     TRANSLATIONS.de = mergeTranslations(TRANSLATIONS.en, {
+      meta: { documentTitle: 'Pantomime Challenge' },
       common: {
         back: '← Zurück',
         add: '+ Hinzufügen',
@@ -1453,7 +1467,8 @@
         preview: { auto: 'Auto', mobile: 'Mobil', tablet: 'Tablet', desktop: 'Desktop' }
       },
       home: {
-        subtitle: '🎭 Pantomime und Zeichnen mit der Familie',
+        title: 'Pantomime Challenge',
+        subtitle: 'Zeichnen, Raten und Gemeinsam Spaß Haben',
         enterFullscreen: 'Vollbild',
         exitFullscreen: 'Vollbild verlassen',
         newGame: '🎮 Neues Spiel',
@@ -1652,17 +1667,22 @@
         resetAllButton: 'Alles zurücksetzen'
       },
       donate: {
-        title: 'MimiMania unterstützen',
+        title: 'Pantomime Challenge unterstützen',
         chooseTitle: '❤️ Wähle deine Spendenart',
         subtitle: 'Wähle deine bevorzugte Plattform, um das Spiel zu unterstützen und neue Wortpacks, Sprachen und Verbesserungen zu finanzieren.',
         buyMeCoffeeSub: 'Schnelle direkte Unterstützung mit einer einmaligen Spende.',
         koFiSub: 'Spende über Ko-fi und hilf dem Projekt zu wachsen.',
         whyTitle: '🎭 Warum spenden?',
         whyLanguages: 'Deine Unterstützung finanziert neue Sprachen, Inhaltspacks und künftige Erweiterungen der Wortbank.',
-        whyUpdates: 'Sie hilft auch, MimiMania mit Feinschliff, Balancing und neuen Funktionen aktuell zu halten.'
+        whyUpdates: 'Sie hilft auch, Pantomime Challenge mit Feinschliff, Balancing und neuen Funktionen aktuell zu halten.'
       },
-      share: { title: 'MimiMania', text: 'Komm und spiel MimiMania mit mir!' },
+      share: {
+        title: 'Pantomime Challenge',
+        text: 'Komm und spiel Pantomime Challenge mit mir!',
+        footerAriaLabel: 'Pantomime Challenge teilen'
+      },
       theme: { cosmic: 'Kosmisch', 'liquid-glass': 'Herbst', material3: 'Frühling', 'light-mode': 'Heller Modus', 'dark-mode': 'Dunkler Modus', 'high-contrast': 'Hoher Kontrast' },
+      footer: { copyPrefix: '© 2025 Pantomime Challenge v6.0 · Insight X Lab Technologies' },
       teams: { defaultA: 'Team A', defaultB: 'Team B' },
       players: { defaultName: 'Spieler {number}' },
       dynamic: {
@@ -1730,6 +1750,7 @@
     });
 
     TRANSLATIONS.it = mergeTranslations(TRANSLATIONS.en, {
+      meta: { documentTitle: 'Sfida di Mimica' },
       common: {
         back: '← Indietro',
         add: '+ Aggiungi',
@@ -1750,7 +1771,8 @@
         preview: { auto: 'Auto', mobile: 'Mobile', tablet: 'Tablet', desktop: 'Desktop' }
       },
       home: {
-        subtitle: '🎭 Mimica e disegno in famiglia',
+        title: 'Sfida di Mimica',
+        subtitle: 'Disegna, Indovina e Divertiti in Famiglia',
         enterFullscreen: 'Schermo intero',
         exitFullscreen: 'Esci da schermo intero',
         newGame: '🎮 Nuova partita',
@@ -1949,17 +1971,22 @@
         resetAllButton: 'Ripristina tutto'
       },
       donate: {
-        title: 'Sostieni MimiMania',
+        title: 'Sostieni Sfida di Mimica',
         chooseTitle: '❤️ Scegli come donare',
         subtitle: 'Scegli la piattaforma preferita per sostenere il gioco e finanziare nuovi pack di parole, lingue e miglioramenti.',
         buyMeCoffeeSub: 'Supporto rapido e diretto con una donazione singola.',
         koFiSub: 'Dona via Ko-fi e aiuta il progetto a crescere.',
         whyTitle: '🎭 Perché donare?',
         whyLanguages: 'Il tuo supporto aiuta a finanziare nuove lingue, pack di contenuti e future espansioni della banca delle parole.',
-        whyUpdates: 'Aiuta anche a mantenere MimiMania aggiornato con rifiniture, bilanciamento e nuove funzionalità.'
+        whyUpdates: 'Aiuta anche a mantenere Sfida di Mimica aggiornata con rifiniture, bilanciamento e nuove funzionalità.'
       },
-      share: { title: 'MimiMania', text: 'Vieni a giocare a MimiMania con me!' },
+      share: {
+        title: 'Sfida di Mimica',
+        text: 'Vieni a giocare a Sfida di Mimica con me!',
+        footerAriaLabel: 'Condividi Sfida di Mimica'
+      },
       theme: { cosmic: 'Cosmico', 'liquid-glass': 'Autunno', material3: 'Primavera', 'light-mode': 'Modalità chiara', 'dark-mode': 'Modalità scura', 'high-contrast': 'Alto contrasto' },
+      footer: { copyPrefix: '© 2025 Sfida di Mimica v6.0 · Insight X Lab Technologies' },
       teams: { defaultA: 'Squadra A', defaultB: 'Squadra B' },
       players: { defaultName: 'Giocatore {number}' },
       dynamic: {

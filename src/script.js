@@ -133,6 +133,7 @@
           donate: '❤️ Doar',
           settings: '⚙️ Configurações',
           leaderboard: '🏅 Placar Histórico',
+          installOnDevice: '📲 Instalar no dispositivo',
           howToTitle: '🏆 Como jogar',
           howTo: {
             setupTitle: 'Monte a partida',
@@ -575,6 +576,7 @@
           donate: '❤️ Donate',
           settings: '⚙️ Settings',
           leaderboard: '🏅 Leaderboard',
+          installOnDevice: '📲 Install on Device',
           howToTitle: '🏆 How to play',
           howTo: {
             setupTitle: 'Set up the match',
@@ -1017,6 +1019,7 @@
           donate: '❤️ Donar',
           settings: '⚙️ Configuración',
           leaderboard: '🏅 Clasificación histórica',
+          installOnDevice: '📲 Instalar en el dispositivo',
           howToTitle: '🏆 Cómo jugar',
           howTo: {
             setupTitle: 'Prepara la partida',
@@ -1443,6 +1446,7 @@
         donate: '❤️ Faire un don',
         settings: '⚙️ Paramètres',
         leaderboard: '🏅 Classement historique',
+        installOnDevice: '📲 Installer sur l’appareil',
         howToTitle: '🏆 Comment jouer',
         howTo: {
           setupTitle: 'Préparez la partie',
@@ -1824,6 +1828,7 @@
         donate: '❤️ Spenden',
         settings: '⚙️ Einstellungen',
         leaderboard: '🏅 Bestenliste',
+        installOnDevice: '📲 Auf Gerät installieren',
         howToTitle: '🏆 Spielanleitung',
         howTo: {
           setupTitle: 'Spiel einrichten',
@@ -2205,6 +2210,7 @@
         donate: '❤️ Dona',
         settings: '⚙️ Impostazioni',
         leaderboard: '🏅 Classifica storica',
+        installOnDevice: '📲 Installa sul dispositivo',
         howToTitle: '🏆 Come giocare',
         howTo: {
           setupTitle: 'Prepara la partita',
@@ -4146,6 +4152,7 @@
       unlocked: false
     };
 
+    let deferredPWAInstallPrompt = null;
     let wbDiff = 'easy';
     let wbCat = 'objects';
     let wbPreviewPackId = '';
@@ -4332,6 +4339,30 @@
       } finally {
         updateFullscreenButton();
       }
+    }
+
+    function isPWAStandalone() {
+      return window.matchMedia?.('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    }
+
+    function updatePWAInstallButton() {
+      const button = document.getElementById('pwa-install-button');
+      if (!button) return;
+      button.classList.toggle('hidden', !deferredPWAInstallPrompt || isPWAStandalone());
+    }
+
+    async function installPWA() {
+      if (!deferredPWAInstallPrompt || isPWAStandalone()) {
+        updatePWAInstallButton();
+        return;
+      }
+      const promptEvent = deferredPWAInstallPrompt;
+      deferredPWAInstallPrompt = null;
+      updatePWAInstallButton();
+      try {
+        await promptEvent.prompt();
+        await promptEvent.userChoice;
+      } catch (e) { }
     }
 
     // ============================================================
@@ -7494,6 +7525,10 @@
         animateButtonClick(button);
         return toggleFullscreen();
       }
+      if (action === 'install-pwa') {
+        animateButtonClick(button);
+        return installPWA();
+      }
       if (action === 'select-multidevice-host') {
         animateButtonClick(button);
         return selectMultiDeviceMode('host');
@@ -7719,6 +7754,15 @@
       });
       document.addEventListener('fullscreenchange', updateFullscreenButton);
       document.addEventListener('webkitfullscreenchange', updateFullscreenButton);
+      window.addEventListener('beforeinstallprompt', event => {
+        event.preventDefault();
+        deferredPWAInstallPrompt = event;
+        updatePWAInstallButton();
+      });
+      window.addEventListener('appinstalled', () => {
+        deferredPWAInstallPrompt = null;
+        updatePWAInstallButton();
+      });
 
       const packFileInput = document.getElementById('pack-file-input');
       if (packFileInput) {

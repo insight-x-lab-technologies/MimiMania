@@ -1,6 +1,7 @@
     const DEFAULT_LANGUAGE = 'en';
     const SETTINGS_KEY = 'mm_settings_v2';
     const CONTENT_KEY = 'mm_content_v1';
+    const LEADERBOARD_KEY = 'mm_leaderboard_v1';
     const LEGACY_WORDS_KEY = 'mm_words_v2';
     const QUICK_GAME_KEY = 'mm_quick_game_v1';
     const USER_ID_KEY = 'mm_user_id_v1';
@@ -20,6 +21,7 @@
     const SUPPORTED_LANGUAGES = ['pt', 'en', 'es', 'fr', 'de', 'it'];
     const LANGUAGE_HTML_MAP = { pt: 'pt-BR', en: 'en', es: 'es', fr: 'fr', de: 'de', it: 'it' };
     const GAME_TYPES = ['mime', 'drawing'];
+    const LEADERBOARD_MODE_KEYS = ['mimeTeams', 'mimeFfa', 'drawingTeams', 'drawingFfa'];
     const DIFFICULTY_KEYS = ['easy', 'normal', 'hard'];
     const CATEGORY_KEYS = ['objects', 'actions', 'animals', 'movies', 'professions', 'celebrities'];
     const CATEGORY_ICONS = { objects: '🧸', actions: '🏃', animals: '🐾', movies: '🎬', professions: '👔', celebrities: '⭐' };
@@ -124,6 +126,7 @@
           wordBank: '🧩 Conteúdo e Expansões',
           donate: '❤️ Doar',
           settings: '⚙️ Configurações',
+          leaderboard: '🏅 Placar Histórico',
           howToTitle: '🏆 Como jogar',
           howTo: {
             setupTitle: 'Monte a partida',
@@ -280,6 +283,31 @@
           playAgain: '🎮 Jogar de Novo',
           tie: 'EMPATE!'
         },
+        leaderboard: {
+          title: 'Placar Histórico',
+          sortLabel: 'Ordenar por',
+          sortSub: 'Compare pontuação total, partidas ou modos específicos.',
+          resetButton: 'Apagar resultados',
+          listTitle: 'Jogadores',
+          emptyState: 'Nenhum resultado registrado ainda.',
+          pointsLabel: 'pontos',
+          matchesLabel: 'partidas',
+          sort: {
+            total: 'Total de pontos',
+            matches: 'Partidas',
+            mimeTeams: 'Mímica · Times',
+            mimeFfa: 'Mímica · Free For All',
+            drawingTeams: 'Desenho · Times',
+            drawingFfa: 'Desenho · Free For All',
+            name: 'Nome'
+          },
+          mode: {
+            mimeTeams: 'Mímica · Times',
+            mimeFfa: 'Mímica · Free For All',
+            drawingTeams: 'Desenho · Times',
+            drawingFfa: 'Desenho · Free For All'
+          }
+        },
         wordbank: {
           title: 'Conteúdo e Expansões',
           addTitle: '➕ Adicionar Palavra',
@@ -397,6 +425,8 @@
           timeUpNoPoints: 'O tempo acabou! Sem pontos.',
           skippedNoPoints: 'Palavra pulada. Sem pontos.',
           scoreManagerContext: ({ round, total, playerName }) => `Rodada ${round} de ${total} · Vez de ${playerName}`,
+          leaderboardSummary: ({ players, matches }) => `${players} jogador${players !== 1 ? 'es' : ''} · ${matches} partida${matches !== 1 ? 's' : ''}`,
+          leaderboardModeStats: ({ points, matches }) => `${points} pts · ${matches} partida${matches !== 1 ? 's' : ''}`,
           roundSummary: ({ roundDone, remaining }) => `Fim da Rodada ${roundDone} — ${remaining} rodada${remaining !== 1 ? 's' : ''} restante${remaining !== 1 ? 's' : ''}!`,
           wordAdded: ({ word, difficulty }) => `✅ "${word}" adicionada (${difficulty})!`,
           teamAdded: ({ name, teamName }) => `✅ ${name} em ${teamName}!`,
@@ -412,6 +442,7 @@
           bankRestored: '✅ Banco restaurado!',
           challengeRemoved: 'Desafio removido.',
           challengesRestored: '✅ Desafios restaurados!',
+          leaderboardReset: '✅ Placar histórico apagado!',
           userIdCopied: '🪪 user_id copiado!',
           packInstallReading: 'Lendo arquivo...',
           packInstallSuccess: '✅ Pack instalado e ativado!',
@@ -433,6 +464,7 @@
         confirmations: {
           resetWords: 'Restaurar o banco de palavras padrão? Palavras customizadas serão perdidas.',
           resetChallenges: 'Restaurar os desafios padrão? Desafios customizados serão perdidos.',
+          resetLeaderboard: 'Apagar todos os resultados do placar histórico?',
           resetAppDefaults: 'Restaurar toda a aplicação para o padrão? Configurações, jogadores salvos, packs instalados e user_id serão apagados.',
           restartGame: 'Reiniciar o jogo? Todo o progresso será perdido.',
           replacePack: ({ packName }) => `Já existe um pack instalado com este ID (${packName}). Substituir?`,
@@ -497,6 +529,7 @@
           wordBank: '🧩 Content & Expansions',
           donate: '❤️ Donate',
           settings: '⚙️ Settings',
+          leaderboard: '🏅 Leaderboard',
           howToTitle: '🏆 How to play',
           howTo: {
             setupTitle: 'Set up the match',
@@ -653,6 +686,31 @@
           playAgain: '🎮 Play Again',
           tie: 'TIE!'
         },
+        leaderboard: {
+          title: 'All Time Leaderboard',
+          sortLabel: 'Sort by',
+          sortSub: 'Compare total score, matches, or specific game modes.',
+          resetButton: 'Clear results',
+          listTitle: 'Players',
+          emptyState: 'No results recorded yet.',
+          pointsLabel: 'points',
+          matchesLabel: 'matches',
+          sort: {
+            total: 'Total points',
+            matches: 'Matches',
+            mimeTeams: 'Mime · Teams',
+            mimeFfa: 'Mime · Free For All',
+            drawingTeams: 'Drawing · Teams',
+            drawingFfa: 'Drawing · Free For All',
+            name: 'Name'
+          },
+          mode: {
+            mimeTeams: 'Mime · Teams',
+            mimeFfa: 'Mime · Free For All',
+            drawingTeams: 'Drawing · Teams',
+            drawingFfa: 'Drawing · Free For All'
+          }
+        },
         wordbank: {
           title: 'Content & Expansions',
           addTitle: '➕ Add Word',
@@ -770,6 +828,8 @@
           timeUpNoPoints: 'Time is up! No points.',
           skippedNoPoints: 'Word skipped. No points.',
           scoreManagerContext: ({ round, total, playerName }) => `Round ${round} of ${total} · ${playerName}'s turn`,
+          leaderboardSummary: ({ players, matches }) => `${players} player${players !== 1 ? 's' : ''} · ${matches} match${matches !== 1 ? 'es' : ''}`,
+          leaderboardModeStats: ({ points, matches }) => `${points} pts · ${matches} match${matches !== 1 ? 'es' : ''}`,
           roundSummary: ({ roundDone, remaining }) => `End of Round ${roundDone} — ${remaining} round${remaining !== 1 ? 's' : ''} remaining!`,
           wordAdded: ({ word, difficulty }) => `✅ "${word}" added (${difficulty})!`,
           teamAdded: ({ name, teamName }) => `✅ ${name} joined ${teamName}!`,
@@ -785,6 +845,7 @@
           bankRestored: '✅ Word bank restored!',
           challengeRemoved: 'Challenge removed.',
           challengesRestored: '✅ Challenges restored!',
+          leaderboardReset: '✅ Leaderboard cleared!',
           userIdCopied: '🪪 user_id copied!',
           packInstallReading: 'Reading file...',
           packInstallSuccess: '✅ Pack installed and enabled!',
@@ -806,6 +867,7 @@
         confirmations: {
           resetWords: 'Restore the default word bank? Custom words will be lost.',
           resetChallenges: 'Restore the default challenges? Custom challenges will be lost.',
+          resetLeaderboard: 'Clear all All Time Leaderboard results?',
           resetAppDefaults: 'Reset the entire application to defaults? Settings, saved players, installed packs, and user_id will be erased.',
           restartGame: 'Restart the game? All progress will be lost.',
           replacePack: ({ packName }) => `A pack with this ID is already installed (${packName}). Replace it?`,
@@ -870,6 +932,7 @@
           wordBank: '🧩 Contenido y Expansiones',
           donate: '❤️ Donar',
           settings: '⚙️ Configuración',
+          leaderboard: '🏅 Clasificación histórica',
           howToTitle: '🏆 Cómo jugar',
           howTo: {
             setupTitle: 'Prepara la partida',
@@ -1026,6 +1089,31 @@
           playAgain: '🎮 Jugar de Nuevo',
           tie: '¡EMPATE!'
         },
+        leaderboard: {
+          title: 'Clasificación histórica',
+          sortLabel: 'Ordenar por',
+          sortSub: 'Compara puntuación total, partidas o modos específicos.',
+          resetButton: 'Borrar resultados',
+          listTitle: 'Jugadores',
+          emptyState: 'Aún no hay resultados registrados.',
+          pointsLabel: 'puntos',
+          matchesLabel: 'partidas',
+          sort: {
+            total: 'Total de puntos',
+            matches: 'Partidas',
+            mimeTeams: 'Mímica · Equipos',
+            mimeFfa: 'Mímica · Todos contra todos',
+            drawingTeams: 'Dibujo · Equipos',
+            drawingFfa: 'Dibujo · Todos contra todos',
+            name: 'Nombre'
+          },
+          mode: {
+            mimeTeams: 'Mímica · Equipos',
+            mimeFfa: 'Mímica · Todos contra todos',
+            drawingTeams: 'Dibujo · Equipos',
+            drawingFfa: 'Dibujo · Todos contra todos'
+          }
+        },
         wordbank: {
           title: 'Contenido y Expansiones',
           addTitle: '➕ Añadir Palabra',
@@ -1143,6 +1231,8 @@
           timeUpNoPoints: '¡Se acabó el tiempo! Sin puntos.',
           skippedNoPoints: 'Palabra saltada. Sin puntos.',
           scoreManagerContext: ({ round, total, playerName }) => `Ronda ${round} de ${total} · Turno de ${playerName}`,
+          leaderboardSummary: ({ players, matches }) => `${players} jugador${players !== 1 ? 'es' : ''} · ${matches} partida${matches !== 1 ? 's' : ''}`,
+          leaderboardModeStats: ({ points, matches }) => `${points} pts · ${matches} partida${matches !== 1 ? 's' : ''}`,
           roundSummary: ({ roundDone, remaining }) => `Fin de la Ronda ${roundDone} — ${remaining} ronda${remaining !== 1 ? 's' : ''} restante${remaining !== 1 ? 's' : ''}!`,
           wordAdded: ({ word, difficulty }) => `✅ "${word}" añadida (${difficulty})!`,
           teamAdded: ({ name, teamName }) => `✅ ${name} entró en ${teamName}!`,
@@ -1158,6 +1248,7 @@
           bankRestored: '✅ ¡Banco restaurado!',
           challengeRemoved: 'Desafío eliminado.',
           challengesRestored: '✅ ¡Desafíos restaurados!',
+          leaderboardReset: '✅ ¡Clasificación borrada!',
           userIdCopied: '🪪 ¡user_id copiado!',
           packInstallReading: 'Leyendo archivo...',
           packInstallSuccess: '✅ ¡Pack instalado y activado!',
@@ -1179,6 +1270,7 @@
         confirmations: {
           resetWords: '¿Restaurar el banco de palabras predeterminado? Las palabras personalizadas se perderán.',
           resetChallenges: '¿Restaurar los desafíos predeterminados? Los desafíos personalizados se perderán.',
+          resetLeaderboard: '¿Borrar todos los resultados de la clasificación histórica?',
           resetAppDefaults: '¿Restaurar toda la aplicación a los valores predeterminados? Se eliminarán configuración, jugadores guardados, packs instalados y user_id.',
           restartGame: '¿Reiniciar el juego? Todo el progreso se perderá.',
           replacePack: ({ packName }) => `Ya existe un pack instalado con este ID (${packName}). ¿Reemplazarlo?`,
@@ -1248,6 +1340,7 @@
         wordBank: '🧩 Contenu et extensions',
         donate: '❤️ Faire un don',
         settings: '⚙️ Paramètres',
+        leaderboard: '🏅 Classement historique',
         howToTitle: '🏆 Comment jouer',
         howTo: {
           setupTitle: 'Préparez la partie',
@@ -1392,6 +1485,31 @@
       },
       score: { title: '🏆 Score', nextRoundTitle: '🎊 Prochaine manche' },
       final: { winnerLabel: 'GAGNANT !', resultTitle: '📊 Résultat final', playAgain: '🎮 Rejouer', tie: 'ÉGALITÉ !' },
+      leaderboard: {
+        title: 'Classement historique',
+        sortLabel: 'Trier par',
+        sortSub: 'Comparez le score total, les parties ou les modes précis.',
+        resetButton: 'Effacer les résultats',
+        listTitle: 'Joueurs',
+        emptyState: 'Aucun résultat enregistré pour le moment.',
+        pointsLabel: 'points',
+        matchesLabel: 'parties',
+        sort: {
+          total: 'Total de points',
+          matches: 'Parties',
+          mimeTeams: 'Mime · Équipes',
+          mimeFfa: 'Mime · Chacun pour soi',
+          drawingTeams: 'Dessin · Équipes',
+          drawingFfa: 'Dessin · Chacun pour soi',
+          name: 'Nom'
+        },
+        mode: {
+          mimeTeams: 'Mime · Équipes',
+          mimeFfa: 'Mime · Chacun pour soi',
+          drawingTeams: 'Dessin · Équipes',
+          drawingFfa: 'Dessin · Chacun pour soi'
+        }
+      },
       wordbank: {
         title: 'Contenu et extensions',
         addTitle: '➕ Ajouter un mot',
@@ -1493,6 +1611,8 @@
         timeUpNoPoints: 'Temps écoulé ! Aucun point.',
         skippedNoPoints: 'Mot passé. Aucun point.',
         scoreManagerContext: ({ round, total, playerName }) => `Manche ${round} sur ${total} · Tour de ${playerName}`,
+        leaderboardSummary: ({ players, matches }) => `${players} joueur${players !== 1 ? 's' : ''} · ${matches} partie${matches !== 1 ? 's' : ''}`,
+        leaderboardModeStats: ({ points, matches }) => `${points} pts · ${matches} partie${matches !== 1 ? 's' : ''}`,
         roundSummary: ({ roundDone, remaining }) => `Fin de la manche ${roundDone} — ${remaining} manche${remaining !== 1 ? 's' : ''} restante${remaining !== 1 ? 's' : ''} !`,
         wordAdded: ({ word, difficulty }) => `✅ "${word}" ajouté (${difficulty}) !`,
         teamAdded: ({ name, teamName }) => `✅ ${name} rejoint ${teamName} !`,
@@ -1508,6 +1628,7 @@
         bankRestored: '✅ Banque de mots restaurée !',
         challengeRemoved: 'Défi supprimé.',
         challengesRestored: '✅ Défis restaurés !',
+        leaderboardReset: '✅ Classement effacé !',
         userIdCopied: '🪪 user_id copié !',
         packInstallReading: 'Lecture du fichier...',
         packInstallSuccess: '✅ Pack installé et activé !',
@@ -1529,6 +1650,7 @@
       confirmations: {
         resetWords: 'Restaurer la banque de mots par défaut ? Les mots personnalisés seront perdus.',
         resetChallenges: 'Restaurer les défis par défaut ? Les défis personnalisés seront perdus.',
+        resetLeaderboard: 'Effacer tous les résultats du classement historique ?',
         resetAppDefaults: 'Restaurer toute l’application par défaut ? Les paramètres, joueurs sauvegardés, packs installés et user_id seront effacés.',
         restartGame: 'Recommencer la partie ? Toute la progression sera perdue.',
         replacePack: ({ packName }) => `Un pack avec cet ID est déjà installé (${packName}). Le remplacer ?`,
@@ -1581,6 +1703,7 @@
         wordBank: '🧩 Inhalte und Erweiterungen',
         donate: '❤️ Spenden',
         settings: '⚙️ Einstellungen',
+        leaderboard: '🏅 Bestenliste',
         howToTitle: '🏆 Spielanleitung',
         howTo: {
           setupTitle: 'Spiel einrichten',
@@ -1725,6 +1848,31 @@
       },
       score: { title: '🏆 Punktestand', nextRoundTitle: '🎊 Nächste Runde' },
       final: { winnerLabel: 'GEWINNER!', resultTitle: '📊 Endergebnis', playAgain: '🎮 Nochmals spielen', tie: 'UNENTSCHIEDEN!' },
+      leaderboard: {
+        title: 'Ewige Bestenliste',
+        sortLabel: 'Sortieren nach',
+        sortSub: 'Vergleiche Gesamtpunkte, Partien oder bestimmte Modi.',
+        resetButton: 'Ergebnisse löschen',
+        listTitle: 'Spieler',
+        emptyState: 'Noch keine gespeicherten Ergebnisse.',
+        pointsLabel: 'Punkte',
+        matchesLabel: 'Partien',
+        sort: {
+          total: 'Gesamtpunkte',
+          matches: 'Partien',
+          mimeTeams: 'Pantomime · Teams',
+          mimeFfa: 'Pantomime · Jeder gegen jeden',
+          drawingTeams: 'Zeichnen · Teams',
+          drawingFfa: 'Zeichnen · Jeder gegen jeden',
+          name: 'Name'
+        },
+        mode: {
+          mimeTeams: 'Pantomime · Teams',
+          mimeFfa: 'Pantomime · Jeder gegen jeden',
+          drawingTeams: 'Zeichnen · Teams',
+          drawingFfa: 'Zeichnen · Jeder gegen jeden'
+        }
+      },
       wordbank: {
         title: 'Inhalte und Erweiterungen',
         addTitle: '➕ Wort hinzufügen',
@@ -1826,6 +1974,8 @@
         timeUpNoPoints: 'Zeit abgelaufen! Keine Punkte.',
         skippedNoPoints: 'Wort übersprungen. Keine Punkte.',
         scoreManagerContext: ({ round, total, playerName }) => `Runde ${round} von ${total} · ${playerName} ist dran`,
+        leaderboardSummary: ({ players, matches }) => `${players} Spieler · ${matches} Partie${matches !== 1 ? 'n' : ''}`,
+        leaderboardModeStats: ({ points, matches }) => `${points} Pkt. · ${matches} Partie${matches !== 1 ? 'n' : ''}`,
         roundSummary: ({ roundDone, remaining }) => `Ende von Runde ${roundDone} — ${remaining} Runde${remaining !== 1 ? 'n' : ''} übrig!`,
         wordAdded: ({ word, difficulty }) => `✅ "${word}" hinzugefügt (${difficulty})!`,
         teamAdded: ({ name, teamName }) => `✅ ${name} ist in ${teamName}!`,
@@ -1841,6 +1991,7 @@
         bankRestored: '✅ Wortbank wiederhergestellt!',
         challengeRemoved: 'Herausforderung entfernt.',
         challengesRestored: '✅ Herausforderungen wiederhergestellt!',
+        leaderboardReset: '✅ Bestenliste gelöscht!',
         userIdCopied: '🪪 user_id kopiert!',
         packInstallReading: 'Datei wird gelesen...',
         packInstallSuccess: '✅ Pack installiert und aktiviert!',
@@ -1862,6 +2013,7 @@
       confirmations: {
         resetWords: 'Standard-Wortbank wiederherstellen? Eigene Wörter gehen verloren.',
         resetChallenges: 'Standard-Herausforderungen wiederherstellen? Eigene Herausforderungen gehen verloren.',
+        resetLeaderboard: 'Alle Ergebnisse aus der ewigen Bestenliste löschen?',
         resetAppDefaults: 'Die gesamte Anwendung auf Standard zurücksetzen? Einstellungen, gespeicherte Spieler, installierte Packs und user_id werden gelöscht.',
         restartGame: 'Spiel neu starten? Der gesamte Fortschritt geht verloren.',
         replacePack: ({ packName }) => `Ein Pack mit dieser ID ist bereits installiert (${packName}). Ersetzen?`,
@@ -1914,6 +2066,7 @@
         wordBank: '🧩 Contenuti ed espansioni',
         donate: '❤️ Dona',
         settings: '⚙️ Impostazioni',
+        leaderboard: '🏅 Classifica storica',
         howToTitle: '🏆 Come giocare',
         howTo: {
           setupTitle: 'Prepara la partita',
@@ -2058,6 +2211,31 @@
       },
       score: { title: '🏆 Punteggio', nextRoundTitle: '🎊 Prossimo turno' },
       final: { winnerLabel: 'VINCITORE!', resultTitle: '📊 Risultato finale', playAgain: '🎮 Gioca ancora', tie: 'PAREGGIO!' },
+      leaderboard: {
+        title: 'Classifica storica',
+        sortLabel: 'Ordina per',
+        sortSub: 'Confronta punti totali, partite o modalità specifiche.',
+        resetButton: 'Cancella risultati',
+        listTitle: 'Giocatori',
+        emptyState: 'Nessun risultato salvato per ora.',
+        pointsLabel: 'punti',
+        matchesLabel: 'partite',
+        sort: {
+          total: 'Punti totali',
+          matches: 'Partite',
+          mimeTeams: 'Mimica · Squadre',
+          mimeFfa: 'Mimica · Tutti contro tutti',
+          drawingTeams: 'Disegno · Squadre',
+          drawingFfa: 'Disegno · Tutti contro tutti',
+          name: 'Nome'
+        },
+        mode: {
+          mimeTeams: 'Mimica · Squadre',
+          mimeFfa: 'Mimica · Tutti contro tutti',
+          drawingTeams: 'Disegno · Squadre',
+          drawingFfa: 'Disegno · Tutti contro tutti'
+        }
+      },
       wordbank: {
         title: 'Contenuti ed espansioni',
         addTitle: '➕ Aggiungi parola',
@@ -2159,6 +2337,8 @@
         timeUpNoPoints: 'Tempo scaduto! Nessun punto.',
         skippedNoPoints: 'Parola saltata. Nessun punto.',
         scoreManagerContext: ({ round, total, playerName }) => `Turno ${round} di ${total} · Tocca a ${playerName}`,
+        leaderboardSummary: ({ players, matches }) => `${players} giocator${players !== 1 ? 'i' : 'e'} · ${matches} partit${matches !== 1 ? 'e' : 'a'}`,
+        leaderboardModeStats: ({ points, matches }) => `${points} pt · ${matches} partit${matches !== 1 ? 'e' : 'a'}`,
         roundSummary: ({ roundDone, remaining }) => `Fine del turno ${roundDone} — ${remaining} turn${remaining !== 1 ? 'i' : 'o'} restant${remaining !== 1 ? 'i' : 'e'}!`,
         wordAdded: ({ word, difficulty }) => `✅ "${word}" aggiunta (${difficulty})!`,
         teamAdded: ({ name, teamName }) => `✅ ${name} in ${teamName}!`,
@@ -2174,6 +2354,7 @@
         bankRestored: '✅ Banca delle parole ripristinata!',
         challengeRemoved: 'Sfida rimossa.',
         challengesRestored: '✅ Sfide ripristinate!',
+        leaderboardReset: '✅ Classifica cancellata!',
         userIdCopied: '🪪 user_id copiato!',
         packInstallReading: 'Lettura file...',
         packInstallSuccess: '✅ Pack installato e attivato!',
@@ -2195,6 +2376,7 @@
       confirmations: {
         resetWords: 'Ripristinare il banco parole predefinito? Le parole personalizzate andranno perse.',
         resetChallenges: 'Ripristinare le sfide predefinite? Le sfide personalizzate andranno perse.',
+        resetLeaderboard: 'Cancellare tutti i risultati della classifica storica?',
         resetAppDefaults: 'Ripristinare tutta l’applicazione ai valori predefiniti? Impostazioni, giocatori salvati, pack installati e user_id saranno cancellati.',
         restartGame: 'Riavviare il gioco? Tutti i progressi andranno persi.',
         replacePack: ({ packName }) => `Esiste già un pack installato con questo ID (${packName}). Sostituirlo?`,
@@ -3743,6 +3925,7 @@
       phase: 'preparing',
       totalTurns: 0,
       turnsDone: 0,
+      leaderboardRecorded: false,
       randomChallenge: false,
       selectedCategories: getDefaultSelectedCategories()
     };
@@ -3849,6 +4032,7 @@
       refreshScoreScreenCopy();
       refreshFinalScreenCopy();
       renderScoreMini();
+      if (document.getElementById('screen-leaderboard')?.classList.contains('active')) renderLeaderboard();
       if (document.getElementById('screen-score-manager')?.classList.contains('active')) renderScoreManager();
       updateScoreManagerButton();
       updateTimerLabel(document.getElementById('timer-slider').value);
@@ -3909,6 +4093,9 @@
       }
       if (screen === 'multidevice') {
         resetMultiDeviceChoice();
+      }
+      if (screen === 'leaderboard') {
+        renderLeaderboard();
       }
       updateBackgroundMusic();
       resetViewportToTop(nextScreen);
@@ -5383,6 +5570,7 @@
       gameState.usedWords = [];
       gameState.turnsDone = 0;
       gameState.totalTurns = gameState.players.length * rounds;
+      gameState.leaderboardRecorded = false;
       saveQuickGameConfig();
 
       const key = gameState.mode === 'teams' ? 'mm_last_teams' : 'mm_last_ffa';
@@ -6060,6 +6248,227 @@
       });
     }
 
+    function getLeaderboardPlayerKey(name) {
+      const normalized = String(name || '').trim().toLocaleLowerCase();
+      return normalized ? `player:${normalized}` : '';
+    }
+
+    function createEmptyLeaderboardModes() {
+      return LEADERBOARD_MODE_KEYS.reduce((modes, key) => {
+        modes[key] = { points: 0, matches: 0 };
+        return modes;
+      }, {});
+    }
+
+    function normalizeLeaderboardModes(modes = {}) {
+      const normalized = createEmptyLeaderboardModes();
+      LEADERBOARD_MODE_KEYS.forEach(key => {
+        const mode = modes[key] || {};
+        normalized[key] = {
+          points: Number.parseInt(mode.points, 10) || 0,
+          matches: Number.parseInt(mode.matches, 10) || 0
+        };
+      });
+      return normalized;
+    }
+
+    function normalizeLeaderboardModel(model = {}) {
+      const normalized = { version: 1, matches: 0, players: {} };
+      const sourcePlayers = model && typeof model === 'object' ? (model.players || {}) : {};
+      Object.keys(sourcePlayers).forEach(sourceKey => {
+        const player = sourcePlayers[sourceKey] || {};
+        const displayName = String(player.name || sourceKey.replace(/^player:/, '')).trim();
+        const playerKey = getLeaderboardPlayerKey(displayName);
+        if (!playerKey) return;
+        normalized.players[playerKey] = {
+          name: displayName,
+          totalPoints: Number.parseInt(player.totalPoints, 10) || 0,
+          matches: Number.parseInt(player.matches, 10) || 0,
+          modes: normalizeLeaderboardModes(player.modes)
+        };
+      });
+      const savedMatches = Number.parseInt(model?.matches, 10);
+      normalized.matches = Number.isFinite(savedMatches)
+        ? savedMatches
+        : Object.values(normalized.players).reduce((max, player) => Math.max(max, player.matches), 0);
+      return normalized;
+    }
+
+    function loadLeaderboard() {
+      try {
+        return normalizeLeaderboardModel(JSON.parse(localStorage.getItem(LEADERBOARD_KEY) || '{}'));
+      } catch (e) {
+        return normalizeLeaderboardModel();
+      }
+    }
+
+    function saveLeaderboard(model) {
+      localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(normalizeLeaderboardModel(model)));
+    }
+
+    function getLeaderboardModeKey(gameType = gameState.gameType, mode = gameState.mode) {
+      const typeKey = gameType === 'drawing' ? 'drawing' : 'mime';
+      return `${typeKey}${mode === 'teams' ? 'Teams' : 'Ffa'}`;
+    }
+
+    function getOrCreateLeaderboardPlayer(model, name) {
+      const playerKey = getLeaderboardPlayerKey(name);
+      if (!playerKey) return null;
+      if (!model.players[playerKey]) {
+        model.players[playerKey] = {
+          name: String(name || '').trim(),
+          totalPoints: 0,
+          matches: 0,
+          modes: createEmptyLeaderboardModes()
+        };
+      }
+      return model.players[playerKey];
+    }
+
+    function collectFinalLeaderboardEntries() {
+      const entriesByName = new Map();
+      const addEntry = (name, points) => {
+        const playerKey = getLeaderboardPlayerKey(name);
+        if (!playerKey) return;
+        const entry = { name: String(name || '').trim(), points: Number.parseInt(points, 10) || 0 };
+        const current = entriesByName.get(playerKey);
+        if (!current || entry.points > current.points) entriesByName.set(playerKey, entry);
+      };
+
+      if (gameState.mode === 'teams') {
+        gameState.players.forEach(player => {
+          const team = player.team;
+          if (!team) return;
+          addEntry(player.name || player, gameState.scores['team' + team] || 0);
+        });
+      } else {
+        gameState.players.forEach(player => {
+          const name = player.name || player;
+          addEntry(name, gameState.scores[name] || 0);
+        });
+      }
+
+      return Array.from(entriesByName.values());
+    }
+
+    function recordLeaderboardFinalScore() {
+      if (gameState.leaderboardRecorded) return;
+      const modeKey = getLeaderboardModeKey();
+      const leaderboard = loadLeaderboard();
+      const entries = collectFinalLeaderboardEntries();
+      if (entries.length) leaderboard.matches = (Number.parseInt(leaderboard.matches, 10) || 0) + 1;
+      entries.forEach(entry => {
+        const player = getOrCreateLeaderboardPlayer(leaderboard, entry.name);
+        if (!player) return;
+        player.totalPoints += entry.points;
+        player.matches += 1;
+        player.modes = normalizeLeaderboardModes(player.modes);
+        player.modes[modeKey].points += entry.points;
+        player.modes[modeKey].matches += 1;
+      });
+      saveLeaderboard(leaderboard);
+      gameState.leaderboardRecorded = true;
+    }
+
+    function compareLeaderboardPlayers(sortKey) {
+      return (a, b) => {
+        const byName = () => a.name.localeCompare(b.name, currentLanguage, { sensitivity: 'base' });
+        if (sortKey === 'name') return byName();
+        if (sortKey === 'matches') return (b.matches - a.matches) || (b.totalPoints - a.totalPoints) || byName();
+        if (LEADERBOARD_MODE_KEYS.includes(sortKey)) {
+          const aMode = a.modes?.[sortKey]?.points || 0;
+          const bMode = b.modes?.[sortKey]?.points || 0;
+          return (bMode - aMode) || (b.totalPoints - a.totalPoints) || byName();
+        }
+        return (b.totalPoints - a.totalPoints) || (b.matches - a.matches) || byName();
+      };
+    }
+
+    function renderLeaderboard() {
+      const container = document.getElementById('leaderboard-list');
+      if (!container) return;
+      const sortSelect = document.getElementById('leaderboard-sort-select');
+      const sortKey = sortSelect?.value || 'total';
+      const leaderboard = loadLeaderboard();
+      const players = Object.values(leaderboard.players)
+        .map(player => ({ ...player, modes: normalizeLeaderboardModes(player.modes) }))
+        .sort(compareLeaderboardPlayers(sortKey));
+      const totalMatches = Number.parseInt(leaderboard.matches, 10) || 0;
+      const summary = document.getElementById('leaderboard-summary');
+      if (summary) {
+        summary.textContent = t('dynamic.leaderboardSummary', { players: players.length, matches: totalMatches });
+      }
+
+      container.innerHTML = '';
+      if (!players.length) {
+        const empty = document.createElement('div');
+        empty.className = 'leaderboard-empty';
+        empty.textContent = t('leaderboard.emptyState');
+        container.appendChild(empty);
+        return;
+      }
+
+      const ranks = ['🥇', '🥈', '🥉'];
+      players.forEach((player, index) => {
+        const row = document.createElement('div');
+        row.className = 'leaderboard-row';
+
+        const head = document.createElement('div');
+        head.className = 'leaderboard-row-head';
+
+        const rank = document.createElement('div');
+        rank.className = 'rank-badge';
+        rank.textContent = ranks[index] || String(index + 1);
+
+        const identity = document.createElement('div');
+        identity.className = 'leaderboard-identity';
+        const name = document.createElement('div');
+        name.className = 'leaderboard-player-name';
+        name.textContent = player.name;
+        const matches = document.createElement('div');
+        matches.className = 'text-meta';
+        matches.textContent = `${player.matches} ${t('leaderboard.matchesLabel')}`;
+        identity.append(name, matches);
+
+        const total = document.createElement('div');
+        total.className = 'leaderboard-total';
+        const points = document.createElement('div');
+        points.className = 'leaderboard-total-points';
+        points.textContent = String(player.totalPoints);
+        const pointsLabel = document.createElement('div');
+        pointsLabel.className = 'text-meta';
+        pointsLabel.textContent = t('leaderboard.pointsLabel');
+        total.append(points, pointsLabel);
+
+        head.append(rank, identity, total);
+
+        const breakdown = document.createElement('div');
+        breakdown.className = 'leaderboard-breakdown';
+        LEADERBOARD_MODE_KEYS.forEach(modeKey => {
+          const chip = document.createElement('div');
+          chip.className = 'leaderboard-mode-chip';
+          const modeLabel = document.createElement('span');
+          modeLabel.className = 'leaderboard-mode-label';
+          modeLabel.textContent = t(`leaderboard.mode.${modeKey}`);
+          const modeStats = document.createElement('span');
+          modeStats.className = 'leaderboard-mode-stats';
+          modeStats.textContent = t('dynamic.leaderboardModeStats', player.modes[modeKey] || { points: 0, matches: 0 });
+          chip.append(modeLabel, modeStats);
+          breakdown.appendChild(chip);
+        });
+
+        row.append(head, breakdown);
+        container.appendChild(row);
+      });
+    }
+
+    function resetLeaderboard() {
+      if (!confirm(t('confirmations.resetLeaderboard'))) return;
+      localStorage.removeItem(LEADERBOARD_KEY);
+      renderLeaderboard();
+      showNotif(t('notifications.leaderboardReset'));
+    }
+
     function getScoreManagerEntries() {
       if (gameState.mode === 'teams') {
         return [
@@ -6205,6 +6614,7 @@
 
     function showFinalScore() {
       gameState.phase = 'final';
+      recordLeaderboardFinalScore();
       broadcastHostGameState();
       goTo('final');
       renderFullScoreboard(true);
@@ -6548,6 +6958,7 @@
           phase: 'preparing',
           totalTurns: 0,
           turnsDone: 0,
+          leaderboardRecorded: false,
           randomChallenge: false,
           selectedCategories: getDefaultSelectedCategories()
         };
@@ -6660,6 +7071,7 @@
         return startGame();
       }
       if (action === 'confirm-restart') return confirmRestart();
+      if (action === 'reset-leaderboard') return resetLeaderboard();
       if (action === 'open-score-manager') {
         animateButtonClick(button);
         return openScoreManager();
@@ -6806,6 +7218,7 @@
       document.getElementById('result-guesser-select')?.addEventListener('change', event => {
         applyResultGuesserSelection(event.target.value);
       });
+      document.getElementById('leaderboard-sort-select')?.addEventListener('change', renderLeaderboard);
       document.getElementById('language-select').addEventListener('change', event => {
         setLanguage(event.target.value, { save: true });
       });

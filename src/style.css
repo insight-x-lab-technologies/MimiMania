@@ -1044,6 +1044,96 @@
       font-weight: 800;
     }
 
+    .leaderboard-layout {
+      display: grid;
+      gap: 16px;
+    }
+
+    .leaderboard-controls-card,
+    .leaderboard-list-card {
+      min-width: 0;
+    }
+
+    .leaderboard-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .leaderboard-empty {
+      padding: 18px;
+      color: var(--text2);
+      text-align: center;
+      border: 1px dashed var(--surface-border);
+      border-radius: var(--radius-sm);
+      background: var(--surface-bg);
+    }
+
+    .leaderboard-row {
+      display: grid;
+      gap: 12px;
+      padding: 14px;
+      background: var(--score-row-bg);
+      border: 1px solid var(--score-row-border);
+      border-radius: var(--radius-sm);
+    }
+
+    .leaderboard-row-head {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .leaderboard-identity {
+      min-width: 0;
+    }
+
+    .leaderboard-player-name {
+      overflow-wrap: anywhere;
+      font-weight: 900;
+      color: var(--text);
+    }
+
+    .leaderboard-total {
+      min-width: 72px;
+      text-align: right;
+    }
+
+    .leaderboard-total-points {
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      color: var(--accent2);
+      line-height: 1;
+    }
+
+    .leaderboard-breakdown {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .leaderboard-mode-chip {
+      display: grid;
+      gap: 2px;
+      min-width: 0;
+      padding: 8px 10px;
+      background: var(--surface-bg);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-xs);
+    }
+
+    .leaderboard-mode-label {
+      overflow-wrap: anywhere;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .leaderboard-mode-stats {
+      font-size: 0.72rem;
+      color: var(--text2);
+    }
+
     .score-row.first {
       background: var(--score-row-first-bg);
       border-color: var(--score-row-first-border);
@@ -2428,6 +2518,10 @@
         max-width: 96px;
       }
 
+      .leaderboard-breakdown {
+        grid-template-columns: 1fr;
+      }
+
       .drawing-canvas-shell {
         min-height: 250px;
       }
@@ -2461,6 +2555,16 @@
       .screen {
         padding: 28px;
         justify-content: flex-start;
+      }
+
+      .leaderboard-layout {
+        grid-template-columns: 280px minmax(0, 1fr);
+        align-items: start;
+      }
+
+      .leaderboard-controls-card {
+        position: sticky;
+        top: 16px;
       }
 
       #screen-home {

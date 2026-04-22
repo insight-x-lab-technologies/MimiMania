@@ -40,7 +40,6 @@
       </button>
       <h1 class="logo" data-i18n="home.title">Desafio da Mímica</h1>
       <p class="logo-sub" data-i18n="home.subtitle">Desenhe, Adivinhe e Divirta-se em Família</p>
-      <!--
       <div class="dev-preview-panel mb">
         <div class="dev-preview-copy">
           <div class="eyebrow eyebrow-accent" data-i18n="dev.mode">Modo de desenvolvimento</div>
@@ -56,6 +55,7 @@
           </select>
         </div>
       </div>
+      <!--
       -->
       <div class="home-grid">
         <div class="card home-card home-actions-card">
@@ -69,7 +69,45 @@
             <button class="btn btn-ghost btn-lg btn-block" data-nav="wordbank" data-i18n="home.wordBank">🧩 Conteúdo e Expansões</button>
             <button class="btn btn-ghost btn-lg btn-block" data-nav="donate" data-i18n="home.donate">❤️ Donate</button>
             <button class="btn btn-ghost btn-lg btn-block" data-nav="settings" data-i18n="home.settings">⚙️ Configurações</button>
+            <button class="btn btn-ghost btn-lg btn-block" data-nav="leaderboard" data-i18n="home.leaderboard">🏅 Leaderboard</button>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== ALL TIME LEADERBOARD ========== -->
+  <div class="screen" id="screen-leaderboard">
+    <div class="page-shell">
+      <header class="page-header page-header-tight">
+        <button class="btn btn-ghost btn-sm" data-nav="home" data-i18n="common.back">← Voltar</button>
+        <h1 class="page-title" data-i18n="leaderboard.title">All Time Leaderboard</h1>
+      </header>
+      <div class="leaderboard-layout">
+        <div class="card leaderboard-controls-card">
+          <div class="flex-col">
+            <div>
+              <label class="toggle-label" for="leaderboard-sort-select" data-i18n="leaderboard.sortLabel">Ordenar por</label>
+              <div class="toggle-sub mt-xs" data-i18n="leaderboard.sortSub">Compare pontuação total, partidas ou modos específicos.</div>
+            </div>
+            <select class="inp" id="leaderboard-sort-select">
+              <option value="total" data-i18n="leaderboard.sort.total">Total de pontos</option>
+              <option value="matches" data-i18n="leaderboard.sort.matches">Partidas</option>
+              <option value="mimeTeams" data-i18n="leaderboard.sort.mimeTeams">Mímica · Times</option>
+              <option value="mimeFfa" data-i18n="leaderboard.sort.mimeFfa">Mímica · Free For All</option>
+              <option value="drawingTeams" data-i18n="leaderboard.sort.drawingTeams">Desenho · Times</option>
+              <option value="drawingFfa" data-i18n="leaderboard.sort.drawingFfa">Desenho · Free For All</option>
+              <option value="name" data-i18n="leaderboard.sort.name">Nome</option>
+            </select>
+            <button class="btn btn-danger btn-block" data-action="reset-leaderboard" data-i18n="leaderboard.resetButton">Apagar resultados</button>
+          </div>
+        </div>
+        <div class="card leaderboard-list-card">
+          <div class="action-row action-row-between mb">
+            <h2 class="card-title card-title-sm card-title-inline" data-i18n="leaderboard.listTitle">Jogadores</h2>
+            <div class="text-meta" id="leaderboard-summary"></div>
+          </div>
+          <div class="leaderboard-list" id="leaderboard-list"></div>
         </div>
       </div>
     </div>

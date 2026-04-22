@@ -1,4 +1,4 @@
-# 🎭 Mimi Mania - Family Fun for Everyone
+# 🎭 Charades Challenge - Draw, Guess and Have Fun Together
 
 ![Version](https://img.shields.io/badge/version-6.0.0-blueviolet)
 ![License](https://img.shields.io/badge/license-MIT-green)

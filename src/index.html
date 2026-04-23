@@ -4,7 +4,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#7c3aed">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="MimiMania">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="application-name" content="MimiMania">
   <title>Desafio da Mímica</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
   <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Manrope:wght@500;700;800&family=Nunito:wght@400;600;700;800;900&family=Outfit:wght@600;700;800&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="themes.css">
@@ -61,15 +70,19 @@
         <div class="card home-card home-actions-card">
           <div class="flex-col home-actions">
             <button class="btn btn-primary btn-lg btn-block" data-nav="setup" data-i18n="home.newGame">🎮 Nova Partida</button>
-            <button class="btn btn-secondary btn-lg btn-block" data-nav="multidevice" data-i18n="home.multiDeviceGame">📡 Nova Partida Multi Device</button>
             <button class="btn btn-secondary btn-lg btn-block btn-quick-game" data-action="quick-game">
               <span data-i18n="home.quickGame">⚡ Jogo Rápido</span>
               <span class="btn-quick-game-summary" id="quick-game-summary">🎭 | 🏆 | 👥4 | 🌱 | 🧸 🏃 🐾 | 🔁3</span>
             </button>
+            <button class="btn btn-ghost btn-lg btn-block btn-quick-game" data-nav="multidevice">
+              <span data-i18n="home.multiDeviceGame">📡 Conectar Dispositivos</span>
+              <span class="btn-quick-game-summary" id="multi-device-summary">Off-line | 0 devices conectados</span>
+            </button>
             <button class="btn btn-ghost btn-lg btn-block" data-nav="wordbank" data-i18n="home.wordBank">🧩 Conteúdo e Expansões</button>
             <button class="btn btn-ghost btn-lg btn-block" data-nav="donate" data-i18n="home.donate">❤️ Donate</button>
-            <button class="btn btn-ghost btn-lg btn-block" data-nav="settings" data-i18n="home.settings">⚙️ Configurações</button>
             <button class="btn btn-ghost btn-lg btn-block" data-nav="leaderboard" data-i18n="home.leaderboard">🏅 Leaderboard</button>
+            <button class="btn btn-ghost btn-lg btn-block" data-nav="settings" data-i18n="home.settings">⚙️ Configurações</button>
+            <button class="btn btn-ghost btn-lg btn-block hidden" id="pwa-install-button" data-action="install-pwa" data-i18n="home.installOnDevice">📲 Instalar no dispositivo</button>
           </div>
         </div>
       </div>
@@ -78,36 +91,97 @@
 
   <!-- ========== ALL TIME LEADERBOARD ========== -->
   <div class="screen" id="screen-leaderboard">
-    <div class="page-shell">
-      <header class="page-header page-header-tight">
+    <div class="page-shell leaderboard-shell">
+      <header class="page-header page-header-tight leaderboard-page-header">
         <button class="btn btn-ghost btn-sm" data-nav="home" data-i18n="common.back">← Voltar</button>
-        <h1 class="page-title" data-i18n="leaderboard.title">All Time Leaderboard</h1>
+        <div class="leaderboard-title-block">
+          <h1 class="page-title" data-i18n="leaderboard.title">All Time Leaderboard</h1>
+          <p class="leaderboard-subtitle" data-i18n="leaderboard.subtitle">Ranking dos melhores jogadores em todos os modos e tipos de jogo.</p>
+        </div>
       </header>
       <div class="leaderboard-layout">
-        <div class="card leaderboard-controls-card">
-          <div class="flex-col">
-            <div>
-              <label class="toggle-label" for="leaderboard-sort-select" data-i18n="leaderboard.sortLabel">Ordenar por</label>
-              <div class="toggle-sub mt-xs" data-i18n="leaderboard.sortSub">Compare pontuação total, partidas ou modos específicos.</div>
+        <aside class="card leaderboard-controls-card">
+          <section class="leaderboard-filter-group" aria-labelledby="leaderboard-filter-type-title">
+            <h2 class="leaderboard-filter-title" id="leaderboard-filter-type-title" data-i18n="leaderboard.filter.gameType">Tipo de jogo</h2>
+            <div class="leaderboard-filter-list" role="group" aria-labelledby="leaderboard-filter-type-title">
+              <button class="leaderboard-filter-option selected" type="button" data-leaderboard-filter="type" data-leaderboard-value="all">
+                <span class="leaderboard-filter-icon">⭐</span>
+                <span>
+                  <span class="leaderboard-filter-name" data-i18n="leaderboard.filter.allTypes">Todos os tipos</span>
+                  <span class="leaderboard-filter-sub" data-i18n="leaderboard.filter.allTypesSub">Ranking geral</span>
+                </span>
+              </button>
+              <button class="leaderboard-filter-option" type="button" data-leaderboard-filter="type" data-leaderboard-value="mime">
+                <span class="leaderboard-filter-icon">🎭</span>
+                <span>
+                  <span class="leaderboard-filter-name" data-i18n="setup.gameTypeMimeName">Mímica</span>
+                  <span class="leaderboard-filter-sub" data-i18n="leaderboard.filter.mimeSub">Atue sem falar</span>
+                </span>
+              </button>
+              <button class="leaderboard-filter-option" type="button" data-leaderboard-filter="type" data-leaderboard-value="drawing">
+                <span class="leaderboard-filter-icon">✏️</span>
+                <span>
+                  <span class="leaderboard-filter-name" data-i18n="setup.gameTypeDrawingName">Desenho</span>
+                  <span class="leaderboard-filter-sub" data-i18n="leaderboard.filter.drawingSub">Desenhe a palavra</span>
+                </span>
+              </button>
             </div>
-            <select class="inp" id="leaderboard-sort-select">
-              <option value="total" data-i18n="leaderboard.sort.total">Total de pontos</option>
-              <option value="matches" data-i18n="leaderboard.sort.matches">Partidas</option>
-              <option value="mimeTeams" data-i18n="leaderboard.sort.mimeTeams">Mímica · Times</option>
-              <option value="mimeFfa" data-i18n="leaderboard.sort.mimeFfa">Mímica · Free For All</option>
-              <option value="drawingTeams" data-i18n="leaderboard.sort.drawingTeams">Desenho · Times</option>
-              <option value="drawingFfa" data-i18n="leaderboard.sort.drawingFfa">Desenho · Free For All</option>
-              <option value="name" data-i18n="leaderboard.sort.name">Nome</option>
-            </select>
-            <button class="btn btn-danger btn-block" data-action="reset-leaderboard" data-i18n="leaderboard.resetButton">Apagar resultados</button>
+          </section>
+
+          <section class="leaderboard-filter-group" aria-labelledby="leaderboard-filter-mode-title">
+            <h2 class="leaderboard-filter-title" id="leaderboard-filter-mode-title" data-i18n="leaderboard.filter.gameMode">Modo de jogo</h2>
+            <div class="leaderboard-filter-list" role="group" aria-labelledby="leaderboard-filter-mode-title">
+              <button class="leaderboard-filter-option selected" type="button" data-leaderboard-filter="mode" data-leaderboard-value="all">
+                <span class="leaderboard-filter-icon">👑</span>
+                <span>
+                  <span class="leaderboard-filter-name" data-i18n="leaderboard.filter.allModes">Todos os modos</span>
+                  <span class="leaderboard-filter-sub" data-i18n="leaderboard.filter.allModesSub">Todas as partidas</span>
+                </span>
+              </button>
+              <button class="leaderboard-filter-option" type="button" data-leaderboard-filter="mode" data-leaderboard-value="teams">
+                <span class="leaderboard-filter-icon">🤝</span>
+                <span>
+                  <span class="leaderboard-filter-name" data-i18n="setup.modeTeamsName">Dois Times</span>
+                  <span class="leaderboard-filter-sub" data-i18n="leaderboard.filter.teamsSub">Equipes competem</span>
+                </span>
+              </button>
+              <button class="leaderboard-filter-option" type="button" data-leaderboard-filter="mode" data-leaderboard-value="ffa">
+                <span class="leaderboard-filter-icon">🏆</span>
+                <span>
+                  <span class="leaderboard-filter-name" data-i18n="setup.modeFfaName">Cada um por si</span>
+                  <span class="leaderboard-filter-sub" data-i18n="leaderboard.filter.ffaSub">Todos contra todos</span>
+                </span>
+              </button>
+            </div>
+          </section>
+
+          <div class="leaderboard-summary-box">
+            <span class="leaderboard-summary-icon">⏱️</span>
+            <span>
+              <span class="leaderboard-summary-label" data-i18n="leaderboard.summaryLabel">Resultados salvos</span>
+              <strong id="leaderboard-summary"></strong>
+            </span>
           </div>
-        </div>
+
+          <button class="btn btn-danger btn-block" data-action="reset-leaderboard" data-i18n="leaderboard.resetButton">Apagar resultados</button>
+        </aside>
         <div class="card leaderboard-list-card">
-          <div class="action-row action-row-between mb">
-            <h2 class="card-title card-title-sm card-title-inline" data-i18n="leaderboard.listTitle">Jogadores</h2>
-            <div class="text-meta" id="leaderboard-summary"></div>
+          <div class="leaderboard-tabs" role="tablist" aria-label="Leaderboard scope">
+            <button class="leaderboard-tab selected" type="button" data-leaderboard-tab="all">
+              <span>🏆</span>
+              <span data-i18n="leaderboard.tab.overall">Ranking geral</span>
+            </button>
+            <button class="leaderboard-tab" type="button" data-leaderboard-tab="mime">
+              <span>🎭</span>
+              <span data-i18n="leaderboard.tab.mime">Mímica</span>
+            </button>
+            <button class="leaderboard-tab" type="button" data-leaderboard-tab="drawing">
+              <span>✏️</span>
+              <span data-i18n="leaderboard.tab.drawing">Desenho</span>
+            </button>
           </div>
           <div class="leaderboard-list" id="leaderboard-list"></div>
+          <div class="leaderboard-list-footer" id="leaderboard-footer"></div>
         </div>
       </div>
     </div>
@@ -807,6 +881,15 @@
               <input class="inp mono-input" id="user-id-display" readonly>
               <button class="btn btn-ghost btn-sm" data-action="copy-user-id" data-i18n="settings.copyUserId">Copiar</button>
             </div>
+            <div class="user-id-backup-actions">
+              <button class="btn btn-secondary btn-sm" data-action="export-user-id" data-i18n="settings.exportUserIdButton">Exportar user_id</button>
+              <button class="btn btn-ghost btn-sm" data-action="select-user-id-file" data-i18n="settings.importUserIdButton">Importar user_id</button>
+            </div>
+            <div class="user-id-backup-panel">
+              <p class="text-sm text-muted" data-i18n="settings.userIdBackupSub">Exporte um backup para restaurar este user_id depois de trocar de navegador ou restaurar a aplicação.</p>
+              <input type="file" id="user-id-file-input" accept="application/json,.json" hidden>
+              <div id="user-id-import-status" class="pack-install-status" role="status"></div>
+            </div>
           </div>
         </div>
         <div class="card">
@@ -934,7 +1017,7 @@
     </div>
 
     <footer class="site-footer">
-      <span data-i18n="footer.copyPrefix">© 2025 Desafio da Mímica v6.0 · Insight X Lab Technologies</span>
+      <span data-i18n="footer.copyPrefix">© 2025 Desafio da Mímica v6.1 · Insight X Lab Technologies</span>
     </footer>
   </div>
 
@@ -947,6 +1030,13 @@
   <script src="https://unpkg.com/peerjs@1.5.5/dist/peerjs.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="script.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js').catch(() => { });
+      });
+    }
+  </script>
 </body>
 
 </html>

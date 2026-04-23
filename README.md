@@ -1,6 +1,6 @@
 # 🎭 Charades Challenge - Draw, Guess and Have Fun Together
 
-![Version](https://img.shields.io/badge/version-6.0.0-blueviolet)
+![Version](https://img.shields.io/badge/version-6.1.0-blueviolet)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
 This game was created for families who want to have fun with their children and make the most of every moment at home. **Charades Challenge** turns your tablet or laptop into a stage for creativity, laughter, and connection, encouraging body expression, teamwork, and unforgettable family moments.

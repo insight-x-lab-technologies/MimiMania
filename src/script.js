@@ -5,6 +5,7 @@
     const LEGACY_WORDS_KEY = 'mm_words_v2';
     const QUICK_GAME_KEY = 'mm_quick_game_v1';
     const USER_ID_KEY = 'mm_user_id_v1';
+    const USER_ID_BACKUP_SCHEMA = 'mimimania.user-id.v1';
     const APP_STORAGE_PREFIX = 'mm_';
     const AVAILABLE_THEMES = ['cosmic', 'liquid-glass', 'material3', 'light-mode', 'dark-mode', 'high-contrast'];
     const THEMES_WITH_MUSIC = ['cosmic', 'liquid-glass', 'material3'];
@@ -22,6 +23,8 @@
     const LANGUAGE_HTML_MAP = { pt: 'pt-BR', en: 'en', es: 'es', fr: 'fr', de: 'de', it: 'it' };
     const GAME_TYPES = ['mime', 'drawing'];
     const LEADERBOARD_MODE_KEYS = ['mimeTeams', 'mimeFfa', 'drawingTeams', 'drawingFfa'];
+    const LEADERBOARD_PAGE_SIZE = 10;
+    const LEADERBOARD_DEFAULT_AVATAR = './assets/player-default.svg';
     const DIFFICULTY_KEYS = ['easy', 'normal', 'hard'];
     const CATEGORY_KEYS = ['objects', 'actions', 'animals', 'movies', 'professions', 'celebrities'];
     const CATEGORY_ICONS = { objects: '🧸', actions: '🏃', animals: '🐾', movies: '🎬', professions: '👔', celebrities: '⭐' };
@@ -74,7 +77,7 @@
       return nextUserId;
     }
 
-    const appUserId = getOrCreateUserId();
+    let appUserId = getOrCreateUserId();
 
     function getNestedValue(obj, path) {
       return path.split('.').reduce((acc, key) => acc && acc[key], obj);
@@ -121,12 +124,16 @@
           enterFullscreen: 'Tela cheia',
           exitFullscreen: 'Sair da tela cheia',
           newGame: '🎮 Nova Partida',
-          multiDeviceGame: '📡 Nova Partida Multi Device',
+          multiDeviceGame: '📡 Conectar Dispositivos',
+          multiDeviceOnline: 'On-line',
+          multiDeviceOffline: 'Off-line',
+          multiDeviceSummary: ({ status, count }) => `${status} | ${count} device${count !== 1 ? 's' : ''} conectado${count !== 1 ? 's' : ''}`,
           quickGame: '⚡ Jogo Rápido',
           wordBank: '🧩 Conteúdo e Expansões',
           donate: '❤️ Doar',
           settings: '⚙️ Configurações',
           leaderboard: '🏅 Placar Histórico',
+          installOnDevice: '📲 Instalar no dispositivo',
           howToTitle: '🏆 Como jogar',
           howTo: {
             setupTitle: 'Monte a partida',
@@ -154,6 +161,8 @@
           hostError: 'Não foi possível abrir a sessão.',
           sessionCode: 'Código da sessão:',
           guestsConnected: ({ count }) => `${count} device${count !== 1 ? 's' : ''} conectado${count !== 1 ? 's' : ''}`,
+          online: 'On-line',
+          offline: 'Off-line',
           continueSetup: 'Continuar configuração',
           joinTitle: '🔗 Conectar',
           joinDesc: 'Entre como tela auxiliar para acompanhar a partida do host.',
@@ -285,6 +294,7 @@
         },
         leaderboard: {
           title: 'Placar Histórico',
+          subtitle: 'Ranking dos melhores jogadores em todos os modos e tipos de jogo.',
           sortLabel: 'Ordenar por',
           sortSub: 'Compare pontuação total, partidas ou modos específicos.',
           resetButton: 'Apagar resultados',
@@ -292,6 +302,25 @@
           emptyState: 'Nenhum resultado registrado ainda.',
           pointsLabel: 'pontos',
           matchesLabel: 'partidas',
+          summaryLabel: 'Resultados salvos',
+          playerFallbackTitle: 'Novo desafiante',
+          tab: {
+            overall: 'Ranking geral',
+            mime: 'Mímica',
+            drawing: 'Desenho'
+          },
+          filter: {
+            gameType: 'Tipo de jogo',
+            gameMode: 'Modo de jogo',
+            allTypes: 'Todos os tipos',
+            allTypesSub: 'Ranking geral',
+            mimeSub: 'Atue sem falar',
+            drawingSub: 'Desenhe a palavra',
+            allModes: 'Todos os modos',
+            allModesSub: 'Todas as partidas',
+            teamsSub: 'Equipes competem',
+            ffaSub: 'Todos contra todos'
+          },
           sort: {
             total: 'Total de pontos',
             matches: 'Partidas',
@@ -366,6 +395,9 @@
           userIdLabel: 'Seu user_id',
           userIdSub: 'Use este código na compra de packs para que o arquivo seja emitido para este dispositivo.',
           copyUserId: 'Copiar',
+          userIdBackupSub: 'Exporte um backup para restaurar este user_id depois de trocar de navegador ou restaurar a aplicação.',
+          exportUserIdButton: 'Exportar user_id',
+          importUserIdButton: 'Importar user_id',
           wordsTitle: '🎲 Palavras',
           shuffleWordsLabel: 'Embaralhar Palavras',
           shuffleWordsSub: 'Ordem aleatória a cada jogo',
@@ -402,7 +434,7 @@
           'high-contrast': 'Alto Contraste'
         },
         footer: {
-          copyPrefix: '© 2025 Desafio da Mímica v6.0 · Insight X Lab Technologies'
+          copyPrefix: '© 2025 Desafio da Mímica v6.1 · Insight X Lab Technologies'
         },
         teams: {
           defaultA: 'Time A',
@@ -427,6 +459,7 @@
           scoreManagerContext: ({ round, total, playerName }) => `Rodada ${round} de ${total} · Vez de ${playerName}`,
           leaderboardSummary: ({ players, matches }) => `${players} jogador${players !== 1 ? 'es' : ''} · ${matches} partida${matches !== 1 ? 's' : ''}`,
           leaderboardModeStats: ({ points, matches }) => `${points} pts · ${matches} partida${matches !== 1 ? 's' : ''}`,
+          leaderboardFooter: ({ shown, total }) => `Mostrando top ${shown} de ${total} jogador${total !== 1 ? 'es' : ''}`,
           roundSummary: ({ roundDone, remaining }) => `Fim da Rodada ${roundDone} — ${remaining} rodada${remaining !== 1 ? 's' : ''} restante${remaining !== 1 ? 's' : ''}!`,
           wordAdded: ({ word, difficulty }) => `✅ "${word}" adicionada (${difficulty})!`,
           teamAdded: ({ name, teamName }) => `✅ ${name} em ${teamName}!`,
@@ -444,6 +477,9 @@
           challengesRestored: '✅ Desafios restaurados!',
           leaderboardReset: '✅ Placar histórico apagado!',
           userIdCopied: '🪪 user_id copiado!',
+          userIdExported: '🪪 Backup do user_id exportado!',
+          userIdImported: '🪪 user_id restaurado!',
+          userIdImportCancelled: 'Importação cancelada.',
           packInstallReading: 'Lendo arquivo...',
           packInstallSuccess: '✅ Pack instalado e ativado!',
           packInstallCancelled: 'Instalação cancelada.',
@@ -466,6 +502,7 @@
           resetChallenges: 'Restaurar os desafios padrão? Desafios customizados serão perdidos.',
           resetLeaderboard: 'Apagar todos os resultados do placar histórico?',
           resetAppDefaults: 'Restaurar toda a aplicação para o padrão? Configurações, jogadores salvos, packs instalados e user_id serão apagados.',
+          replaceUserId: ({ currentUserId, importedUserId }) => `Substituir o user_id atual (${currentUserId}) pelo user_id importado (${importedUserId})? Use isso apenas para restaurar compras já emitidas para esse ID.`,
           restartGame: 'Reiniciar o jogo? Todo o progresso será perdido.',
           replacePack: ({ packName }) => `Já existe um pack instalado com este ID (${packName}). Substituir?`,
           removePack: ({ packName }) => `Remover o pack "${packName}" deste dispositivo?`
@@ -482,6 +519,12 @@
           emptyPack: 'O pack não possui palavras ou desafios válidos.',
           cryptoUnavailable: 'Este navegador não suporta validação segura de packs.',
           reservedPackId: 'Este pack_id é reservado pelo jogo.'
+        },
+        userIdErrors: {
+          fileRequired: 'Selecione um arquivo de user_id.',
+          invalidJson: 'Arquivo inválido. Envie um JSON de user_id.',
+          invalidSchema: 'Este arquivo não é um backup de user_id da MimiMania.',
+          invalidUserId: 'O user_id do arquivo é inválido.'
         }
       },
       en: {
@@ -524,12 +567,16 @@
           enterFullscreen: 'Full screen',
           exitFullscreen: 'Exit full screen',
           newGame: '🎮 New Game',
-          multiDeviceGame: '📡 New Multi Device Game',
+          multiDeviceGame: '📡 Connect Devices',
+          multiDeviceOnline: 'Online',
+          multiDeviceOffline: 'Offline',
+          multiDeviceSummary: ({ status, count }) => `${status} | ${count} device${count !== 1 ? 's' : ''} connected`,
           quickGame: '⚡ Quick Game',
           wordBank: '🧩 Content & Expansions',
           donate: '❤️ Donate',
           settings: '⚙️ Settings',
           leaderboard: '🏅 Leaderboard',
+          installOnDevice: '📲 Install on Device',
           howToTitle: '🏆 How to play',
           howTo: {
             setupTitle: 'Set up the match',
@@ -557,6 +604,8 @@
           hostError: 'Could not open the session.',
           sessionCode: 'Session code:',
           guestsConnected: ({ count }) => `${count} device${count !== 1 ? 's' : ''} connected`,
+          online: 'Online',
+          offline: 'Offline',
           continueSetup: 'Continue setup',
           joinTitle: '🔗 Join',
           joinDesc: 'Join as a companion screen to follow the host game.',
@@ -688,6 +737,7 @@
         },
         leaderboard: {
           title: 'All Time Leaderboard',
+          subtitle: 'Ranking of the best players across all game modes and types.',
           sortLabel: 'Sort by',
           sortSub: 'Compare total score, matches, or specific game modes.',
           resetButton: 'Clear results',
@@ -695,6 +745,25 @@
           emptyState: 'No results recorded yet.',
           pointsLabel: 'points',
           matchesLabel: 'matches',
+          summaryLabel: 'Saved results',
+          playerFallbackTitle: 'New challenger',
+          tab: {
+            overall: 'Overall ranking',
+            mime: 'Mime',
+            drawing: 'Drawing'
+          },
+          filter: {
+            gameType: 'Game type',
+            gameMode: 'Game mode',
+            allTypes: 'All types',
+            allTypesSub: 'Overall ranking',
+            mimeSub: 'Act without speaking',
+            drawingSub: 'Draw the word',
+            allModes: 'All modes',
+            allModesSub: 'All matches',
+            teamsSub: 'Teams compete',
+            ffaSub: 'Everyone versus everyone'
+          },
           sort: {
             total: 'Total points',
             matches: 'Matches',
@@ -769,6 +838,9 @@
           userIdLabel: 'Your user_id',
           userIdSub: 'Use this code when buying packs so the file is issued to this device.',
           copyUserId: 'Copy',
+          userIdBackupSub: 'Export a backup to restore this user_id after switching browsers or resetting the application.',
+          exportUserIdButton: 'Export user_id',
+          importUserIdButton: 'Import user_id',
           wordsTitle: '🎲 Words',
           shuffleWordsLabel: 'Shuffle Words',
           shuffleWordsSub: 'Random order every game',
@@ -805,7 +877,7 @@
           'high-contrast': 'High Contrast'
         },
         footer: {
-          copyPrefix: '© 2025 Charades Challenge v6.0 · Insight X Lab Technologies'
+          copyPrefix: '© 2025 Charades Challenge v · Insight X Lab Technologies'
         },
         teams: {
           defaultA: 'Team A',
@@ -830,6 +902,7 @@
           scoreManagerContext: ({ round, total, playerName }) => `Round ${round} of ${total} · ${playerName}'s turn`,
           leaderboardSummary: ({ players, matches }) => `${players} player${players !== 1 ? 's' : ''} · ${matches} match${matches !== 1 ? 'es' : ''}`,
           leaderboardModeStats: ({ points, matches }) => `${points} pts · ${matches} match${matches !== 1 ? 'es' : ''}`,
+          leaderboardFooter: ({ shown, total }) => `Showing top ${shown} of ${total} player${total !== 1 ? 's' : ''}`,
           roundSummary: ({ roundDone, remaining }) => `End of Round ${roundDone} — ${remaining} round${remaining !== 1 ? 's' : ''} remaining!`,
           wordAdded: ({ word, difficulty }) => `✅ "${word}" added (${difficulty})!`,
           teamAdded: ({ name, teamName }) => `✅ ${name} joined ${teamName}!`,
@@ -847,6 +920,9 @@
           challengesRestored: '✅ Challenges restored!',
           leaderboardReset: '✅ Leaderboard cleared!',
           userIdCopied: '🪪 user_id copied!',
+          userIdExported: '🪪 user_id backup exported!',
+          userIdImported: '🪪 user_id restored!',
+          userIdImportCancelled: 'Import cancelled.',
           packInstallReading: 'Reading file...',
           packInstallSuccess: '✅ Pack installed and enabled!',
           packInstallCancelled: 'Installation cancelled.',
@@ -869,6 +945,7 @@
           resetChallenges: 'Restore the default challenges? Custom challenges will be lost.',
           resetLeaderboard: 'Clear all All Time Leaderboard results?',
           resetAppDefaults: 'Reset the entire application to defaults? Settings, saved players, installed packs, and user_id will be erased.',
+          replaceUserId: ({ currentUserId, importedUserId }) => `Replace the current user_id (${currentUserId}) with the imported user_id (${importedUserId})? Use this only to restore purchases already issued for that ID.`,
           restartGame: 'Restart the game? All progress will be lost.',
           replacePack: ({ packName }) => `A pack with this ID is already installed (${packName}). Replace it?`,
           removePack: ({ packName }) => `Remove the pack "${packName}" from this device?`
@@ -885,6 +962,12 @@
           emptyPack: 'The pack has no valid words or challenges.',
           cryptoUnavailable: 'This browser does not support secure pack validation.',
           reservedPackId: 'This pack_id is reserved by the game.'
+        },
+        userIdErrors: {
+          fileRequired: 'Select a user_id file.',
+          invalidJson: 'Invalid file. Upload a user_id JSON.',
+          invalidSchema: 'This file is not a MimiMania user_id backup.',
+          invalidUserId: 'The user_id in the file is invalid.'
         }
       },
       es: {
@@ -927,12 +1010,16 @@
           enterFullscreen: 'Pantalla completa',
           exitFullscreen: 'Salir de pantalla completa',
           newGame: '🎮 Nueva Partida',
-          multiDeviceGame: '📡 Nueva Partida Multi Device',
+          multiDeviceGame: '📡 Conectar dispositivos',
+          multiDeviceOnline: 'En línea',
+          multiDeviceOffline: 'Sin conexión',
+          multiDeviceSummary: ({ status, count }) => `${status} | ${count} dispositivo${count !== 1 ? 's' : ''} conectado${count !== 1 ? 's' : ''}`,
           quickGame: '⚡ Juego Rápido',
           wordBank: '🧩 Contenido y Expansiones',
           donate: '❤️ Donar',
           settings: '⚙️ Configuración',
           leaderboard: '🏅 Clasificación histórica',
+          installOnDevice: '📲 Instalar en el dispositivo',
           howToTitle: '🏆 Cómo jugar',
           howTo: {
             setupTitle: 'Prepara la partida',
@@ -960,6 +1047,8 @@
           hostError: 'No se pudo abrir la sesión.',
           sessionCode: 'Código de sesión:',
           guestsConnected: ({ count }) => `${count} dispositivo${count !== 1 ? 's' : ''} conectado${count !== 1 ? 's' : ''}`,
+          online: 'En línea',
+          offline: 'Sin conexión',
           continueSetup: 'Continuar configuración',
           joinTitle: '🔗 Conectar',
           joinDesc: 'Entra como pantalla auxiliar para seguir la partida del host.',
@@ -1172,6 +1261,9 @@
           userIdLabel: 'Tu user_id',
           userIdSub: 'Usa este código al comprar packs para que el archivo se emita para este dispositivo.',
           copyUserId: 'Copiar',
+          userIdBackupSub: 'Exporta una copia de seguridad para restaurar este user_id después de cambiar de navegador o restaurar la aplicación.',
+          exportUserIdButton: 'Exportar user_id',
+          importUserIdButton: 'Importar user_id',
           wordsTitle: '🎲 Palabras',
           shuffleWordsLabel: 'Mezclar Palabras',
           shuffleWordsSub: 'Orden aleatorio en cada partida',
@@ -1208,7 +1300,7 @@
           'high-contrast': 'Alto Contraste'
         },
         footer: {
-          copyPrefix: '© 2025 Desafío de Mímica v6.0 · Insight X Lab Technologies'
+          copyPrefix: '© 2025 Desafío de Mímica v6.1 · Insight X Lab Technologies'
         },
         teams: {
           defaultA: 'Equipo A',
@@ -1250,6 +1342,9 @@
           challengesRestored: '✅ ¡Desafíos restaurados!',
           leaderboardReset: '✅ ¡Clasificación borrada!',
           userIdCopied: '🪪 ¡user_id copiado!',
+          userIdExported: '🪪 ¡Copia de user_id exportada!',
+          userIdImported: '🪪 ¡user_id restaurado!',
+          userIdImportCancelled: 'Importación cancelada.',
           packInstallReading: 'Leyendo archivo...',
           packInstallSuccess: '✅ ¡Pack instalado y activado!',
           packInstallCancelled: 'Instalación cancelada.',
@@ -1272,6 +1367,7 @@
           resetChallenges: '¿Restaurar los desafíos predeterminados? Los desafíos personalizados se perderán.',
           resetLeaderboard: '¿Borrar todos los resultados de la clasificación histórica?',
           resetAppDefaults: '¿Restaurar toda la aplicación a los valores predeterminados? Se eliminarán configuración, jugadores guardados, packs instalados y user_id.',
+          replaceUserId: ({ currentUserId, importedUserId }) => `¿Sustituir el user_id actual (${currentUserId}) por el user_id importado (${importedUserId})? Úsalo solo para restaurar compras ya emitidas para ese ID.`,
           restartGame: '¿Reiniciar el juego? Todo el progreso se perderá.',
           replacePack: ({ packName }) => `Ya existe un pack instalado con este ID (${packName}). ¿Reemplazarlo?`,
           removePack: ({ packName }) => `¿Eliminar el pack "${packName}" de este dispositivo?`
@@ -1288,6 +1384,12 @@
           emptyPack: 'El pack no tiene palabras o desafíos válidos.',
           cryptoUnavailable: 'Este navegador no soporta validación segura de packs.',
           reservedPackId: 'Este pack_id está reservado por el juego.'
+        },
+        userIdErrors: {
+          fileRequired: 'Selecciona un archivo de user_id.',
+          invalidJson: 'Archivo inválido. Sube un JSON de user_id.',
+          invalidSchema: 'Este archivo no es una copia de user_id de MimiMania.',
+          invalidUserId: 'El user_id del archivo no es válido.'
         }
       }
     };
@@ -1335,12 +1437,16 @@
         enterFullscreen: 'Plein écran',
         exitFullscreen: 'Quitter le plein écran',
         newGame: '🎮 Nouvelle partie',
-        multiDeviceGame: '📡 Nouvelle partie multi-device',
+        multiDeviceGame: '📡 Connecter les appareils',
+        multiDeviceOnline: 'En ligne',
+        multiDeviceOffline: 'Hors ligne',
+        multiDeviceSummary: ({ status, count }) => `${status} | ${count} appareil${count !== 1 ? 's' : ''} connecté${count !== 1 ? 's' : ''}`,
         quickGame: '⚡ Partie rapide',
         wordBank: '🧩 Contenu et extensions',
         donate: '❤️ Faire un don',
         settings: '⚙️ Paramètres',
         leaderboard: '🏅 Classement historique',
+        installOnDevice: '📲 Installer sur l’appareil',
         howToTitle: '🏆 Comment jouer',
         howTo: {
           setupTitle: 'Préparez la partie',
@@ -1368,6 +1474,8 @@
         hostError: 'Impossible d’ouvrir la session.',
         sessionCode: 'Code de session :',
         guestsConnected: ({ count }) => `${count} appareil${count !== 1 ? 's' : ''} connecté${count !== 1 ? 's' : ''}`,
+        online: 'En ligne',
+        offline: 'Hors ligne',
         continueSetup: 'Continuer la configuration',
         joinTitle: '🔗 Rejoindre',
         joinDesc: 'Rejoignez comme écran auxiliaire pour suivre la partie de l’hôte.',
@@ -1568,6 +1676,9 @@
         userIdLabel: 'Votre user_id',
         userIdSub: 'Utilisez ce code lors de l’achat de packs pour que le fichier soit émis pour cet appareil.',
         copyUserId: 'Copier',
+        userIdBackupSub: 'Exportez une sauvegarde pour restaurer ce user_id après un changement de navigateur ou une réinitialisation de l’application.',
+        exportUserIdButton: 'Exporter user_id',
+        importUserIdButton: 'Importer user_id',
         wordsTitle: '🎲 Mots',
         shuffleWordsLabel: 'Mélanger les mots',
         shuffleWordsSub: 'Ordre aléatoire à chaque partie',
@@ -1594,7 +1705,7 @@
         footerAriaLabel: 'Partager Défi du Mime'
       },
       theme: { cosmic: 'Cosmique', 'liquid-glass': 'Automne', material3: 'Printemps', 'light-mode': 'Mode clair', 'dark-mode': 'Mode sombre', 'high-contrast': 'Contraste élevé' },
-      footer: { copyPrefix: '© 2025 Défi du Mime v6.0 · Insight X Lab Technologies' },
+      footer: { copyPrefix: '© 2025 Défi du Mime v6.1 · Insight X Lab Technologies' },
       teams: { defaultA: 'Équipe A', defaultB: 'Équipe B' },
       players: { defaultName: 'Joueur {number}' },
       dynamic: {
@@ -1630,6 +1741,9 @@
         challengesRestored: '✅ Défis restaurés !',
         leaderboardReset: '✅ Classement effacé !',
         userIdCopied: '🪪 user_id copié !',
+        userIdExported: '🪪 Sauvegarde du user_id exportée !',
+        userIdImported: '🪪 user_id restauré !',
+        userIdImportCancelled: 'Importation annulée.',
         packInstallReading: 'Lecture du fichier...',
         packInstallSuccess: '✅ Pack installé et activé !',
         packInstallCancelled: 'Installation annulée.',
@@ -1652,6 +1766,7 @@
         resetChallenges: 'Restaurer les défis par défaut ? Les défis personnalisés seront perdus.',
         resetLeaderboard: 'Effacer tous les résultats du classement historique ?',
         resetAppDefaults: 'Restaurer toute l’application par défaut ? Les paramètres, joueurs sauvegardés, packs installés et user_id seront effacés.',
+        replaceUserId: ({ currentUserId, importedUserId }) => `Remplacer le user_id actuel (${currentUserId}) par le user_id importé (${importedUserId}) ? À utiliser uniquement pour restaurer des achats déjà émis pour cet ID.`,
         restartGame: 'Recommencer la partie ? Toute la progression sera perdue.',
         replacePack: ({ packName }) => `Un pack avec cet ID est déjà installé (${packName}). Le remplacer ?`,
         removePack: ({ packName }) => `Supprimer le pack "${packName}" de cet appareil ?`
@@ -1668,6 +1783,12 @@
         emptyPack: 'Le pack ne contient aucun mot ou défi valide.',
         cryptoUnavailable: 'Ce navigateur ne prend pas en charge la validation sécurisée des packs.',
         reservedPackId: 'Ce pack_id est réservé par le jeu.'
+      },
+      userIdErrors: {
+        fileRequired: 'Sélectionnez un fichier de user_id.',
+        invalidJson: 'Fichier invalide. Envoyez un JSON de user_id.',
+        invalidSchema: 'Ce fichier n’est pas une sauvegarde de user_id MimiMania.',
+        invalidUserId: 'Le user_id du fichier est invalide.'
       }
     });
 
@@ -1698,12 +1819,16 @@
         enterFullscreen: 'Vollbild',
         exitFullscreen: 'Vollbild verlassen',
         newGame: '🎮 Neues Spiel',
-        multiDeviceGame: '📡 Neues Multi-Device-Spiel',
+        multiDeviceGame: '📡 Geräte verbinden',
+        multiDeviceOnline: 'Online',
+        multiDeviceOffline: 'Offline',
+        multiDeviceSummary: ({ status, count }) => `${status} | ${count} Gerät${count !== 1 ? 'e' : ''} verbunden`,
         quickGame: '⚡ Schnellspiel',
         wordBank: '🧩 Inhalte und Erweiterungen',
         donate: '❤️ Spenden',
         settings: '⚙️ Einstellungen',
         leaderboard: '🏅 Bestenliste',
+        installOnDevice: '📲 Auf Gerät installieren',
         howToTitle: '🏆 Spielanleitung',
         howTo: {
           setupTitle: 'Spiel einrichten',
@@ -1731,6 +1856,8 @@
         hostError: 'Sitzung konnte nicht geöffnet werden.',
         sessionCode: 'Sitzungscode:',
         guestsConnected: ({ count }) => `${count} Gerät${count !== 1 ? 'e' : ''} verbunden`,
+        online: 'Online',
+        offline: 'Offline',
         continueSetup: 'Einrichtung fortsetzen',
         joinTitle: '🔗 Beitreten',
         joinDesc: 'Als Zusatzbildschirm beitreten, um dem Host-Spiel zu folgen.',
@@ -1931,6 +2058,9 @@
         userIdLabel: 'Deine user_id',
         userIdSub: 'Nutze diesen Code beim Kauf von Packs, damit die Datei für dieses Gerät ausgestellt wird.',
         copyUserId: 'Kopieren',
+        userIdBackupSub: 'Exportiere ein Backup, um diese user_id nach einem Browserwechsel oder Zurücksetzen der App wiederherzustellen.',
+        exportUserIdButton: 'user_id exportieren',
+        importUserIdButton: 'user_id importieren',
         wordsTitle: '🎲 Wörter',
         shuffleWordsLabel: 'Wörter mischen',
         shuffleWordsSub: 'Zufällige Reihenfolge in jedem Spiel',
@@ -1957,7 +2087,7 @@
         footerAriaLabel: 'Pantomime Challenge teilen'
       },
       theme: { cosmic: 'Kosmisch', 'liquid-glass': 'Herbst', material3: 'Frühling', 'light-mode': 'Heller Modus', 'dark-mode': 'Dunkler Modus', 'high-contrast': 'Hoher Kontrast' },
-      footer: { copyPrefix: '© 2025 Pantomime Challenge v6.0 · Insight X Lab Technologies' },
+      footer: { copyPrefix: '© 2025 Pantomime Challenge v6.1 · Insight X Lab Technologies' },
       teams: { defaultA: 'Team A', defaultB: 'Team B' },
       players: { defaultName: 'Spieler {number}' },
       dynamic: {
@@ -1993,6 +2123,9 @@
         challengesRestored: '✅ Herausforderungen wiederhergestellt!',
         leaderboardReset: '✅ Bestenliste gelöscht!',
         userIdCopied: '🪪 user_id kopiert!',
+        userIdExported: '🪪 user_id-Backup exportiert!',
+        userIdImported: '🪪 user_id wiederhergestellt!',
+        userIdImportCancelled: 'Import abgebrochen.',
         packInstallReading: 'Datei wird gelesen...',
         packInstallSuccess: '✅ Pack installiert und aktiviert!',
         packInstallCancelled: 'Installation abgebrochen.',
@@ -2015,6 +2148,7 @@
         resetChallenges: 'Standard-Herausforderungen wiederherstellen? Eigene Herausforderungen gehen verloren.',
         resetLeaderboard: 'Alle Ergebnisse aus der ewigen Bestenliste löschen?',
         resetAppDefaults: 'Die gesamte Anwendung auf Standard zurücksetzen? Einstellungen, gespeicherte Spieler, installierte Packs und user_id werden gelöscht.',
+        replaceUserId: ({ currentUserId, importedUserId }) => `Aktuelle user_id (${currentUserId}) durch die importierte user_id (${importedUserId}) ersetzen? Nutze dies nur, um Käufe wiederherzustellen, die bereits für diese ID ausgestellt wurden.`,
         restartGame: 'Spiel neu starten? Der gesamte Fortschritt geht verloren.',
         replacePack: ({ packName }) => `Ein Pack mit dieser ID ist bereits installiert (${packName}). Ersetzen?`,
         removePack: ({ packName }) => `Pack "${packName}" von diesem Gerät entfernen?`
@@ -2031,6 +2165,12 @@
         emptyPack: 'Das Pack enthält keine gültigen Wörter oder Herausforderungen.',
         cryptoUnavailable: 'Dieser Browser unterstützt keine sichere Pack-Validierung.',
         reservedPackId: 'Diese pack_id ist für das Spiel reserviert.'
+      },
+      userIdErrors: {
+        fileRequired: 'Wähle eine user_id-Datei aus.',
+        invalidJson: 'Ungültige Datei. Lade ein user_id-JSON hoch.',
+        invalidSchema: 'Diese Datei ist kein MimiMania-user_id-Backup.',
+        invalidUserId: 'Die user_id in der Datei ist ungültig.'
       }
     });
 
@@ -2061,12 +2201,16 @@
         enterFullscreen: 'Schermo intero',
         exitFullscreen: 'Esci da schermo intero',
         newGame: '🎮 Nuova partita',
-        multiDeviceGame: '📡 Nuova partita multi-device',
+        multiDeviceGame: '📡 Connetti dispositivi',
+        multiDeviceOnline: 'Online',
+        multiDeviceOffline: 'Offline',
+        multiDeviceSummary: ({ status, count }) => `${status} | ${count} dispositiv${count === 1 ? 'o' : 'i'} conness${count === 1 ? 'o' : 'i'}`,
         quickGame: '⚡ Partita rapida',
         wordBank: '🧩 Contenuti ed espansioni',
         donate: '❤️ Dona',
         settings: '⚙️ Impostazioni',
         leaderboard: '🏅 Classifica storica',
+        installOnDevice: '📲 Installa sul dispositivo',
         howToTitle: '🏆 Come giocare',
         howTo: {
           setupTitle: 'Prepara la partita',
@@ -2094,6 +2238,8 @@
         hostError: 'Impossibile aprire la sessione.',
         sessionCode: 'Codice sessione:',
         guestsConnected: ({ count }) => `${count} dispositiv${count !== 1 ? 'i' : 'o'} conness${count !== 1 ? 'i' : 'o'}`,
+        online: 'Online',
+        offline: 'Offline',
         continueSetup: 'Continua configurazione',
         joinTitle: '🔗 Connetti',
         joinDesc: 'Entra come schermo ausiliario per seguire la partita dell’host.',
@@ -2294,6 +2440,9 @@
         userIdLabel: 'Il tuo user_id',
         userIdSub: 'Usa questo codice quando acquisti pack, così il file viene emesso per questo dispositivo.',
         copyUserId: 'Copia',
+        userIdBackupSub: 'Esporta un backup per ripristinare questo user_id dopo aver cambiato browser o ripristinato l’applicazione.',
+        exportUserIdButton: 'Esporta user_id',
+        importUserIdButton: 'Importa user_id',
         wordsTitle: '🎲 Parole',
         shuffleWordsLabel: 'Mescola parole',
         shuffleWordsSub: 'Ordine casuale a ogni partita',
@@ -2320,7 +2469,7 @@
         footerAriaLabel: 'Condividi Sfida di Mimica'
       },
       theme: { cosmic: 'Cosmico', 'liquid-glass': 'Autunno', material3: 'Primavera', 'light-mode': 'Modalità chiara', 'dark-mode': 'Modalità scura', 'high-contrast': 'Alto contrasto' },
-      footer: { copyPrefix: '© 2025 Sfida di Mimica v6.0 · Insight X Lab Technologies' },
+      footer: { copyPrefix: '© 2025 Sfida di Mimica v6.1 · Insight X Lab Technologies' },
       teams: { defaultA: 'Squadra A', defaultB: 'Squadra B' },
       players: { defaultName: 'Giocatore {number}' },
       dynamic: {
@@ -2356,6 +2505,9 @@
         challengesRestored: '✅ Sfide ripristinate!',
         leaderboardReset: '✅ Classifica cancellata!',
         userIdCopied: '🪪 user_id copiato!',
+        userIdExported: '🪪 Backup dello user_id esportato!',
+        userIdImported: '🪪 user_id ripristinato!',
+        userIdImportCancelled: 'Importazione annullata.',
         packInstallReading: 'Lettura file...',
         packInstallSuccess: '✅ Pack installato e attivato!',
         packInstallCancelled: 'Installazione annullata.',
@@ -2378,6 +2530,7 @@
         resetChallenges: 'Ripristinare le sfide predefinite? Le sfide personalizzate andranno perse.',
         resetLeaderboard: 'Cancellare tutti i risultati della classifica storica?',
         resetAppDefaults: 'Ripristinare tutta l’applicazione ai valori predefiniti? Impostazioni, giocatori salvati, pack installati e user_id saranno cancellati.',
+        replaceUserId: ({ currentUserId, importedUserId }) => `Sostituire lo user_id attuale (${currentUserId}) con lo user_id importato (${importedUserId})? Usalo solo per ripristinare acquisti già emessi per questo ID.`,
         restartGame: 'Riavviare il gioco? Tutti i progressi andranno persi.',
         replacePack: ({ packName }) => `Esiste già un pack installato con questo ID (${packName}). Sostituirlo?`,
         removePack: ({ packName }) => `Rimuovere il pack "${packName}" da questo dispositivo?`
@@ -2394,6 +2547,12 @@
         emptyPack: 'Il pack non contiene parole o sfide valide.',
         cryptoUnavailable: 'Questo browser non supporta la validazione sicura dei pack.',
         reservedPackId: 'Questo pack_id è riservato dal gioco.'
+      },
+      userIdErrors: {
+        fileRequired: 'Seleziona un file user_id.',
+        invalidJson: 'File non valido. Carica un JSON di user_id.',
+        invalidSchema: 'Questo file non è un backup user_id di MimiMania.',
+        invalidUserId: 'Lo user_id nel file non è valido.'
       }
     });
 
@@ -3892,6 +4051,29 @@
       if (button) button.title = fullSummary;
     }
 
+    function getMultiDeviceHomeConnectionCount() {
+      if (isHostSessionOpen()) return multiDeviceState.connections.filter(conn => conn.open).length;
+      if (isGuestSessionOpen()) return 1;
+      return 0;
+    }
+
+    function renderMultiDeviceHomeSummary() {
+      const summary = document.getElementById('multi-device-summary');
+      if (!summary) return;
+      const isOnline = isHostSessionOpen() || isGuestSessionOpen();
+      const count = getMultiDeviceHomeConnectionCount();
+      const status = t(isOnline ? 'home.multiDeviceOnline' : 'home.multiDeviceOffline');
+      const text = t('home.multiDeviceSummary', { status, count });
+      const dot = document.createElement('span');
+      dot.className = `connection-status-dot ${isOnline ? 'is-online' : 'is-offline'}`;
+      dot.setAttribute('aria-hidden', 'true');
+      summary.replaceChildren(dot, document.createTextNode(text));
+      summary.title = text;
+      summary.setAttribute('aria-label', text);
+      const button = summary.closest('button');
+      if (button) button.title = `${t('home.multiDeviceGame')} | ${text}`;
+    }
+
     function syncTeamNamesForLanguage(previousLanguage, nextLanguage) {
       ['A', 'B'].forEach(team => {
         const previousDefault = getDefaultTeamName(team, previousLanguage);
@@ -3955,7 +4137,10 @@
       role: 'single',
       peer: null,
       peerId: '',
+      hostPeerId: '',
       hostConnection: null,
+      guestConnectionStatus: 'disconnected',
+      lastGuestDrawingTurnKey: '',
       connections: [],
       sessionUrl: '',
       lastPayload: null
@@ -3967,10 +4152,15 @@
       unlocked: false
     };
 
+    let deferredPWAInstallPrompt = null;
     let wbDiff = 'easy';
     let wbCat = 'objects';
     let wbPreviewPackId = '';
     let resultAwardState = null;
+    let leaderboardFilters = {
+      type: 'all',
+      mode: 'all'
+    };
 
     // ============================================================
     // STARS
@@ -4017,6 +4207,7 @@
       applyTranslations();
       refreshGameTypeUI();
       renderQuickGameSummary();
+      renderMultiDeviceHomeSummary();
       updateTeamLabels();
       renderCategorySelection();
       renderSetupPlayers();
@@ -4034,6 +4225,10 @@
       renderScoreMini();
       if (document.getElementById('screen-leaderboard')?.classList.contains('active')) renderLeaderboard();
       if (document.getElementById('screen-score-manager')?.classList.contains('active')) renderScoreManager();
+      if (document.getElementById('screen-guest')?.classList.contains('active') && multiDeviceState.lastPayload) {
+        renderGuestSessionState(multiDeviceState.lastPayload);
+      }
+      renderGuestConnectionStatus();
       updateScoreManagerButton();
       updateTimerLabel(document.getElementById('timer-slider').value);
       updateFullscreenButton();
@@ -4046,6 +4241,7 @@
       currentLanguage = nextLanguage;
       syncTeamNamesForLanguage(previousLanguage, nextLanguage);
       refreshLocalizedUI();
+      setUserIdImportStatus();
       if (save) saveSettings();
     }
 
@@ -4092,7 +4288,7 @@
         renderCategorySelection();
       }
       if (screen === 'multidevice') {
-        resetMultiDeviceChoice();
+        restoreMultiDeviceScreenState();
       }
       if (screen === 'leaderboard') {
         renderLeaderboard();
@@ -4145,6 +4341,30 @@
       }
     }
 
+    function isPWAStandalone() {
+      return window.matchMedia?.('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    }
+
+    function updatePWAInstallButton() {
+      const button = document.getElementById('pwa-install-button');
+      if (!button) return;
+      button.classList.toggle('hidden', !deferredPWAInstallPrompt || isPWAStandalone());
+    }
+
+    async function installPWA() {
+      if (!deferredPWAInstallPrompt || isPWAStandalone()) {
+        updatePWAInstallButton();
+        return;
+      }
+      const promptEvent = deferredPWAInstallPrompt;
+      deferredPWAInstallPrompt = null;
+      updatePWAInstallButton();
+      try {
+        await promptEvent.prompt();
+        await promptEvent.userChoice;
+      } catch (e) { }
+    }
+
     // ============================================================
     // MULTI DEVICE
     // ============================================================
@@ -4162,6 +4382,23 @@
       const el = document.getElementById('multidevice-host-status');
       if (!el) return;
       el.textContent = keyOrText.includes('.') ? t(keyOrText) : keyOrText;
+    }
+
+    function renderGuestConnectionStatus() {
+      const el = document.getElementById('guest-connection-status');
+      if (!el) return;
+      const statusKey = multiDeviceState.guestConnectionStatus === 'connected'
+        ? 'multiDevice.online'
+        : multiDeviceState.guestConnectionStatus === 'disconnected'
+          ? 'multiDevice.offline'
+          : 'multiDevice.connecting';
+      el.textContent = t(statusKey);
+      el.dataset.connectionStatus = multiDeviceState.guestConnectionStatus;
+    }
+
+    function setGuestConnectionStatus(status) {
+      multiDeviceState.guestConnectionStatus = status;
+      renderGuestConnectionStatus();
     }
 
     function getSessionUrl(peerId) {
@@ -4205,6 +4442,7 @@
       const count = multiDeviceState.connections.filter(conn => conn.open).length;
       const el = document.getElementById('multidevice-guest-count');
       if (el) el.textContent = t('multiDevice.guestsConnected', { count });
+      renderMultiDeviceHomeSummary();
     }
 
     function closeCurrentPeer() {
@@ -4215,10 +4453,27 @@
       } catch (e) { }
       multiDeviceState.peer = null;
       multiDeviceState.hostConnection = null;
+      multiDeviceState.guestConnectionStatus = 'disconnected';
+      multiDeviceState.lastGuestDrawingTurnKey = '';
       multiDeviceState.connections = [];
       multiDeviceState.peerId = '';
+      multiDeviceState.hostPeerId = '';
       multiDeviceState.sessionUrl = '';
       multiDeviceState.lastPayload = null;
+      renderMultiDeviceHomeSummary();
+    }
+
+    function isCurrentPeerOpen() {
+      const peer = multiDeviceState.peer;
+      return Boolean(peer && !peer.destroyed && peer.disconnected !== true);
+    }
+
+    function isHostSessionOpen() {
+      return multiDeviceState.role === 'host' && isCurrentPeerOpen() && Boolean(multiDeviceState.peerId && multiDeviceState.sessionUrl);
+    }
+
+    function isGuestSessionOpen() {
+      return multiDeviceState.role === 'guest' && isCurrentPeerOpen() && Boolean(multiDeviceState.hostConnection?.open);
     }
 
     function resetMultiDeviceChoice() {
@@ -4238,15 +4493,46 @@
       }
     }
 
+    function showExistingHostSession() {
+      selectMultiDeviceMode('host');
+      document.getElementById('multidevice-host-panel')?.classList.remove('hidden');
+      document.getElementById('multidevice-session-code').textContent = multiDeviceState.peerId;
+      document.getElementById('multidevice-link').value = multiDeviceState.sessionUrl;
+      renderSessionQRCode(multiDeviceState.sessionUrl);
+      setHostStatus('multiDevice.hostReady');
+      updateHostGuestCount();
+    }
+
+    function showExistingGuestSession() {
+      selectMultiDeviceMode('join');
+      const input = document.getElementById('multidevice-join-code');
+      const hostCode = multiDeviceState.hostPeerId || multiDeviceState.hostConnection?.peer || '';
+      if (input) input.value = hostCode;
+      setJoinStatus('multiDevice.connected');
+    }
+
+    function restoreMultiDeviceScreenState() {
+      if (isHostSessionOpen()) {
+        showExistingHostSession();
+        return;
+      }
+      if (isGuestSessionOpen()) {
+        showExistingGuestSession();
+        return;
+      }
+      resetMultiDeviceChoice();
+    }
+
     function disconnectGuestSession() {
       closeCurrentPeer();
       multiDeviceState.role = 'single';
-      document.getElementById('guest-connection-status').textContent = t('multiDevice.disconnected');
+      setGuestConnectionStatus('disconnected');
       document.getElementById('guest-round-title').textContent = t('multiDevice.waitingTitle');
       document.getElementById('guest-current-player-label').textContent = t('multiDevice.guestWaiting');
       document.getElementById('guest-current-player-name').textContent = '--';
       document.getElementById('guest-hint-banner')?.classList.add('hidden');
       document.getElementById('guest-drawing-card')?.classList.add('hidden');
+      document.body.dataset.guestGameType = 'mime';
       updateGuestTimerDisplay(NaN, 1);
       goTo('home');
     }
@@ -4284,6 +4570,15 @@
       }
     }
 
+    function getGuestStatusKey(phase = 'waiting') {
+      if (phase === 'preparing') return 'guestPreparing';
+      if (phase === 'memorizing') return 'guestMemorizing';
+      if (phase === 'playing') return 'guestPlaying';
+      if (phase === 'score') return 'guestScore';
+      if (phase === 'final') return 'guestFinal';
+      return 'guestWaiting';
+    }
+
     function buildHostGamePayload(options = {}) {
       const { includeDrawingSnapshot = false } = options;
       const hasStarted = Boolean(gameState.players.length && gameState.totalTurns);
@@ -4299,25 +4594,15 @@
         gameType: gameState.gameType,
         timerLeft: isPlaying ? gameState.timerLeft : gameState.timerDur,
         timerDur: gameState.timerDur,
-        roundText: hasStarted
-          ? t('dynamic.roundDisplay', { current: gameState.currentRound, total: gameState.totalRounds })
-          : t('multiDevice.waitingTitle'),
-        currentPlayerLabel: t(gameState.gameType === 'drawing' ? 'game.currentPlayerDrawingLabel' : 'game.currentPlayerLabel'),
+        currentRound: hasStarted ? gameState.currentRound : 0,
+        totalRounds: hasStarted ? gameState.totalRounds : 0,
+        drawingTurnKey: `${gameState.turnsDone}:${gameState.currentRound}:${gameState.currentPlayerIdx}`,
+        statusKey: getGuestStatusKey(phase),
         currentPlayerName: currentPlayer.name,
         teamLabel: currentPlayer.teamLabel,
         hintVisible: Boolean(isMime && isPlaying && gameState.hintShown && hintText),
-        hintText,
-        statusText: t(`multiDevice.${phase === 'preparing'
-          ? 'guestPreparing'
-          : phase === 'memorizing'
-            ? 'guestMemorizing'
-            : phase === 'playing'
-              ? 'guestPlaying'
-              : phase === 'score'
-                ? 'guestScore'
-                : phase === 'final'
-                  ? 'guestFinal'
-                  : 'guestWaiting'}`)
+        hintCategory: gameState.currentWord?.cat || '',
+        hintText
       };
       if (includeDrawingSnapshot && gameState.gameType === 'drawing' && phase === 'playing') {
         payload.drawingSnapshot = getDrawingSnapshot();
@@ -4368,11 +4653,13 @@
         document.getElementById('multidevice-link').value = multiDeviceState.sessionUrl;
         renderSessionQRCode(multiDeviceState.sessionUrl);
         setHostStatus('multiDevice.hostReady');
+        renderMultiDeviceHomeSummary();
         broadcastHostGameState();
       });
       peer.on('connection', attachHostConnection);
       peer.on('error', () => {
         setHostStatus('multiDevice.hostError');
+        renderMultiDeviceHomeSummary();
         showNotif(t('multiDevice.hostError'), 'var(--accent1)', 'var(--btn-danger-text)');
       });
     }
@@ -4391,8 +4678,9 @@
 
       closeCurrentPeer();
       multiDeviceState.role = 'guest';
+      multiDeviceState.hostPeerId = hostId;
       setJoinStatus('multiDevice.connecting');
-      document.getElementById('guest-connection-status').textContent = t('multiDevice.connecting');
+      setGuestConnectionStatus('connecting');
       goTo('guest');
 
       const peer = new window.Peer();
@@ -4403,23 +4691,27 @@
         attachGuestConnection(conn);
       });
       peer.on('error', () => {
-        document.getElementById('guest-connection-status').textContent = t('multiDevice.disconnected');
+        setGuestConnectionStatus('disconnected');
         setJoinStatus('multiDevice.hostError');
+        renderMultiDeviceHomeSummary();
       });
     }
 
     function attachGuestConnection(conn) {
       conn.on('open', () => {
-        document.getElementById('guest-connection-status').textContent = t('multiDevice.connected');
+        setGuestConnectionStatus('connected');
         setJoinStatus('multiDevice.connected');
+        renderMultiDeviceHomeSummary();
         sendToGuest(conn, { type: 'guest-ready' });
       });
       conn.on('data', handleGuestMessage);
       conn.on('close', () => {
-        document.getElementById('guest-connection-status').textContent = t('multiDevice.disconnected');
+        setGuestConnectionStatus('disconnected');
+        renderMultiDeviceHomeSummary();
       });
       conn.on('error', () => {
-        document.getElementById('guest-connection-status').textContent = t('multiDevice.disconnected');
+        setGuestConnectionStatus('disconnected');
+        renderMultiDeviceHomeSummary();
       });
     }
 
@@ -4450,18 +4742,41 @@
           : getThemeVar('--timer-color-danger');
     }
 
+    function getGuestRoundText(payload = {}) {
+      const current = Number.parseInt(payload.currentRound, 10);
+      const total = Number.parseInt(payload.totalRounds, 10);
+      if (payload.phase !== 'waiting' && current > 0 && total > 0) {
+        return t('dynamic.roundDisplay', { current, total });
+      }
+      return t('multiDevice.waitingTitle');
+    }
+
+    function getGuestStatusText(payload = {}) {
+      const statusKey = payload.statusKey || getGuestStatusKey(payload.phase);
+      return t(`multiDevice.${statusKey}`);
+    }
+
+    function getGuestHintText(payload = {}) {
+      if (CATEGORY_KEYS.includes(payload.hintCategory)) {
+        return getCategoryLabel(payload.hintCategory, { singular: true, withIcon: true });
+      }
+      return payload.hintText || '';
+    }
+
     function renderGuestSessionState(payload) {
       multiDeviceState.lastPayload = payload;
       if (!document.getElementById('screen-guest').classList.contains('active')) goTo('guest');
-      document.getElementById('guest-round-title').textContent = payload.roundText || t('multiDevice.waitingTitle');
-      document.getElementById('guest-current-player-label').textContent = payload.statusText || t('multiDevice.guestWaiting');
+      document.body.dataset.guestGameType = payload.gameType === 'drawing' ? 'drawing' : 'mime';
+      document.getElementById('guest-round-title').textContent = getGuestRoundText(payload);
+      document.getElementById('guest-current-player-label').textContent = getGuestStatusText(payload);
       document.getElementById('guest-current-player-name').textContent = payload.phase === 'waiting' ? '--' : (payload.currentPlayerName || '--');
       updateGuestTimerDisplay(payload.timerLeft, payload.timerDur);
 
       const hint = document.getElementById('guest-hint-banner');
       const hintText = document.getElementById('guest-hint-text');
-      if (payload.hintVisible && payload.hintText) {
-        hintText.textContent = payload.hintText;
+      const localizedHintText = getGuestHintText(payload);
+      if (payload.hintVisible && localizedHintText) {
+        hintText.textContent = localizedHintText;
         hint.classList.remove('hidden');
       } else {
         hint.classList.add('hidden');
@@ -4471,8 +4786,15 @@
       const shouldShowDrawing = payload.gameType === 'drawing' && payload.phase === 'playing';
       drawingCard.classList.toggle('hidden', !shouldShowDrawing);
       if (shouldShowDrawing) {
+        const drawingTurnKey = payload.drawingTurnKey || `${payload.currentRound || 0}:${payload.currentPlayerName || ''}`;
+        if (drawingTurnKey !== multiDeviceState.lastGuestDrawingTurnKey) {
+          multiDeviceState.lastGuestDrawingTurnKey = drawingTurnKey;
+          clearGuestDrawingCanvas();
+        }
         requestAnimationFrame(() => resizeGuestDrawingCanvas({ preserve: true }));
         if (payload.drawingSnapshot) applyGuestDrawingSnapshot(payload.drawingSnapshot);
+      } else {
+        multiDeviceState.lastGuestDrawingTurnKey = '';
       }
     }
 
@@ -4595,6 +4917,109 @@
     function renderUserId() {
       const input = document.getElementById('user-id-display');
       if (input) input.value = appUserId;
+    }
+
+    function setUserIdImportStatus(message = '', type = '') {
+      const el = document.getElementById('user-id-import-status');
+      if (!el) return;
+      el.textContent = message;
+      el.classList.remove('success', 'error');
+      if (type) el.classList.add(type);
+    }
+
+    function isValidImportedUserId(userId) {
+      return typeof userId === 'string'
+        && userId.length >= 8
+        && userId.length <= 160
+        && /^[A-Za-z0-9._:-]+$/.test(userId);
+    }
+
+    function createUserIdBackupEnvelope(userId = appUserId) {
+      return {
+        schema: USER_ID_BACKUP_SCHEMA,
+        app: 'MimiMania',
+        version: 1,
+        exported_at: new Date().toISOString(),
+        user_id: userId
+      };
+    }
+
+    function downloadJsonFile(filename, payload) {
+      const blob = new Blob([`${JSON.stringify(payload, null, 2)}\n`], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 0);
+    }
+
+    function exportUserId() {
+      const dateToken = new Date().toISOString().slice(0, 10);
+      downloadJsonFile(`mimimania-user-id-${dateToken}.json`, createUserIdBackupEnvelope());
+      setUserIdImportStatus(t('notifications.userIdExported'), 'success');
+      showNotif(t('notifications.userIdExported'));
+    }
+
+    function selectUserIdFile() {
+      const input = document.getElementById('user-id-file-input');
+      if (!input) return;
+      input.value = '';
+      input.click();
+    }
+
+    async function parseUserIdFile(file) {
+      if (!file) throw new Error(t('userIdErrors.fileRequired'));
+      let envelope;
+      try {
+        envelope = JSON.parse(await file.text());
+      } catch (error) {
+        throw new Error(t('userIdErrors.invalidJson'));
+      }
+
+      if (!envelope || typeof envelope !== 'object' || envelope.schema !== USER_ID_BACKUP_SCHEMA) {
+        throw new Error(t('userIdErrors.invalidSchema'));
+      }
+      if (!isValidImportedUserId(envelope.user_id)) {
+        throw new Error(t('userIdErrors.invalidUserId'));
+      }
+      return envelope;
+    }
+
+    async function importUserIdFile(file) {
+      setUserIdImportStatus(t('notifications.packInstallReading'));
+      const envelope = await parseUserIdFile(file);
+      const importedUserId = envelope.user_id;
+
+      if (importedUserId !== appUserId) {
+        const shouldReplace = confirm(t('confirmations.replaceUserId', {
+          currentUserId: appUserId,
+          importedUserId
+        }));
+        if (!shouldReplace) {
+          setUserIdImportStatus(t('notifications.userIdImportCancelled'));
+          return null;
+        }
+      }
+
+      appUserId = importedUserId;
+      localStorage.setItem(USER_ID_KEY, appUserId);
+      renderUserId();
+      setUserIdImportStatus(t('notifications.userIdImported'), 'success');
+      showNotif(t('notifications.userIdImported'));
+      return appUserId;
+    }
+
+    async function handleUserIdFileSelection(file) {
+      try {
+        await importUserIdFile(file);
+      } catch (error) {
+        const message = error?.message || t('userIdErrors.invalidJson');
+        setUserIdImportStatus(message, 'error');
+        showNotif(message, 'var(--accent2)', 'var(--text)');
+      }
     }
 
     async function copyUserId() {
@@ -5235,8 +5660,12 @@
       const shouldShow = gameState.gameType === 'drawing' && gameState.phase === 'playing';
       board.classList.toggle('hidden', !shouldShow);
       if (shouldShow) {
-        requestAnimationFrame(() => resizeDrawingCanvas({ preserve: !reset }));
-        if (reset) broadcastDrawingClear();
+        if (reset) {
+          resizeDrawingCanvas({ preserve: false });
+          broadcastDrawingClear();
+        } else {
+          requestAnimationFrame(() => resizeDrawingCanvas({ preserve: true }));
+        }
       }
     }
 
@@ -6370,34 +6799,97 @@
       gameState.leaderboardRecorded = true;
     }
 
-    function compareLeaderboardPlayers(sortKey) {
+    function getLeaderboardModeType(modeKey) {
+      return modeKey.startsWith('drawing') ? 'drawing' : 'mime';
+    }
+
+    function getLeaderboardModePlayStyle(modeKey) {
+      return modeKey.endsWith('Teams') ? 'teams' : 'ffa';
+    }
+
+    function getLeaderboardScopedModeKeys(filters = leaderboardFilters) {
+      return LEADERBOARD_MODE_KEYS.filter(modeKey => {
+        const typeMatches = filters.type === 'all' || getLeaderboardModeType(modeKey) === filters.type;
+        const modeMatches = filters.mode === 'all' || getLeaderboardModePlayStyle(modeKey) === filters.mode;
+        return typeMatches && modeMatches;
+      });
+    }
+
+    function getLeaderboardScopedStats(player, filters = leaderboardFilters) {
+      if (filters.type === 'all' && filters.mode === 'all') {
+        return {
+          points: Number.parseInt(player.totalPoints, 10) || 0,
+          matches: Number.parseInt(player.matches, 10) || 0
+        };
+      }
+
+      return getLeaderboardScopedModeKeys(filters).reduce((acc, modeKey) => {
+        const mode = player.modes?.[modeKey] || {};
+        acc.points += Number.parseInt(mode.points, 10) || 0;
+        acc.matches += Number.parseInt(mode.matches, 10) || 0;
+        return acc;
+      }, { points: 0, matches: 0 });
+    }
+
+    function formatLeaderboardNumber(value) {
+      const locale = LANGUAGE_HTML_MAP[currentLanguage] || LANGUAGE_HTML_MAP[DEFAULT_LANGUAGE] || currentLanguage;
+      return new Intl.NumberFormat(locale).format(Number.parseInt(value, 10) || 0);
+    }
+
+    function getLeaderboardBestModeKey(player, filters = leaderboardFilters) {
+      const bestMode = getLeaderboardScopedModeKeys(filters)
+        .map(modeKey => ({ modeKey, points: player.modes?.[modeKey]?.points || 0, matches: player.modes?.[modeKey]?.matches || 0 }))
+        .sort((a, b) => (b.points - a.points) || (b.matches - a.matches))[0];
+      return bestMode && (bestMode.points > 0 || bestMode.matches > 0) ? bestMode.modeKey : null;
+    }
+
+    function getLeaderboardPlayerTitle(player, filters = leaderboardFilters) {
+      const bestModeKey = getLeaderboardBestModeKey(player, filters);
+      if (bestModeKey) return t(`leaderboard.mode.${bestModeKey}`);
+      return t('leaderboard.playerFallbackTitle');
+    }
+
+    function compareLeaderboardPlayers() {
       return (a, b) => {
         const byName = () => a.name.localeCompare(b.name, currentLanguage, { sensitivity: 'base' });
-        if (sortKey === 'name') return byName();
-        if (sortKey === 'matches') return (b.matches - a.matches) || (b.totalPoints - a.totalPoints) || byName();
-        if (LEADERBOARD_MODE_KEYS.includes(sortKey)) {
-          const aMode = a.modes?.[sortKey]?.points || 0;
-          const bMode = b.modes?.[sortKey]?.points || 0;
-          return (bMode - aMode) || (b.totalPoints - a.totalPoints) || byName();
-        }
-        return (b.totalPoints - a.totalPoints) || (b.matches - a.matches) || byName();
+        return (b.scoped.points - a.scoped.points) || (b.scoped.matches - a.scoped.matches) || byName();
       };
+    }
+
+    function syncLeaderboardFilterUI() {
+      document.querySelectorAll('[data-leaderboard-filter]').forEach(button => {
+        const selected = leaderboardFilters[button.dataset.leaderboardFilter] === button.dataset.leaderboardValue;
+        button.classList.toggle('selected', selected);
+        button.setAttribute('aria-pressed', selected ? 'true' : 'false');
+      });
+
+      document.querySelectorAll('[data-leaderboard-tab]').forEach(button => {
+        const selected = leaderboardFilters.type === button.dataset.leaderboardTab;
+        button.classList.toggle('selected', selected);
+        button.setAttribute('aria-selected', selected ? 'true' : 'false');
+      });
     }
 
     function renderLeaderboard() {
       const container = document.getElementById('leaderboard-list');
       if (!container) return;
-      const sortSelect = document.getElementById('leaderboard-sort-select');
-      const sortKey = sortSelect?.value || 'total';
       const leaderboard = loadLeaderboard();
-      const players = Object.values(leaderboard.players)
-        .map(player => ({ ...player, modes: normalizeLeaderboardModes(player.modes) }))
-        .sort(compareLeaderboardPlayers(sortKey));
+      const allPlayers = Object.values(leaderboard.players)
+        .map(player => {
+          const normalizedPlayer = { ...player, modes: normalizeLeaderboardModes(player.modes) };
+          return { ...normalizedPlayer, scoped: getLeaderboardScopedStats(normalizedPlayer) };
+        });
+      const isOverallScope = leaderboardFilters.type === 'all' && leaderboardFilters.mode === 'all';
+      const players = allPlayers
+        .filter(player => isOverallScope || player.scoped.points > 0 || player.scoped.matches > 0)
+        .sort(compareLeaderboardPlayers());
+      const visiblePlayers = players.slice(0, LEADERBOARD_PAGE_SIZE);
       const totalMatches = Number.parseInt(leaderboard.matches, 10) || 0;
       const summary = document.getElementById('leaderboard-summary');
       if (summary) {
         summary.textContent = t('dynamic.leaderboardSummary', { players: players.length, matches: totalMatches });
       }
+      syncLeaderboardFilterUI();
 
       container.innerHTML = '';
       if (!players.length) {
@@ -6405,61 +6897,70 @@
         empty.className = 'leaderboard-empty';
         empty.textContent = t('leaderboard.emptyState');
         container.appendChild(empty);
+        const footer = document.getElementById('leaderboard-footer');
+        if (footer) footer.textContent = '';
         return;
       }
 
-      const ranks = ['🥇', '🥈', '🥉'];
-      players.forEach((player, index) => {
+      visiblePlayers.forEach((player, index) => {
         const row = document.createElement('div');
-        row.className = 'leaderboard-row';
-
-        const head = document.createElement('div');
-        head.className = 'leaderboard-row-head';
+        const podiumClass = index === 0 ? ' rank-first' : index === 1 ? ' rank-second' : index === 2 ? ' rank-third' : '';
+        row.className = `leaderboard-row${index < 3 ? ' is-podium' : ''}${podiumClass}`;
 
         const rank = document.createElement('div');
-        rank.className = 'rank-badge';
-        rank.textContent = ranks[index] || String(index + 1);
+        rank.className = 'leaderboard-rank';
+        const rankNumber = document.createElement('span');
+        rankNumber.textContent = String(index + 1);
+        rank.appendChild(rankNumber);
+
+        const avatarFrame = document.createElement('div');
+        avatarFrame.className = 'leaderboard-avatar-frame';
+        const avatar = document.createElement('img');
+        avatar.className = 'leaderboard-avatar';
+        avatar.src = LEADERBOARD_DEFAULT_AVATAR;
+        avatar.alt = '';
+        avatar.loading = 'lazy';
+        avatarFrame.appendChild(avatar);
 
         const identity = document.createElement('div');
         identity.className = 'leaderboard-identity';
         const name = document.createElement('div');
         name.className = 'leaderboard-player-name';
         name.textContent = player.name;
+        const title = document.createElement('div');
+        title.className = 'leaderboard-player-title';
+        title.textContent = getLeaderboardPlayerTitle(player);
         const matches = document.createElement('div');
-        matches.className = 'text-meta';
-        matches.textContent = `${player.matches} ${t('leaderboard.matchesLabel')}`;
-        identity.append(name, matches);
+        matches.className = 'leaderboard-player-meta';
+        matches.textContent = `${formatLeaderboardNumber(player.scoped.matches)} ${t('leaderboard.matchesLabel')}`;
+        identity.append(name, title, matches);
 
-        const total = document.createElement('div');
-        total.className = 'leaderboard-total';
-        const points = document.createElement('div');
-        points.className = 'leaderboard-total-points';
-        points.textContent = String(player.totalPoints);
-        const pointsLabel = document.createElement('div');
-        pointsLabel.className = 'text-meta';
-        pointsLabel.textContent = t('leaderboard.pointsLabel');
-        total.append(points, pointsLabel);
+        const score = document.createElement('div');
+        score.className = 'leaderboard-score';
+        const scoreStar = document.createElement('span');
+        scoreStar.className = 'leaderboard-score-star';
+        scoreStar.textContent = '★';
+        const scoreCopy = document.createElement('span');
+        const points = document.createElement('span');
+        points.className = 'leaderboard-score-value';
+        points.textContent = formatLeaderboardNumber(player.scoped.points);
+        const pointsLabel = document.createElement('span');
+        pointsLabel.className = 'leaderboard-score-label';
+        pointsLabel.textContent = ` ${t('leaderboard.pointsLabel')}`;
+        scoreCopy.append(points, pointsLabel);
+        score.append(scoreStar, scoreCopy);
 
-        head.append(rank, identity, total);
-
-        const breakdown = document.createElement('div');
-        breakdown.className = 'leaderboard-breakdown';
-        LEADERBOARD_MODE_KEYS.forEach(modeKey => {
-          const chip = document.createElement('div');
-          chip.className = 'leaderboard-mode-chip';
-          const modeLabel = document.createElement('span');
-          modeLabel.className = 'leaderboard-mode-label';
-          modeLabel.textContent = t(`leaderboard.mode.${modeKey}`);
-          const modeStats = document.createElement('span');
-          modeStats.className = 'leaderboard-mode-stats';
-          modeStats.textContent = t('dynamic.leaderboardModeStats', player.modes[modeKey] || { points: 0, matches: 0 });
-          chip.append(modeLabel, modeStats);
-          breakdown.appendChild(chip);
-        });
-
-        row.append(head, breakdown);
+        row.append(rank, avatarFrame, identity, score);
         container.appendChild(row);
       });
+
+      const footer = document.getElementById('leaderboard-footer');
+      if (footer) {
+        footer.textContent = t('dynamic.leaderboardFooter', {
+          shown: visiblePlayers.length,
+          total: players.length
+        });
+      }
     }
 
     function resetLeaderboard() {
@@ -7024,6 +7525,10 @@
         animateButtonClick(button);
         return toggleFullscreen();
       }
+      if (action === 'install-pwa') {
+        animateButtonClick(button);
+        return installPWA();
+      }
       if (action === 'select-multidevice-host') {
         animateButtonClick(button);
         return selectMultiDeviceMode('host');
@@ -7104,6 +7609,8 @@
       if (action === 'toggle-installed-pack') return toggleInstalledPack(packId);
       if (action === 'remove-installed-pack') return removeInstalledPack(packId);
       if (action === 'copy-user-id') return copyUserId();
+      if (action === 'export-user-id') return exportUserId();
+      if (action === 'select-user-id-file') return selectUserIdFile();
       if (action === 'remove-word') return removeWord(wordCategory, wordDiff, wordPack, Number(index));
       if (action === 'remove-challenge') return removeChallenge(Number(index));
       if (action === 'remove-team-player') return removeTeamPlayer(team, Number(index));
@@ -7164,6 +7671,26 @@
           return;
         }
 
+        const leaderboardFilter = event.target.closest('[data-leaderboard-filter]');
+        if (leaderboardFilter) {
+          const filter = leaderboardFilter.dataset.leaderboardFilter;
+          const value = leaderboardFilter.dataset.leaderboardValue;
+          if (filter === 'type' || filter === 'mode') {
+            leaderboardFilters = { ...leaderboardFilters, [filter]: value };
+            playNavigationSound();
+            renderLeaderboard();
+          }
+          return;
+        }
+
+        const leaderboardTab = event.target.closest('[data-leaderboard-tab]');
+        if (leaderboardTab) {
+          leaderboardFilters = { ...leaderboardFilters, type: leaderboardTab.dataset.leaderboardTab || 'all' };
+          playNavigationSound();
+          renderLeaderboard();
+          return;
+        }
+
         const actionButton = event.target.closest('[data-action]');
         if (actionButton) {
           handleAction(actionButton);
@@ -7218,7 +7745,6 @@
       document.getElementById('result-guesser-select')?.addEventListener('change', event => {
         applyResultGuesserSelection(event.target.value);
       });
-      document.getElementById('leaderboard-sort-select')?.addEventListener('change', renderLeaderboard);
       document.getElementById('language-select').addEventListener('change', event => {
         setLanguage(event.target.value, { save: true });
       });
@@ -7228,12 +7754,30 @@
       });
       document.addEventListener('fullscreenchange', updateFullscreenButton);
       document.addEventListener('webkitfullscreenchange', updateFullscreenButton);
+      window.addEventListener('beforeinstallprompt', event => {
+        event.preventDefault();
+        deferredPWAInstallPrompt = event;
+        updatePWAInstallButton();
+      });
+      window.addEventListener('appinstalled', () => {
+        deferredPWAInstallPrompt = null;
+        updatePWAInstallButton();
+      });
 
       const packFileInput = document.getElementById('pack-file-input');
       if (packFileInput) {
         packFileInput.addEventListener('change', event => {
           const file = event.target.files?.[0];
           handlePackFileSelection(file);
+          event.target.value = '';
+        });
+      }
+
+      const userIdFileInput = document.getElementById('user-id-file-input');
+      if (userIdFileInput) {
+        userIdFileInput.addEventListener('change', event => {
+          const file = event.target.files?.[0];
+          handleUserIdFileSelection(file);
           event.target.value = '';
         });
       }

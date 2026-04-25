@@ -1,14 +1,14 @@
 {
-  "name": "mimimania",
+  "name": "charadeschallenge",
   "version": "1.0.0",
-  "description": "Jogo de mímica para família",
+  "description": "Draw, Guess and Have Fun Together.",
   "main": "src/index.html",
   "scripts": {
     "start": "npx serve src",
     "dev": "npx serve src --listen 3000"
   },
   "keywords": ["game", "charades", "family"],
-  "author": "Flavio Matiello",
+  "author": "Insight X Lab Game Studios",
   "license": "MIT",
   "devDependencies": {
     "serve": "^14.2.1"
